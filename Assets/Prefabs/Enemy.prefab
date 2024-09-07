@@ -100,6 +100,8 @@ MonoBehaviour:
   gName: Troll
   gLevel: 69
   damage: 69
+  currentHP: 0
+  maxHP: 0
   type: {fileID: 0}
   moveset: []
 --- !u!1 &6791506042132939037
@@ -111,6 +113,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6777223153057698054}
+  - component: {fileID: 4504505920119129606}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -134,3 +137,22 @@ Transform:
   - {fileID: 3042851523318105014}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4504505920119129606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6791506042132939037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0e74ac394a9dc74da3e0acadcb75f3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gName: TROLLED!!!!!
+  gLevel: 69
+  damage: 69
+  currentHP: 69
+  maxHP: 69
+  type: {fileID: 0}
+  moveset: []
