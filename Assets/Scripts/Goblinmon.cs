@@ -5,7 +5,11 @@ using UnityEngine.Scripting.APIUpdating;
 
 public class Goblinmon : MonoBehaviour
 {
-    public string name;
+    public string gName;
+    public int gLevel;
+
+    public int damage;
+
     public SOType type;
     public List<Move> moveset;
 }

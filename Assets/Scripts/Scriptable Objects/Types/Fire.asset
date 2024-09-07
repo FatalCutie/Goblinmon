@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d119150f4997c42bbd717171d509c8, type: 3}
   m_Name: Fire
   m_EditorClassIdentifier: 
-  strength: []
-  weakness: []
+  strength:
+  - {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}

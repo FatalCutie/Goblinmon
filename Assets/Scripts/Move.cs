@@ -6,5 +6,5 @@ public abstract class Move : MonoBehaviour
 {
     public SOType type;
 
-    public abstract void moveAction();
+    public abstract void moveAction(); 
 }
