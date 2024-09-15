@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleSystem : MonoBehaviour
 {
+    [SerializeField] ButtonManager bMan;
 
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
@@ -19,6 +20,9 @@ public class BattleSystem : MonoBehaviour
 
     Goblinmon playerUnit;
     Goblinmon enemyUnit;
+    SpriteRenderer pSpriteR;
+    SpriteRenderer eSpriteR;
+    public Sprite newSprite;
 
     public BattleHUD playerHUD;
     public BattleHUD enemyHUD;
@@ -26,6 +30,7 @@ public class BattleSystem : MonoBehaviour
     public BattleState state;
     void Start()
     {
+        bMan = GetComponent<ButtonManager>();
         state = BattleState.START;
         StartCoroutine(SetupBattle());
     }
@@ -34,9 +39,14 @@ public class BattleSystem : MonoBehaviour
     { //Prefab scales with battle station, fix is unclear
         GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
         playerUnit = playerGO.GetComponent<Goblinmon>();
+        //Will have to adjust sprite positions during sprite production
+        pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
+        pSpriteR.sprite = playerUnit.sprite;
 
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Goblinmon>();
+        eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
+        eSpriteR.sprite = enemyUnit.sprite;
 
         dialogueText.text = "A wild " + enemyUnit.gName + " approches!";
 
@@ -49,12 +59,15 @@ public class BattleSystem : MonoBehaviour
         PlayerTurn();
     }
 
-    IEnumerator PlayerAttack()
+    IEnumerator PlayerAttack() //Triggered by OnAttackButton
     {
-        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-
-        enemyHUD.setHP(enemyUnit.currentHP);
         dialogueText.text = "The attack is successful!";
+
+        yield return new WaitForSeconds(1f);
+
+        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+        enemyHUD.setHP(enemyUnit.currentHP);
+
 
         yield return new WaitForSeconds(2f);
 
@@ -130,9 +143,6 @@ public class BattleSystem : MonoBehaviour
         if (state != BattleState.PLAYERTURN) return;
 
         StartCoroutine(PlayerAttack());
-
-        state = BattleState.ENEMYTURN;
-        StartCoroutine(EnemyTurn());
     }
 
     public void OnHealButton()

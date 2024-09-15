@@ -10,6 +10,8 @@ public class Goblinmon : MonoBehaviour
 
     public int damage;
 
+    public Sprite sprite;
+
     public int currentHP;
     public int maxHP;
 
