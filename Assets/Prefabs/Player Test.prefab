@@ -52,7 +52,10 @@ MonoBehaviour:
   currentHP: 10
   maxHP: 15
   type: {fileID: 0}
-  moveset: []
+  moveset:
+  - {fileID: 11400000, guid: 20f3e8ccfd1846f4595ddb10ae5b0d1c, type: 2}
+  - {fileID: 11400000, guid: b1a04a2c067a2704c8c7e4c7375791ce, type: 2}
+  - {fileID: 11400000, guid: db8d5fb63d66fd5448450b43d6cf4b94, type: 2}
 --- !u!212 &1429744762996290612
 SpriteRenderer:
   m_ObjectHideFlags: 0

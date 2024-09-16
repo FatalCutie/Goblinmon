@@ -51,6 +51,7 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = "A wild " + enemyUnit.gName + " approches!";
 
         playerHUD.SetHUD(playerUnit);
+        bMan.SetPlayerMoves(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
 
         yield return new WaitForSeconds(2f);
@@ -151,5 +152,7 @@ public class BattleSystem : MonoBehaviour
 
         StartCoroutine(PlayerHeal());
     }
+
+
 
 }

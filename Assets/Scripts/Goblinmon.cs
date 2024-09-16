@@ -17,7 +17,7 @@ public class Goblinmon : MonoBehaviour
 
 
     public SOType type;
-    public List<Move> moveset;
+    public List<SOMove> moveset;
 
     public bool TakeDamage(int dmg)
     {
