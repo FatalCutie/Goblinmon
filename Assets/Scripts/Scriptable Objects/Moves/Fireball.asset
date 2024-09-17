@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: Fireball
   m_EditorClassIdentifier: 
   moveName: Fireball
+  moveDescription: Shoot a weak ball of fire
   moveType: {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
   damage: 15
+  moveAction: 0
+  statBuffed: 0

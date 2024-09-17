@@ -60,7 +60,7 @@ public class BattleSystem : MonoBehaviour
         PlayerTurn();
     }
 
-    IEnumerator PlayerAttack() //Triggered by OnAttackButton
+    public IEnumerator PlayerAttack() //Triggered by OnAttackButton
     {
         dialogueText.text = "The attack is successful!";
 

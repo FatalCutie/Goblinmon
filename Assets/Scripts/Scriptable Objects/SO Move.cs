@@ -11,6 +11,8 @@ public class SOMove : ScriptableObject
     public int damage;
     //TODO: MoveAction changes move being used to either do damage,
     //Buff a stat, or debuff an enemys stat
-    public enum MoveAction { Attack, Buff, Debuff }
-    public enum StatBuffed { Attack, Defense, Dodge }
+    [System.Serializable] public enum MoveAction { ATTACK, BUFF, DEBUFF }
+    public MoveAction moveAction; //Should this be private?
+    [System.Serializable] public enum StatBuffed { NONE, ATTACK, DEFENSE, DODGE }
+    public StatBuffed statBuffed = StatBuffed.NONE; //Defaulting to none
 }

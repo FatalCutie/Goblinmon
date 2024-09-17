@@ -50,13 +50,18 @@ public class ButtonManager : MonoBehaviour
             foreach (Transform go in buttonsAttack.transform) //this is also pretty dumb
             {
                 TextMeshProUGUI moveNameText = go.GetChild(0).GetComponent<TextMeshProUGUI>();
-                moveNameText.text = unit.moveset[i].moveName;
+                AttackButton ab = go.GetComponent<AttackButton>();
+                ab.move = unit.moveset[i];
+                moveNameText.text = ab.move.name;
                 i++;
             }
         }
         //Not the optimal solution but a functional one
         //My favorite kind!
-        catch (ArgumentOutOfRangeException) { }
+        catch (ArgumentOutOfRangeException)
+        {
+            //TODO: Disables buttons after argument catch
+        }
 
     }
 }

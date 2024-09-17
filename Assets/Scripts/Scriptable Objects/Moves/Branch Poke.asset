@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: Branch Poke
   m_EditorClassIdentifier: 
   moveName: Branch Poke
+  moveDescription: Poke the enemy with a sharp stick
   moveType: {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
   damage: 5
+  moveAction: 0
+  statBuffed: 0
