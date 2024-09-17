@@ -8,16 +8,17 @@ public class SOType : ScriptableObject
 {
     //Types give special passives?
 
-    public List<SOType> strength; //Deal more damage to
+    public List<SOType> weakness; //Take more damage from
 
     //This list is redundent
     //public List<SOType> weakness;
 
-    public void compareTypes(SOType other)
+    public bool weakAgainstEnemyType(SOType other)
     {
-        if (strength.Contains(other))
+        if (weakness.Contains(other))
         {
-            //Is Stronger
+            return true;
         }
+        return false;
     }
 }

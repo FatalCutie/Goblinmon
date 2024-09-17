@@ -19,9 +19,14 @@ public class Goblinmon : MonoBehaviour
     public SOType type;
     public List<SOMove> moveset;
 
-    public bool TakeDamage(int dmg)
+    public bool TakeDamage(int dmg, bool weakness)
     {
-        currentHP -= dmg;
+        if (weakness)
+        {
+            currentHP = currentHP - dmg * 2;
+        }
+        else currentHP -= dmg;
+
 
         if (currentHP <= 0) return true;
         else return false;

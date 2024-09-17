@@ -100,6 +100,7 @@ MonoBehaviour:
   gName: Troll
   gLevel: 69
   damage: 69
+  sprite: {fileID: 0}
   currentHP: 0
   maxHP: 0
   type: {fileID: 0}
@@ -152,7 +153,8 @@ MonoBehaviour:
   gName: TROLLED!!!!!
   gLevel: 69
   damage: 69
+  sprite: {fileID: 0}
   currentHP: 69
   maxHP: 69
-  type: {fileID: 0}
+  type: {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
   moveset: []

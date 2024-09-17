@@ -7,9 +7,9 @@ using UnityEngine;
 public class AttackButton : MonoBehaviour
 {
     public SOMove move;
-    [SerializeField] BattleSystem battleSystem;
+    [SerializeField] BattleSystem bs;
+    [SerializeField] ButtonManager bm;
     [SerializeField] private TextMeshProUGUI descriptionText;
-
 
 
     public void UseMoveOnButtonPress()
@@ -18,8 +18,8 @@ public class AttackButton : MonoBehaviour
         {
             case SOMove.MoveAction.ATTACK:
                 {
-                    //Attack the enemy based on move damage and typing
-                    battleSystem.PlayerAttack();
+                    //TODO: Hide buttons when attakc is chosen
+                    StartCoroutine(PlayerAttack(move));
                     break;
                 }
             case SOMove.MoveAction.BUFF:
@@ -32,6 +32,52 @@ public class AttackButton : MonoBehaviour
                     //Debuff enemy based on selected debuff type
                     break;
                 }
+        }
+    }
+
+    IEnumerator PlayerAttack(SOMove move)
+    {
+
+        int moveDamage = move.damage;
+        bool strongAttack = move.moveType.weakAgainstEnemyType(move.moveType);
+        if (strongAttack)
+        {
+            descriptionText.text = "The attack is super effective!";
+            //TODO play super effective sound
+            yield return new WaitForSeconds(1f);
+            bool isDead = bs.GetComponent<BattleSystem>().enemyUnit.TakeDamage(bs.playerUnit.damage, strongAttack);
+            bs.enemyHUD.setHP(bs.enemyUnit.currentHP);
+            yield return new WaitForSeconds(2f);
+
+            if (isDead)
+            {
+                bs.state = BattleState.WON;
+            }
+            else
+            {
+                bs.state = BattleState.ENEMYTURN;
+                StartCoroutine(bs.EnemyTurn());
+            }
+        }
+        else
+        {
+            descriptionText.text = "The attack is successful!";
+            //TODO play super effective sound
+            yield return new WaitForSeconds(1f);
+            //Throwing NullReferenceException error?
+            bool isDead = bs.enemyUnit.TakeDamage(bs.playerUnit.damage, strongAttack);
+            bs.enemyHUD.setHP(bs.enemyUnit.currentHP);
+            yield return new WaitForSeconds(2f);
+
+            if (isDead)
+            {
+                bs.state = BattleState.WON;
+            }
+            else
+            {
+                bs.state = BattleState.ENEMYTURN;
+                StartCoroutine(bs.EnemyTurn());
+            }
         }
     }
 

@@ -28,6 +28,12 @@ public class ButtonManager : MonoBehaviour
         buttonsAttack.SetActive(true);
     }
 
+    public void disableButtonsDuringAttack()
+    {
+        buttonsBasic.SetActive(false);
+        buttonsBasic.SetActive(false);
+    }
+
     public void enableBasicButtonsOnPress()
     {
         buttonsAttack.SetActive(false);

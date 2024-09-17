@@ -18,8 +18,8 @@ public class BattleSystem : MonoBehaviour
 
     public TextMeshProUGUI dialogueText;
 
-    Goblinmon playerUnit;
-    Goblinmon enemyUnit;
+    public Goblinmon playerUnit;
+    public Goblinmon enemyUnit;
     SpriteRenderer pSpriteR;
     SpriteRenderer eSpriteR;
     public Sprite newSprite;
@@ -43,6 +43,7 @@ public class BattleSystem : MonoBehaviour
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
         pSpriteR.sprite = playerUnit.sprite;
 
+        //Not instantiating correctly, type specifically
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Goblinmon>();
         eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
@@ -60,39 +61,39 @@ public class BattleSystem : MonoBehaviour
         PlayerTurn();
     }
 
-    public IEnumerator PlayerAttack() //Triggered by OnAttackButton
-    {
-        dialogueText.text = "The attack is successful!";
+    // public IEnumerator PlayerAttack() //Triggered by OnAttackButton
+    // {
+    //     dialogueText.text = "The attack is successful!";
 
-        yield return new WaitForSeconds(1f);
+    //     yield return new WaitForSeconds(1f);
 
-        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-        enemyHUD.setHP(enemyUnit.currentHP);
+    //     bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+    //     enemyHUD.setHP(enemyUnit.currentHP);
 
 
-        yield return new WaitForSeconds(2f);
+    //     yield return new WaitForSeconds(2f);
 
-        if (isDead)
-        {
-            state = BattleState.WON;
-        }
-        else
-        {
-            state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
-        }
+    //     if (isDead)
+    //     {
+    //         state = BattleState.WON;
+    //     }
+    //     else
+    //     {
+    //         state = BattleState.ENEMYTURN;
+    //         StartCoroutine(EnemyTurn());
+    //     }
 
-        //Check if enemy is dead
-        //Change state accordingly
-    }
+    //     //Check if enemy is dead
+    //     //Change state accordingly
+    // }
 
-    IEnumerator EnemyTurn()
+    public IEnumerator EnemyTurn()
     {
         dialogueText.text = enemyUnit.gName + " attacks!";
 
         yield return new WaitForSeconds(1f);
 
-        bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
+        bool isDead = false;//playerUnit.TakeDamage(enemyUnit.damage);
 
         playerHUD.setHP(playerUnit.currentHP);
 
@@ -139,19 +140,19 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-    public void OnAttackButton()
-    {
-        if (state != BattleState.PLAYERTURN) return;
+    // public void OnAttackButton()
+    // {
+    //     if (state != BattleState.PLAYERTURN) return;
 
-        StartCoroutine(PlayerAttack());
-    }
+    //     StartCoroutine(PlayerAttack());
+    // }
 
-    public void OnHealButton()
-    {
-        if (state != BattleState.PLAYERTURN) return;
+    // public void OnHealButton()
+    // {
+    //     if (state != BattleState.PLAYERTURN) return;
 
-        StartCoroutine(PlayerHeal());
-    }
+    //     StartCoroutine(PlayerHeal());
+    // }
 
 
 
