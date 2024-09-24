@@ -45,17 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0e74ac394a9dc74da3e0acadcb75f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gName: Monke
-  gLevel: 5
-  damage: 5
-  sprite: {fileID: 21300000, guid: c63f7ca2add8b72448892553a8ad689a, type: 3}
-  currentHP: 10
-  maxHP: 15
-  type: {fileID: 0}
-  moveset:
-  - {fileID: 11400000, guid: 20f3e8ccfd1846f4595ddb10ae5b0d1c, type: 2}
-  - {fileID: 11400000, guid: b1a04a2c067a2704c8c7e4c7375791ce, type: 2}
-  - {fileID: 11400000, guid: db8d5fb63d66fd5448450b43d6cf4b94, type: 2}
+  goblinData: {fileID: 11400000, guid: 2875e90ce313c12489196937969a8242, type: 2}
 --- !u!212 &1429744762996290612
 SpriteRenderer:
   m_ObjectHideFlags: 0

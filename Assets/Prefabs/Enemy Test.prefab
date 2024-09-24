@@ -45,14 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0e74ac394a9dc74da3e0acadcb75f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gName: TROLLED!!!!!
-  gLevel: 69
-  damage: 69
-  sprite: {fileID: 21300000, guid: 54af892492a0845498105b368ce8bc3b, type: 3}
-  currentHP: 69
-  maxHP: 69
-  type: {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
-  moveset: []
+  goblinData: {fileID: 11400000, guid: 969f58b3700fbf94391f02cfd94258d8, type: 2}
 --- !u!212 &5597225937199056495
 SpriteRenderer:
   m_ObjectHideFlags: 0

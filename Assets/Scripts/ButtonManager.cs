@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using UnityEngine;
 
@@ -51,13 +48,11 @@ public class ButtonManager : MonoBehaviour
         int i = 0;
         try
         {
-
-
             foreach (Transform go in buttonsAttack.transform) //this is also pretty dumb
             {
                 TextMeshProUGUI moveNameText = go.GetChild(0).GetComponent<TextMeshProUGUI>();
                 AttackButton ab = go.GetComponent<AttackButton>();
-                ab.move = unit.moveset[i];
+                ab.move = unit.goblinData.moveset[i];
                 moveNameText.text = ab.move.name;
                 i++;
             }

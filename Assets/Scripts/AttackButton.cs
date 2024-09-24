@@ -39,19 +39,20 @@ public class AttackButton : MonoBehaviour
     {
 
         int moveDamage = move.damage;
-        bool strongAttack = bs.enemyUnit.type.weakAgainstEnemyType(move.moveType);
+        bool strongAttack = bs.enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
         if (strongAttack)
         {
             descriptionText.text = "The attack is super effective!";
             //TODO play super effective sound
             yield return new WaitForSeconds(1f);
-            bool isDead = bs.GetComponent<BattleSystem>().enemyUnit.TakeDamage(bs.playerUnit.damage, strongAttack);
-            bs.enemyHUD.setHP(bs.enemyUnit.currentHP);
+            bool isDead = bs.GetComponent<BattleSystem>().enemyUnit.TakeDamage(move.damage, strongAttack);
+            bs.enemyHUD.setHP(bs.enemyUnit.goblinData.currentHP);
             yield return new WaitForSeconds(2f);
 
             if (isDead)
             {
                 bs.state = BattleState.WON;
+                bs.EndBattle();
             }
             else
             {
@@ -64,8 +65,8 @@ public class AttackButton : MonoBehaviour
             descriptionText.text = "The attack is successful!";
             //TODO play super effective sound
             yield return new WaitForSeconds(1f);
-            bool isDead = bs.enemyUnit.TakeDamage(bs.playerUnit.damage, strongAttack);
-            bs.enemyHUD.setHP(bs.enemyUnit.currentHP);
+            bool isDead = bs.enemyUnit.TakeDamage(move.damage, strongAttack);
+            bs.enemyHUD.setHP(bs.enemyUnit.goblinData.currentHP);
             yield return new WaitForSeconds(2f);
 
             if (isDead)

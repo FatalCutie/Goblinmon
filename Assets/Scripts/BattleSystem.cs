@@ -42,16 +42,16 @@ public class BattleSystem : MonoBehaviour
         playerUnit = playerGO.GetComponent<Goblinmon>();
         //Will have to adjust sprite positions during sprite production
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
-        pSpriteR.sprite = playerUnit.sprite;
+        pSpriteR.sprite = playerUnit.goblinData.sprite;
 
         //Not instantiating correctly, type specifically
         //Instantiate enemy
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Goblinmon>();
         eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
-        eSpriteR.sprite = enemyUnit.sprite;
+        eSpriteR.sprite = enemyUnit.goblinData.sprite;
 
-        dialogueText.text = "A wild " + enemyUnit.gName + " approches!";
+        dialogueText.text = "A wild " + enemyUnit.goblinData.gName + " approches!";
 
         //Updates the HUD
         playerHUD.SetHUD(playerUnit);
@@ -64,41 +64,15 @@ public class BattleSystem : MonoBehaviour
         PlayerTurn();
     }
 
-    // public IEnumerator PlayerAttack() //Triggered by OnAttackButton
-    // {
-    //     dialogueText.text = "The attack is successful!";
-
-    //     yield return new WaitForSeconds(1f);
-
-    //     bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-    //     enemyHUD.setHP(enemyUnit.currentHP);
-
-
-    //     yield return new WaitForSeconds(2f);
-
-    //     if (isDead)
-    //     {
-    //         state = BattleState.WON;
-    //     }
-    //     else
-    //     {
-    //         state = BattleState.ENEMYTURN;
-    //         StartCoroutine(EnemyTurn());
-    //     }
-
-    //     //Check if enemy is dead
-    //     //Change state accordingly
-    // }
-
     public IEnumerator EnemyTurn()
     {
-        dialogueText.text = enemyUnit.gName + " attacks!";
+        dialogueText.text = enemyUnit.goblinData.gName + " attacks!";
 
         yield return new WaitForSeconds(1f);
 
         bool isDead = false;//playerUnit.TakeDamage(enemyUnit.damage);
 
-        playerHUD.setHP(playerUnit.currentHP);
+        playerHUD.setHP(playerUnit.goblinData.currentHP);
 
         yield return new WaitForSeconds(1f);
         if (isDead)
@@ -113,7 +87,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    void EndBattle()
+    public void EndBattle()
     {
         if (state == BattleState.WON)
         {
@@ -133,7 +107,7 @@ public class BattleSystem : MonoBehaviour
     IEnumerator PlayerHeal()
     {
         playerUnit.Heal(5); //Don't forget this is hard coded :trolla:
-        playerHUD.setHP(playerUnit.currentHP);
+        playerHUD.setHP(playerUnit.goblinData.currentHP);
         dialogueText.text = "You feel new stength!";
 
         yield return new WaitForSeconds(2f);

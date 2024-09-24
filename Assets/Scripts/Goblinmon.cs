@@ -1,40 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Scripting.APIUpdating;
+
 
 public class Goblinmon : MonoBehaviour
 {
-    public string gName;
-    public int gLevel;
-
-    public int damage;
-
-    public Sprite sprite;
-
-    public int currentHP;
-    public int maxHP;
-
-
-    public SOType type;
-    public List<SOMove> moveset;
+    [SerializeField] public SOGoblinmon goblinData;
 
     public bool TakeDamage(int dmg, bool weakness)
     {
         if (weakness)
         {
-            currentHP = currentHP - dmg * 2;
+            goblinData.currentHP = goblinData.currentHP - dmg * 2;
         }
-        else currentHP -= dmg;
+        else goblinData.currentHP -= dmg;
 
 
-        if (currentHP <= 0) return true;
+        if (goblinData.currentHP <= 0) return true;
         else return false;
     }
 
     public void Heal(int amount)
     {
-        currentHP += amount;
-        if (currentHP > maxHP) currentHP = maxHP;
+        goblinData.currentHP += amount;
+        if (goblinData.currentHP > goblinData.maxHP) goblinData.currentHP = goblinData.maxHP;
     }
+
 }

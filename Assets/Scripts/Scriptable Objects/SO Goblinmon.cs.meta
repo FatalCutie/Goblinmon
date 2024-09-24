@@ -1,10 +1,9 @@
 fileFormatVersion: 2
-guid: b0e74ac394a9dc74da3e0acadcb75f3a
+guid: 0188a8dcd8e881646856901b1bae9163
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - goblinData: {fileID: 11400000, guid: 2875e90ce313c12489196937969a8242, type: 2}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
