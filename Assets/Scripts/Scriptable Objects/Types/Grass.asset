@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d119150f4997c42bbd717171d509c8, type: 3}
   m_Name: Grass
   m_EditorClassIdentifier: 
-  strength:
-  - {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
+  weakness:
+  - {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}

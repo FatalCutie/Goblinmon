@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,10 +16,12 @@ public class SOType : ScriptableObject
 
     public bool weakAgainstEnemyType(SOType other)
     {
+        Debug.Log("fed: " + other);
         if (weakness.Contains(other))
         {
             return true;
         }
+        Debug.Log("weaknesses are " + weakness[0]);
         return false;
     }
 }

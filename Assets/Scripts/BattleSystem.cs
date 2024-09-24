@@ -37,6 +37,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SetupBattle()
     { //Prefab scales with battle station, fix is unclear
+        //Instantiate player
         GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
         playerUnit = playerGO.GetComponent<Goblinmon>();
         //Will have to adjust sprite positions during sprite production
@@ -44,6 +45,7 @@ public class BattleSystem : MonoBehaviour
         pSpriteR.sprite = playerUnit.sprite;
 
         //Not instantiating correctly, type specifically
+        //Instantiate enemy
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Goblinmon>();
         eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
@@ -51,6 +53,7 @@ public class BattleSystem : MonoBehaviour
 
         dialogueText.text = "A wild " + enemyUnit.gName + " approches!";
 
+        //Updates the HUD
         playerHUD.SetHUD(playerUnit);
         bMan.SetPlayerMoves(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
