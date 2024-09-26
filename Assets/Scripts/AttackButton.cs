@@ -18,66 +18,20 @@ public class AttackButton : MonoBehaviour
         {
             case SOMove.MoveAction.ATTACK:
                 {
-                    //TODO: Hide buttons when attakc is chosen
-                    StartCoroutine(PlayerAttack(move));
+                    //This is called because otherwise Corutine would stop when button is disabled
+                    bs.StartPlayerAttack(move);
                     break;
                 }
             case SOMove.MoveAction.BUFF:
                 {
-                    //Buff player based on selected buff type
+                    //TODO: Buff player based on selected buff type
                     break;
                 }
             case SOMove.MoveAction.DEBUFF:
                 {
-                    //Debuff enemy based on selected debuff type
+                    //TODO: Debuff enemy based on selected debuff type
                     break;
                 }
-        }
-    }
-
-    IEnumerator PlayerAttack(SOMove move)
-    {
-
-        int moveDamage = move.damage;
-        bool strongAttack = bs.enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
-        if (strongAttack)
-        {
-            descriptionText.text = "The attack is super effective!";
-            //TODO play super effective sound
-            yield return new WaitForSeconds(1f);
-            bool isDead = bs.GetComponent<BattleSystem>().enemyUnit.TakeDamage(move.damage, strongAttack);
-            bs.enemyHUD.setHP(bs.enemyUnit.goblinData.currentHP);
-            yield return new WaitForSeconds(2f);
-
-            if (isDead)
-            {
-                bs.state = BattleState.WON;
-                bs.EndBattle();
-            }
-            else
-            {
-                bs.state = BattleState.ENEMYTURN;
-                StartCoroutine(bs.EnemyTurn());
-            }
-        }
-        else
-        {
-            descriptionText.text = "The attack is successful!";
-            //TODO play super effective sound
-            yield return new WaitForSeconds(1f);
-            bool isDead = bs.enemyUnit.TakeDamage(move.damage, strongAttack);
-            bs.enemyHUD.setHP(bs.enemyUnit.goblinData.currentHP);
-            yield return new WaitForSeconds(2f);
-
-            if (isDead)
-            {
-                bs.state = BattleState.WON;
-            }
-            else
-            {
-                bs.state = BattleState.ENEMYTURN;
-                StartCoroutine(bs.EnemyTurn());
-            }
         }
     }
 

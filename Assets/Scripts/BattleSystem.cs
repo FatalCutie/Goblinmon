@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleSystem : MonoBehaviour
 {
+    #region Variables
     [SerializeField] ButtonManager bMan;
 
     public GameObject playerPrefab;
@@ -28,6 +29,8 @@ public class BattleSystem : MonoBehaviour
     public BattleHUD enemyHUD;
 
     public BattleState state;
+
+    #endregion
     void Start()
     {
         bMan = GetComponent<ButtonManager>();
@@ -64,9 +67,60 @@ public class BattleSystem : MonoBehaviour
         PlayerTurn();
     }
 
+    public void StartPlayerAttack(SOMove move)
+    {
+        bMan.disableButtonsDuringAttack();
+        StartCoroutine(PlayerAttack(move));
+    }
+    public IEnumerator PlayerAttack(SOMove move)
+    {
+        int moveDamage = move.damage;
+        bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
+        if (strongAttack)
+        {
+            dialogueText.text = "The attack is super effective!";
+            //TODO play super effective sound
+            yield return new WaitForSeconds(1f);
+            bool isDead = GetComponent<BattleSystem>().enemyUnit.TakeDamage(move.damage, strongAttack);
+            enemyHUD.setHP(enemyUnit.goblinData.currentHP);
+            yield return new WaitForSeconds(2f);
+
+            if (isDead)
+            {
+                state = BattleState.WON;
+                EndBattle();
+            }
+            else
+            {
+                state = BattleState.ENEMYTURN;
+                StartCoroutine(EnemyTurn());
+            }
+        }
+        else
+        {
+            dialogueText.text = "The attack is successful!";
+            //TODO play super effective sound
+            yield return new WaitForSeconds(1f);
+            bool isDead = enemyUnit.TakeDamage(move.damage, strongAttack);
+            enemyHUD.setHP(enemyUnit.goblinData.currentHP);
+            yield return new WaitForSeconds(2f);
+
+            if (isDead)
+            {
+                state = BattleState.WON;
+            }
+            else
+            {
+                state = BattleState.ENEMYTURN;
+                StartCoroutine(EnemyTurn());
+            }
+        }
+    }
+
     public IEnumerator EnemyTurn()
     {
-        dialogueText.text = enemyUnit.goblinData.gName + " attacks!";
+        //dialogueText.text = enemyUnit.goblinData.gName + " attacks!";
+        dialogueText.text = "Enemy attacking is not implemented yet!";
 
         yield return new WaitForSeconds(1f);
 
@@ -83,6 +137,7 @@ public class BattleSystem : MonoBehaviour
         else
         {
             state = BattleState.PLAYERTURN;
+            bMan.enableBasicButtonsOnPress();
             PlayerTurn();
         }
     }
