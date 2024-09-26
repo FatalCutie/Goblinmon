@@ -33,6 +33,7 @@ public class ButtonManager : MonoBehaviour
 
     public void enableBasicButtonsOnPress()
     {
+        FindObjectOfType<AudioManager>().Play("press");
         buttonsAttack.SetActive(false);
         buttonsBasic.SetActive(true);
     }

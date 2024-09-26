@@ -1,27 +1,37 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class Goblinmon : MonoBehaviour
 {
     [SerializeField] public SOGoblinmon goblinData;
+    public int currentHP;
+
+    void Awake()
+    {
+        currentHP = goblinData.maxHP;
+    }
+
 
     public bool TakeDamage(int dmg, bool weakness)
     {
         if (weakness)
         {
-            goblinData.currentHP = goblinData.currentHP - dmg * 2;
+            dmg *= 2;
+            currentHP -= dmg;
+            Debug.Log(dmg);
         }
-        else goblinData.currentHP -= dmg;
+        else currentHP -= dmg;
 
 
-        if (goblinData.currentHP <= 0) return true;
+        if (currentHP <= 0) return true;
         else return false;
     }
 
     public void Heal(int amount)
     {
-        goblinData.currentHP += amount;
-        if (goblinData.currentHP > goblinData.maxHP) goblinData.currentHP = goblinData.maxHP;
+        currentHP += amount;
+        if (currentHP > goblinData.maxHP) currentHP = goblinData.maxHP;
     }
 
 }

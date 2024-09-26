@@ -9,8 +9,6 @@ public class SOGoblinmon : ScriptableObject
     public int gLevel;
 
     public Sprite sprite;
-
-    public int currentHP;
     public int maxHP;
 
 

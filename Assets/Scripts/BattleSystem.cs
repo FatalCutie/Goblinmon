@@ -79,10 +79,11 @@ public class BattleSystem : MonoBehaviour
         if (strongAttack)
         {
             dialogueText.text = "The attack is super effective!";
-            //TODO play super effective sound
             yield return new WaitForSeconds(1f);
+
+            FindObjectOfType<AudioManager>().Play("superEffective");
             bool isDead = GetComponent<BattleSystem>().enemyUnit.TakeDamage(move.damage, strongAttack);
-            enemyHUD.setHP(enemyUnit.goblinData.currentHP);
+            enemyHUD.setHP(enemyUnit.currentHP);
             yield return new WaitForSeconds(2f);
 
             if (isDead)
@@ -99,10 +100,11 @@ public class BattleSystem : MonoBehaviour
         else
         {
             dialogueText.text = "The attack is successful!";
-            //TODO play super effective sound
             yield return new WaitForSeconds(1f);
+
+            FindObjectOfType<AudioManager>().Play("damage");
             bool isDead = enemyUnit.TakeDamage(move.damage, strongAttack);
-            enemyHUD.setHP(enemyUnit.goblinData.currentHP);
+            enemyHUD.setHP(enemyUnit.currentHP);
             yield return new WaitForSeconds(2f);
 
             if (isDead)
@@ -126,7 +128,7 @@ public class BattleSystem : MonoBehaviour
 
         bool isDead = false;//playerUnit.TakeDamage(enemyUnit.damage);
 
-        playerHUD.setHP(playerUnit.goblinData.currentHP);
+        playerHUD.setHP(playerUnit.currentHP);
 
         yield return new WaitForSeconds(1f);
         if (isDead)
@@ -146,10 +148,12 @@ public class BattleSystem : MonoBehaviour
     {
         if (state == BattleState.WON)
         {
+            FindObjectOfType<AudioManager>().Play("win");
             dialogueText.text = "You won the battle!";
         }
         else if (state == BattleState.LOST)
         {
+            FindObjectOfType<AudioManager>().Play("run");
             dialogueText.text = "You were defeated.";
         }
     }
@@ -159,10 +163,10 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = "Choose an action:";
     }
 
-    IEnumerator PlayerHeal()
+    IEnumerator PlayerHeal() //I don't know why I haven't deleted this
     {
         playerUnit.Heal(5); //Don't forget this is hard coded :trolla:
-        playerHUD.setHP(playerUnit.goblinData.currentHP);
+        playerHUD.setHP(playerUnit.currentHP);
         dialogueText.text = "You feel new stength!";
 
         yield return new WaitForSeconds(2f);

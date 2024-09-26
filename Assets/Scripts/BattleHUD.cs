@@ -20,7 +20,7 @@ public class BattleHUD : MonoBehaviour
         nameText.text = unit.goblinData.gName;
         levelText.text = "Lvl " + unit.goblinData.gLevel;
         hpSlider.maxValue = unit.goblinData.maxHP;
-        hpSlider.value = unit.goblinData.currentHP;
+        hpSlider.value = unit.currentHP;
     }
 
     public void setHP(int hp)
