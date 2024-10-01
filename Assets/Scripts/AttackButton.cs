@@ -10,9 +10,9 @@ public class AttackButton : MonoBehaviour
     [SerializeField] ButtonManager bm;
     [SerializeField] private TextMeshProUGUI descriptionText;
 
-    void Update()
+    void FixedUpdate()
     {
-        //this is awful, but it works
+        //this is awful, but it's easy and it works
         if (move == null) this.gameObject.SetActive(false);
     }
 

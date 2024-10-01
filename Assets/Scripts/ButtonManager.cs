@@ -6,11 +6,13 @@ public class ButtonManager : MonoBehaviour
 {
     public GameObject buttonsBasic;
     public GameObject buttonsAttack;
+    public GameObject switchingMenu;
 
     void Start()
     {
         if (buttonsAttack.activeSelf) buttonsAttack.SetActive(false);
         if (!buttonsBasic.activeSelf) buttonsBasic.SetActive(true);
+        // switchingMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -38,6 +40,13 @@ public class ButtonManager : MonoBehaviour
         buttonsBasic.SetActive(true);
     }
 
+    public void openSwitchingMenu()
+    {
+        FindObjectOfType<AudioManager>().Play("press");
+        switchingMenu.SetActive(true);
+        switchingMenu.GetComponent<SwitchingManager>().PopulateUnits();
+    }
+
     public void unimplementedButtonError()
     {
         Debug.LogWarning("Pressed button is not yet Implemented! If this error is unexpected please check your code!");
@@ -60,10 +69,6 @@ public class ButtonManager : MonoBehaviour
         }
         //Not the optimal solution but a functional one
         //My favorite kind!
-        catch (ArgumentOutOfRangeException)
-        {
-            //TODO: Disables buttons after argument catch
-        }
-
+        catch (ArgumentOutOfRangeException) { }
     }
 }

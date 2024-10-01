@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,7 +10,12 @@ public class Goblinmon : MonoBehaviour
 
     void Awake()
     {
-        currentHP = goblinData.maxHP;
+        try
+        {
+            currentHP = goblinData.maxHP;
+        }
+        catch (NullReferenceException) { Debug.LogWarning("Goblinmon Unit did not have a data SO at creation! Please disregard if intended"); }
+
     }
 
 

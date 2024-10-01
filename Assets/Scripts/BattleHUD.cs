@@ -15,8 +15,6 @@ public class BattleHUD : MonoBehaviour
 
     public void SetHUD(Goblinmon unit)
     {
-        Debug.Log(unit.goblinData.gName);
-
         nameText.text = unit.goblinData.gName;
         levelText.text = "Lvl " + unit.goblinData.gLevel;
         hpSlider.maxValue = unit.goblinData.maxHP;
