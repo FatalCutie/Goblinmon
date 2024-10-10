@@ -7,6 +7,8 @@ public class ButtonManager : MonoBehaviour
     public GameObject buttonsBasic;
     public GameObject buttonsAttack;
     public GameObject switchingMenu;
+    public BattleSystem bs;
+    private bool firstTime = true;
 
     void Start()
     {
@@ -20,11 +22,13 @@ public class ButtonManager : MonoBehaviour
     {
 
     }
-
+    //TODO: CHANGE ALL ENABLING/DISABLE TO DISABLE RENDERER
+    //INSTEAD OF GAMEOBJECT
     public void enableAttackButtonsOnPress()
     {
-        buttonsBasic.SetActive(false);
         buttonsAttack.SetActive(true);
+        SetPlayerMoves(bs.playerUnit);
+        buttonsBasic.SetActive(false);
     }
 
     public void disableButtonsDuringAttack()
@@ -43,8 +47,15 @@ public class ButtonManager : MonoBehaviour
     public void openSwitchingMenu()
     {
         FindObjectOfType<AudioManager>().Play("press");
+        disableButtonsDuringAttack();
         switchingMenu.SetActive(true);
         switchingMenu.GetComponent<SwitchingManager>().PopulateUnits();
+    }
+
+    public void closeSwitchingMenu()
+    {
+        switchingMenu.SetActive(false);
+        buttonsBasic.SetActive(true);
     }
 
     public void unimplementedButtonError()
@@ -55,10 +66,18 @@ public class ButtonManager : MonoBehaviour
     public void SetPlayerMoves(Goblinmon unit)
     //Run when goblinmon is switched, sets attack buttons on HUD
     {
+        //Scrubs attack buttons incase # of moves differs after switch
+        if (firstTime)
+        {
+            firstTime = false;
+        }
+        else ClearPlayerMoves();
+
+
         int i = 0;
         try
         {
-            foreach (Transform go in buttonsAttack.transform) //this is also pretty dumb
+            foreach (Transform go in buttonsAttack.transform)
             {
                 TextMeshProUGUI moveNameText = go.GetChild(0).GetComponent<TextMeshProUGUI>();
                 AttackButton ab = go.GetComponent<AttackButton>();
@@ -69,6 +88,21 @@ public class ButtonManager : MonoBehaviour
         }
         //Not the optimal solution but a functional one
         //My favorite kind!
+        catch (ArgumentOutOfRangeException) { }
+    }
+
+    public void ClearPlayerMoves()
+    {
+        try
+        {
+            foreach (Transform go in buttonsAttack.transform) //this is also pretty dumb
+            {
+                TextMeshProUGUI moveNameText = go.GetChild(0).GetComponent<TextMeshProUGUI>();
+                AttackButton ab = go.GetComponent<AttackButton>();
+                ab.move = null; //This errors out
+                moveNameText.text = "";
+            }
+        }
         catch (ArgumentOutOfRangeException) { }
     }
 }

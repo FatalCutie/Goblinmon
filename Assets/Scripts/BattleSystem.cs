@@ -40,6 +40,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SetupBattle()
     { //Prefab scales with battle station, fix is unclear
+    
         //Instantiate player
         GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
         playerUnit = playerGO.GetComponent<Goblinmon>();
@@ -47,7 +48,6 @@ public class BattleSystem : MonoBehaviour
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
         pSpriteR.sprite = playerUnit.goblinData.sprite;
 
-        //Not instantiating correctly, type specifically
         //Instantiate enemy
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Goblinmon>();
