@@ -23,7 +23,6 @@ public class AttackButton : MonoBehaviour
         {
             case SOMove.MoveAction.ATTACK:
                 {
-                    //This is called because otherwise Corutine would stop when button is disabled
                     FindObjectOfType<AudioManager>().Play("press");
                     bs.StartPlayerAttack(move);
                     break;
@@ -54,6 +53,10 @@ public class AttackButton : MonoBehaviour
             descriptionText.text = "Somthing went wrong and this button does not have an assigned move";
         }
 
+    }
+
+    public void SetMove(SOMove newMove){
+        this.move = newMove;
     }
 
     public void OnMouseHoverLeave()

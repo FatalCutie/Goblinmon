@@ -15,8 +15,8 @@ MonoBehaviour:
   gName: Default Enemy
   gLevel: 69
   sprite: {fileID: 21300000, guid: 54af892492a0845498105b368ce8bc3b, type: 3}
-  currentHP: 69
   maxHP: 69
   type: {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
-  moveset: []
+  moveset:
+  - {fileID: 11400000, guid: db8d5fb63d66fd5448450b43d6cf4b94, type: 2}
   weakness: []

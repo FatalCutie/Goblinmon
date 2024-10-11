@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class ButtonManager : MonoBehaviour
@@ -7,7 +8,9 @@ public class ButtonManager : MonoBehaviour
     public GameObject buttonsBasic;
     public GameObject buttonsAttack;
     public GameObject switchingMenu;
-    public BattleSystem bs;
+    public SOMove emptyMove;
+    [SerializeField] private BattleSystem bs;
+    [SerializeField] private AttackButtonManager abm;
     private bool firstTime = true;
 
     void Start()
@@ -64,45 +67,25 @@ public class ButtonManager : MonoBehaviour
     }
 
     public void SetPlayerMoves(Goblinmon unit)
-    //Run when goblinmon is switched, sets attack buttons on HUD
-    {
-        //Scrubs attack buttons incase # of moves differs after switch
-        if (firstTime)
-        {
-            firstTime = false;
-        }
-        else ClearPlayerMoves();
-
-
+    { 
         int i = 0;
         try
-        {
+        {   //Sets up attack buttons on HUD
             foreach (Transform go in buttonsAttack.transform)
             {
                 TextMeshProUGUI moveNameText = go.GetChild(0).GetComponent<TextMeshProUGUI>();
                 AttackButton ab = go.GetComponent<AttackButton>();
                 ab.move = unit.goblinData.moveset[i];
                 moveNameText.text = ab.move.name;
+                ab.gameObject.SetActive(true);
                 i++;
             }
-        }
-        //Not the optimal solution but a functional one
-        //My favorite kind!
-        catch (ArgumentOutOfRangeException) { }
-    }
+        }catch (ArgumentOutOfRangeException) {} //The Goblinmon has run out of moves
 
-    public void ClearPlayerMoves()
-    {
-        try
+        //Hides any unused move slots
+        for(int j = i; j < 3; j++)
         {
-            foreach (Transform go in buttonsAttack.transform) //this is also pretty dumb
-            {
-                TextMeshProUGUI moveNameText = go.GetChild(0).GetComponent<TextMeshProUGUI>();
-                AttackButton ab = go.GetComponent<AttackButton>();
-                ab.move = null; //This errors out
-                moveNameText.text = "";
-            }
+            abm.attackButtons[j].gameObject.SetActive(false);
         }
-        catch (ArgumentOutOfRangeException) { }
     }
 }
