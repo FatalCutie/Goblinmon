@@ -6,9 +6,13 @@ using UnityEngine;
 public class AttackButton : MonoBehaviour
 {
     public SOMove move;
-    [SerializeField] BattleSystem bs;
-    [SerializeField] ButtonManager bm;
+    private BattleSystem bs;
     [SerializeField] private TextMeshProUGUI descriptionText;
+
+    void Start()
+    {
+        bs = FindObjectOfType<BattleSystem>();
+    }
 
     void FixedUpdate()
     {
@@ -19,6 +23,7 @@ public class AttackButton : MonoBehaviour
 
     public void UseMoveOnButtonPress()
     {
+        FindObjectOfType<AudioManager>().Play("press");
         switch (move.moveAction)
         {
             case SOMove.MoveAction.ATTACK:

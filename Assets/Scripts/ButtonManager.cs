@@ -1,6 +1,8 @@
 using System;
+
+using System.Collections.Generic;
 using TMPro;
-using Unity.PlasticSCM.Editor.WebApi;
+
 using UnityEngine;
 
 public class ButtonManager : MonoBehaviour
@@ -8,27 +10,23 @@ public class ButtonManager : MonoBehaviour
     public GameObject buttonsBasic;
     public GameObject buttonsAttack;
     public GameObject switchingMenu;
-    public SOMove emptyMove;
     [SerializeField] private BattleSystem bs;
-    [SerializeField] private AttackButtonManager abm;
-    private bool firstTime = true;
+    [SerializeField] private List<AttackButton> attackButtons;
+
 
     void Start()
     {
         if (buttonsAttack.activeSelf) buttonsAttack.SetActive(false);
         if (!buttonsBasic.activeSelf) buttonsBasic.SetActive(true);
-        // switchingMenu.SetActive(false);
+        switchingMenu.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-    //TODO: CHANGE ALL ENABLING/DISABLE TO DISABLE RENDERER
-    //INSTEAD OF GAMEOBJECT
+    //If disabling the game object raises issues in the future
+    //you can try disabling the renderer instead?
+    #region Button Press Commands
     public void enableAttackButtonsOnPress()
     {
+        FindObjectOfType<AudioManager>().Play("press");
         buttonsAttack.SetActive(true);
         SetPlayerMoves(bs.playerUnit);
         buttonsBasic.SetActive(false);
@@ -47,26 +45,33 @@ public class ButtonManager : MonoBehaviour
         buttonsBasic.SetActive(true);
     }
 
-    public void openSwitchingMenu()
+    public void enableSwitchingMenu()
     {
         FindObjectOfType<AudioManager>().Play("press");
         disableButtonsDuringAttack();
         switchingMenu.SetActive(true);
-        switchingMenu.GetComponent<SwitchingManager>().PopulateUnits();
+        //TODO: Update goblinmon on open?
     }
 
-    public void closeSwitchingMenu()
+    public void disableSwitchingMenu()
     {
+        FindObjectOfType<AudioManager>().Play("press");
         switchingMenu.SetActive(false);
         buttonsBasic.SetActive(true);
+    }
+
+    public void disableSwitchingMenuAfterSwitch(){
+        switchingMenu.SetActive(false);
     }
 
     public void unimplementedButtonError()
     {
         Debug.LogWarning("Pressed button is not yet Implemented! If this error is unexpected please check your code!");
     }
+    #endregion
 
     public void SetPlayerMoves(Goblinmon unit)
+    //This can be improved but I'm so tired of working on it
     { 
         int i = 0;
         try
@@ -85,7 +90,8 @@ public class ButtonManager : MonoBehaviour
         //Hides any unused move slots
         for(int j = i; j < 3; j++)
         {
-            abm.attackButtons[j].gameObject.SetActive(false);
+            attackButtons[j].gameObject.SetActive(false);
         }
     }
+    
 }
