@@ -3,12 +3,14 @@ using System;
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.UI;
 
 public class SwitchingManager : MonoBehaviour
 {
     public List<SOGoblinmon> goblinmon;
     public GameObject unitButtonHolder;
     private BattleSystem bs;
+    private ButtonManager bm;
     private SOGoblinmon gobData; //basically a holder to update player info
 
     void Awake()
@@ -18,6 +20,7 @@ public class SwitchingManager : MonoBehaviour
 
     void Start()
     {
+        bm = FindObjectOfType<ButtonManager>();
         bs = FindObjectOfType<BattleSystem>();
     }
 
@@ -47,6 +50,25 @@ public class SwitchingManager : MonoBehaviour
 
     public void BeginUnitSwitch(Goblinmon unit){
         StartCoroutine(SwitchUnit(unit));
+    }
+
+    public void CheckUnitBeforeSwitching(Goblinmon unit)
+    {
+        if (unit.goblinData == bs.playerUnit.GetComponent<Goblinmon>().goblinData)
+        { //This will need to be adjusted if you can catch multiple of the same Goblinmon
+            //Maybe introduce id system?
+            FindObjectOfType<AudioManager>().Play("damage");
+            Debug.LogWarning("Cannot switch to a unit that is already active!");
+            //Makes sure selected unit isn't active unit
+        }
+        else
+        {
+            FindObjectOfType<AudioManager>().Play("press");
+            StartCoroutine(SwitchUnit(unit));
+            bm.disableButtonsDuringAttack();
+            bm.disableSwitchingMenuAfterSwitch();
+        }
+
     }
 
     public IEnumerator SwitchUnit(Goblinmon unit)

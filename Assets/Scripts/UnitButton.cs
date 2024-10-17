@@ -29,9 +29,7 @@ public class UnitButton : MonoBehaviour
 
     public void SwitchUnitOnPress()
     {
-        sm.BeginUnitSwitch(this.GetComponent<Goblinmon>());
-        bm.disableButtonsDuringAttack();
-        bm.disableSwitchingMenuAfterSwitch();
+        sm.CheckUnitBeforeSwitching(this.GetComponent<Goblinmon>());
     }
 
     //What does this do?
