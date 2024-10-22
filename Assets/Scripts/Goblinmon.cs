@@ -7,13 +7,16 @@ public class Goblinmon : MonoBehaviour
 {
     [SerializeField] public SOGoblinmon goblinData;
     public int currentHP;
+    public int attackModifier;
+    public int defenseModifier;
 
     void Awake()
     {
         try
         {
-            currentHP = goblinData.maxHP;
+            currentHP = goblinData.maxHP; //This will need to be changed LOL!
         }
+        //I don't remember why this warning exists but I remember that it's not really important LOL!
         catch (NullReferenceException) { Debug.LogWarning("Goblinmon Unit did not have a data SO at creation! Please disregard if intended"); }
 
     }

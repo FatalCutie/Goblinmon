@@ -67,16 +67,36 @@ public class BattleSystem : MonoBehaviour
         PlayerTurn();
     }
 
+    //Runs correct function based on move info
     public void StartPlayerAttack(SOMove move)
     {
         bMan.disableButtonsDuringAttack();
-        StartCoroutine(PlayerAttack(move));
+        switch (move.moveAction)
+        {
+            case SOMove.MoveAction.ATTACK:
+                {
+                    StartCoroutine(PlayerAttack(move));
+                    return;
+                }
+            case SOMove.MoveAction.BUFF:
+                {
+                    StartCoroutine(BuffPlayer(move));
+                    return;
+                }
+            case SOMove.MoveAction.DEBUFF:
+                {
+                    StartCoroutine(DebuffEnemy(move));
+                    return;
+                }
+        }
+
     }
+
+    #region Combat Functions
     public IEnumerator PlayerAttack(SOMove move)
     {
-        int moveDamage = move.damage;
         bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
-        if (strongAttack)
+        if (strongAttack) //If super effective 
         {
             dialogueText.text = "The attack is super effective!";
             yield return new WaitForSeconds(1f);
@@ -118,6 +138,120 @@ public class BattleSystem : MonoBehaviour
             }
         }
     }
+
+    public IEnumerator BuffPlayer(SOMove move)
+    {
+        dialogueText.text = "Player used " + move.moveName + "!";
+        yield return new WaitForSeconds(2f);
+
+        //Buff Player
+        switch (move.statModified)
+        {
+            case SOMove.StatModified.ATTACK:
+                {
+                    playerUnit.attackModifier += move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
+                    if (playerUnit.attackModifier > 6)
+                    {
+                        //clamp buff at 6
+                        playerUnit.attackModifier = 6;
+                        dialogueText.text = $"{playerUnit.goblinData.gName}'s attack can't go any higher!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        dialogueText.text = $"{playerUnit.goblinData.gName}'s attack was increased!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    break;
+                }
+
+            case SOMove.StatModified.DEFENSE:
+                {
+                    playerUnit.defenseModifier += move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
+                    if (playerUnit.defenseModifier > 6)
+                    {
+                        //clamp buff at 6
+                        playerUnit.defenseModifier = 6;
+                        dialogueText.text = $"{playerUnit.goblinData.gName}'s defense can't go any higher!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        dialogueText.text = $"{playerUnit.goblinData.gName}'s defense was increased!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    break;
+                }
+
+            case SOMove.StatModified.NONE:
+                {
+                    Debug.LogWarning("WARNING:" + move.moveName + " does not have an assigned stat to modify. Check SO!");
+                    break;
+                }
+        }
+
+        //End Turn
+        StartCoroutine(EnemyTurn());
+    }
+
+    public IEnumerator DebuffEnemy(SOMove move)
+    {
+        dialogueText.text = $"Player used {move.moveName}!";
+        yield return new WaitForSeconds(2f);
+
+        //Debuff Enemy
+        switch (move.statModified)
+        {
+            case SOMove.StatModified.ATTACK:
+                {
+                    enemyUnit.attackModifier -= move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning($"WARNING: {move.moveName}s stat modifier is 0. Is this intentional?");
+                    if (enemyUnit.attackModifier < -6)
+                    {
+                        //clamp debuff at 6
+                        enemyUnit.attackModifier = -6;
+                        dialogueText.text = $"{enemyUnit.goblinData.gName}'s attack can't go any lower!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        dialogueText.text = $"{enemyUnit.goblinData.gName}'s attack was lowered!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    break;
+                }
+
+            case SOMove.StatModified.DEFENSE:
+                {
+                    enemyUnit.defenseModifier -= move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning($"WARNING: {move.moveName}s stat modifier is 0. Is this intentional?");
+                    if (enemyUnit.defenseModifier < -6)
+                    {
+                        enemyUnit.defenseModifier = -6; //clamp
+                        dialogueText.text = $"{enemyUnit.goblinData.gName}'s defense can't go any lower!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        dialogueText.text = $"{playerUnit.goblinData.gName}'s defense was lowered!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    break;
+                }
+
+            case SOMove.StatModified.NONE:
+                {
+                    Debug.LogWarning($"WARNING: {move.moveName} does not have an assigned stat to modify. Check SO!");
+                    break;
+                }
+        }
+
+        //End Turn
+        StartCoroutine(EnemyTurn());
+    }
+    #endregion
 
     public IEnumerator EnemyTurn()
     {

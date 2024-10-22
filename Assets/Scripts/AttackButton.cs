@@ -24,27 +24,7 @@ public class AttackButton : MonoBehaviour
     public void UseMoveOnButtonPress()
     {
         FindObjectOfType<AudioManager>().Play("press");
-        switch (move.moveAction)
-        {
-            case SOMove.MoveAction.ATTACK:
-                {
-                    FindObjectOfType<AudioManager>().Play("press");
-                    bs.StartPlayerAttack(move);
-                    break;
-                }
-            case SOMove.MoveAction.BUFF:
-                {
-                    //TODO: Buff player based on selected buff type
-                    FindObjectOfType<AudioManager>().Play("press");
-                    break;
-                }
-            case SOMove.MoveAction.DEBUFF:
-                {
-                    //TODO: Debuff enemy based on selected debuff type
-                    FindObjectOfType<AudioManager>().Play("press");
-                    break;
-                }
-        }
+        bs.StartPlayerAttack(move);
     }
 
     public void OnMouseHover()

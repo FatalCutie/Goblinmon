@@ -3,7 +3,6 @@ using System;
 using UnityEngine;
 using TMPro;
 using System.Collections;
-using UnityEngine.UI;
 
 public class SwitchingManager : MonoBehaviour
 {
@@ -48,10 +47,6 @@ public class SwitchingManager : MonoBehaviour
 
     }
 
-    public void BeginUnitSwitch(Goblinmon unit){
-        StartCoroutine(SwitchUnit(unit));
-    }
-
     public void CheckUnitBeforeSwitching(Goblinmon unit)
     {
         if (unit.goblinData == bs.playerUnit.GetComponent<Goblinmon>().goblinData)
@@ -61,7 +56,7 @@ public class SwitchingManager : MonoBehaviour
             Debug.LogWarning("Cannot switch to a unit that is already active!");
             //Makes sure selected unit isn't active unit
         }
-        else
+        else //switch unit
         {
             FindObjectOfType<AudioManager>().Play("press");
             StartCoroutine(SwitchUnit(unit));
