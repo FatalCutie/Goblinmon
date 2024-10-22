@@ -23,6 +23,7 @@ public class SwitchingManager : MonoBehaviour
         bs = FindObjectOfType<BattleSystem>();
     }
 
+    //Populates the switching menu
     public void PopulateUnits()
     {
         int i = 0;
@@ -51,6 +52,7 @@ public class SwitchingManager : MonoBehaviour
 
     }
 
+    //Makes sure player is not switching to active unit
     public void CheckUnitBeforeSwitching(Goblinmon unit)
     {
         if (unit.goblinData == bs.playerUnit.GetComponent<Goblinmon>().goblinData)

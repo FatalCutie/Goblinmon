@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Stinky Fart
   m_EditorClassIdentifier: 
   moveName: Stinky Fart
-  moveDescription: Let out a stinky fart to lower enemy attack!
+  moveDescription: Let out a stinky fart to lower enemy defense!
   moveType: {fileID: 11400000, guid: ac95565f8b427be4091427a3f5da2bbf, type: 2}
   damage: 0
   moveAction: 2
-  statModified: 1
+  statModified: 2
   statModifier: 1

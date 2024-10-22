@@ -1,6 +1,5 @@
 using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AttackButton : MonoBehaviour
@@ -12,6 +11,11 @@ public class AttackButton : MonoBehaviour
     void Start()
     {
         bs = FindObjectOfType<BattleSystem>();
+    }
+
+    public void SetMove(SOMove newMove) //I think this is redundent
+    {
+        this.move = newMove;
     }
 
     void FixedUpdate()
@@ -37,11 +41,6 @@ public class AttackButton : MonoBehaviour
         {
             descriptionText.text = "Somthing went wrong and this button does not have an assigned move";
         }
-
-    }
-
-    public void SetMove(SOMove newMove){
-        this.move = newMove;
     }
 
     public void OnMouseHoverLeave()

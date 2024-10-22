@@ -27,14 +27,40 @@ public class Goblinmon : MonoBehaviour
         if (weakness)
         {
             dmg *= 2;
+            dmg = ApplyDamageModifiers(dmg);
             currentHP -= dmg;
             Debug.Log(dmg);
         }
-        else currentHP -= dmg;
+        else
+        {
+            dmg = ApplyDamageModifiers(dmg);
+            currentHP -= dmg;
+        }
 
 
         if (currentHP <= 0) return true;
         else return false;
+    }
+
+    //Applies stat changes to damage value
+    private int ApplyDamageModifiers(int dmg)
+    {
+        int returnDamage = dmg;
+        if (attackModifier > defenseModifier)
+        {
+            int atkModTemp = attackModifier - defenseModifier;
+            returnDamage = (int)(returnDamage * (1 + .5 * atkModTemp)); //Each attack point = roughly 50% more damage
+            Debug.Log($"Attack Modifier: {atkModTemp}");
+        }
+        else if (defenseModifier > attackModifier)
+        {
+            int defModTemp = defenseModifier - attackModifier;
+            returnDamage = (int)(returnDamage * Math.Pow(.5, defModTemp)); //each defense point = roughly 50% less damage
+            Debug.Log($"Defense Modifier: {defModTemp}");
+        }
+        else return returnDamage;
+
+        return returnDamage;
     }
 
     public void Heal(int amount)
