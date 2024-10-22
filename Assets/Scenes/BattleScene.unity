@@ -1173,9 +1173,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
-  playerHUD: {fileID: 530642187}
-  bs: {fileID: 2087887649}
-  bm: {fileID: 2087887650}
 --- !u!1 &412710919
 GameObject:
   m_ObjectHideFlags: 0
@@ -1324,8 +1321,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   move: {fileID: 0}
-  bs: {fileID: 2087887649}
-  bm: {fileID: 2087887650}
   descriptionText: {fileID: 1803398209}
 --- !u!114 &412710925
 MonoBehaviour:
@@ -1611,9 +1606,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
-  playerHUD: {fileID: 530642187}
-  bs: {fileID: 2087887649}
-  bm: {fileID: 2087887650}
 --- !u!1001 &530642181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2748,8 +2740,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   move: {fileID: 0}
-  bs: {fileID: 2087887649}
-  bm: {fileID: 2087887650}
   descriptionText: {fileID: 1803398209}
 --- !u!114 &931614529
 MonoBehaviour:
@@ -3788,7 +3778,7 @@ GameObject:
   - component: {fileID: 1220717678}
   - component: {fileID: 1220717679}
   m_Layer: 0
-  m_Name: EnemyBattleStation (1)
+  m_Name: EnemyBattleStation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4414,8 +4404,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   move: {fileID: 0}
-  bs: {fileID: 2087887649}
-  bm: {fileID: 2087887650}
   descriptionText: {fileID: 1803398209}
 --- !u!114 &1419269013
 MonoBehaviour:
@@ -4780,9 +4768,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
-  playerHUD: {fileID: 530642187}
-  bs: {fileID: 2087887649}
-  bm: {fileID: 2087887650}
 --- !u!1 &1561290541
 GameObject:
   m_ObjectHideFlags: 0
@@ -4930,9 +4915,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
-  playerHUD: {fileID: 530642187}
-  bs: {fileID: 2087887649}
-  bm: {fileID: 2087887650}
 --- !u!1 &1591943124
 GameObject:
   m_ObjectHideFlags: 0
@@ -5032,8 +5014,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   move: {fileID: 0}
-  bs: {fileID: 2087887649}
-  bm: {fileID: 2087887650}
   descriptionText: {fileID: 1803398209}
 --- !u!114 &1591943128
 MonoBehaviour:
@@ -5276,9 +5256,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
-  playerHUD: {fileID: 530642187}
-  bs: {fileID: 2087887649}
-  bm: {fileID: 2087887650}
 --- !u!1 &1803398207
 GameObject:
   m_ObjectHideFlags: 0
@@ -5863,6 +5840,9 @@ MonoBehaviour:
   goblinmon:
   - {fileID: 11400000, guid: 2875e90ce313c12489196937969a8242, type: 2}
   - {fileID: 11400000, guid: 969f58b3700fbf94391f02cfd94258d8, type: 2}
+  - {fileID: 11400000, guid: 969f58b3700fbf94391f02cfd94258d8, type: 2}
+  - {fileID: 11400000, guid: 969f58b3700fbf94391f02cfd94258d8, type: 2}
+  - {fileID: 11400000, guid: 969f58b3700fbf94391f02cfd94258d8, type: 2}
   unitButtonHolder: {fileID: 1075037271}
 --- !u!1 &2128971626
 GameObject:
@@ -6011,9 +5991,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
-  playerHUD: {fileID: 530642187}
-  bs: {fileID: 2087887649}
-  bm: {fileID: 2087887650}
 --- !u!1 &2143325723
 GameObject:
   m_ObjectHideFlags: 0

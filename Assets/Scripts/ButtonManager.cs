@@ -88,7 +88,7 @@ public class ButtonManager : MonoBehaviour
         }catch (ArgumentOutOfRangeException) {} //The Goblinmon has run out of moves
 
         //Hides any unused move slots
-        for(int j = i; j < 3; j++)
+        for (int j = i; j < 4; j++)
         {
             attackButtons[j].gameObject.SetActive(false);
         }

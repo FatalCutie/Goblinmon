@@ -24,7 +24,12 @@ public class UnitButton : MonoBehaviour
 
     public void SwitchUnitOnPress()
     {
-        sm.CheckUnitBeforeSwitching(this.GetComponent<Goblinmon>());
+        if (this.GetComponent<Goblinmon>() == null)
+        {
+            FindObjectOfType<AudioManager>().Play("damage");
+        }
+        else sm.CheckUnitBeforeSwitching(this.GetComponent<Goblinmon>());
+
     }
 
 }

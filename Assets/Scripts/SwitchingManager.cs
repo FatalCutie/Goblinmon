@@ -34,13 +34,17 @@ public class SwitchingManager : MonoBehaviour
                 UnitButton ub = go.GetComponent<UnitButton>();
 
                 //Init button
-                Goblinmon gob = go.gameObject.AddComponent<Goblinmon>();
-                gob.goblinData = goblinmon[i];
-                gob.currentHP = gob.goblinData.maxHP; //This will need to be changed
-                ub.unit = goblinmon[i];
-                unitNameText.text = ub.unit.gName;
+                if (goblinmon[i] != null)
+                {
+                    Goblinmon gob = go.gameObject.AddComponent<Goblinmon>();
+                    gob.goblinData = goblinmon[i];
+                    gob.currentHP = gob.goblinData.maxHP; //This will need to be changed
+                    ub.unit = goblinmon[i];
+                    unitNameText.text = ub.unit.gName;
+                    Debug.Log(ub.unit.gName);
+                    i++;
+                }
 
-                i++;
             }
         }
         catch (ArgumentOutOfRangeException) { }
@@ -56,7 +60,7 @@ public class SwitchingManager : MonoBehaviour
             Debug.LogWarning("Cannot switch to a unit that is already active!");
             //Makes sure selected unit isn't active unit
         }
-        else //switch unit
+        else//switch unit
         {
             FindObjectOfType<AudioManager>().Play("press");
             StartCoroutine(SwitchUnit(unit));

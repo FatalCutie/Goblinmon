@@ -262,7 +262,7 @@ public class BattleSystem : MonoBehaviour
 
         bool isDead = false;//playerUnit.TakeDamage(enemyUnit.damage);
 
-        playerHUD.setHP(playerUnit.currentHP);
+        //playerHUD.setHP(playerUnit.currentHP);
 
         yield return new WaitForSeconds(1f);
         if (isDead)
