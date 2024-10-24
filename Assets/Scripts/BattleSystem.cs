@@ -9,13 +9,13 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleSystem : MonoBehaviour
 {
     #region Variables
-    [SerializeField] ButtonManager bMan;
+    ButtonManager bm;
 
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
 
-    public Transform playerBattleStation;
-    public Transform enemyBattleStation;
+    [SerializeField] private Transform playerBattleStation;
+    [SerializeField] private Transform enemyBattleStation;
 
     public TextMeshProUGUI dialogueText;
 
@@ -23,7 +23,6 @@ public class BattleSystem : MonoBehaviour
     public Goblinmon enemyUnit;
     SpriteRenderer pSpriteR;
     SpriteRenderer eSpriteR;
-    public Sprite newSprite;
 
     public BattleHUD playerHUD;
     public BattleHUD enemyHUD;
@@ -33,7 +32,7 @@ public class BattleSystem : MonoBehaviour
     #endregion
     void Start()
     {
-        bMan = GetComponent<ButtonManager>();
+        bm = FindObjectOfType<ButtonManager>();
         state = BattleState.START;
         StartCoroutine(SetupBattle());
     }
@@ -58,7 +57,7 @@ public class BattleSystem : MonoBehaviour
 
         //Updates the HUD
         playerHUD.SetHUD(playerUnit);
-        bMan.SetPlayerMoves(playerUnit);
+        bm.SetPlayerMoves(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
 
         yield return new WaitForSeconds(2f);
@@ -70,31 +69,14 @@ public class BattleSystem : MonoBehaviour
     //Runs correct function based on move info
     public void StartPlayerAttack(SOMove move)
     {
-        bMan.disableButtonsDuringAttack();
-        switch (move.moveAction)
-        {
-            case SOMove.MoveAction.ATTACK:
-                {
-                    StartCoroutine(PlayerAttack(move));
-                    return;
-                }
-            case SOMove.MoveAction.BUFF:
-                {
-                    StartCoroutine(BuffPlayer(move));
-                    return;
-                }
-            case SOMove.MoveAction.DEBUFF:
-                {
-                    StartCoroutine(DebuffEnemy(move));
-                    return;
-                }
-        }
-
+        bm.disableButtonsDuringAttack();
+        StartCoroutine(PlayerAttack(move));
     }
 
-    #region Combat Functions
+    #region Player Attacks
     public IEnumerator PlayerAttack(SOMove move)
     {
+        int moveDamage = move.damage;
         bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
         if (strongAttack) //If super effective 
         {
@@ -109,6 +91,7 @@ public class BattleSystem : MonoBehaviour
             if (isDead)
             {
                 state = BattleState.WON;
+                print(state);
                 EndBattle();
             }
             else
@@ -273,7 +256,7 @@ public class BattleSystem : MonoBehaviour
         else
         {
             state = BattleState.PLAYERTURN;
-            bMan.enableBasicButtonsOnPress();
+            bm.enableBasicButtonsOnPress();
             PlayerTurn();
         }
     }
@@ -295,6 +278,19 @@ public class BattleSystem : MonoBehaviour
     void PlayerTurn()
     {
         dialogueText.text = "Choose an action:";
+    }
+
+    IEnumerator PlayerHeal() //I don't know why I haven't deleted this
+    {
+        playerUnit.Heal(5); //Don't forget this is hard coded :trolla:
+        playerHUD.setHP(playerUnit.currentHP);
+        dialogueText.text = "You feel new stength!";
+
+        yield return new WaitForSeconds(2f);
+
+        state = BattleState.ENEMYTURN;
+        StartCoroutine(EnemyTurn());
+
     }
 
     // public void OnAttackButton()

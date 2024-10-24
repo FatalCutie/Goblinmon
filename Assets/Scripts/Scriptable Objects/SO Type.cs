@@ -11,9 +11,7 @@ public class SOType : ScriptableObject
 
     public List<SOType> weakness; //Take more damage from
 
-    //This list is redundent
-    //public List<SOType> weakness;
-
+    //Checks if the type given is strong against this type
     public bool weakAgainstEnemyType(SOType other)
     {
         if (weakness.Contains(other))
