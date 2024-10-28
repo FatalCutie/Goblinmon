@@ -280,18 +280,6 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = "Choose an action:";
     }
 
-    IEnumerator PlayerHeal() //I don't know why I haven't deleted this
-    {
-        playerUnit.Heal(5); //Don't forget this is hard coded :trolla:
-        playerHUD.setHP(playerUnit.currentHP);
-        dialogueText.text = "You feel new stength!";
-
-        yield return new WaitForSeconds(2f);
-
-        state = BattleState.ENEMYTURN;
-        StartCoroutine(EnemyTurn());
-
-    }
 
     // public void OnAttackButton()
     // {
