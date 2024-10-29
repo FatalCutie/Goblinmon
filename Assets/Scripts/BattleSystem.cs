@@ -10,6 +10,7 @@ public class BattleSystem : MonoBehaviour
 {
     #region Variables
     ButtonManager bm;
+    private EnemyAI eAI;
 
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
@@ -52,6 +53,8 @@ public class BattleSystem : MonoBehaviour
         enemyUnit = enemyGO.GetComponent<Goblinmon>();
         eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
         eSpriteR.sprite = enemyUnit.goblinData.sprite;
+        eAI.InitilizeUnitsForEnemyAI(enemyUnit, playerUnit);
+
 
         dialogueText.text = "A wild " + enemyUnit.goblinData.gName + " approches!";
 
@@ -66,6 +69,8 @@ public class BattleSystem : MonoBehaviour
         PlayerTurn();
     }
 
+    #region Player Attacks
+
     //Runs correct function based on move info
     public void StartPlayerAttack(SOMove move)
     {
@@ -73,10 +78,11 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(PlayerAttack(move));
     }
 
-    #region Player Attacks
+
     public IEnumerator PlayerAttack(SOMove move)
     {
-        int moveDamage = move.damage;
+        dialogueText.text = $"{playerUnit.goblinData.name} used {move.name}!";
+        yield return new WaitForSeconds(2);
         bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
         if (strongAttack) //If super effective 
         {
@@ -84,21 +90,6 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(1f);
 
             FindObjectOfType<AudioManager>().Play("superEffective");
-            bool isDead = enemyUnit.TakeDamage(move.damage, strongAttack);
-            enemyHUD.setHP(enemyUnit.currentHP);
-            yield return new WaitForSeconds(2f);
-
-            if (isDead)
-            {
-                state = BattleState.WON;
-                print(state);
-                EndBattle();
-            }
-            else
-            {
-                state = BattleState.ENEMYTURN;
-                StartCoroutine(EnemyTurn());
-            }
         }
         else
         {
@@ -106,20 +97,22 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(1f);
 
             FindObjectOfType<AudioManager>().Play("damage");
-            bool isDead = enemyUnit.TakeDamage(move.damage, strongAttack);
-            enemyHUD.setHP(enemyUnit.currentHP);
-            yield return new WaitForSeconds(2f);
-
-            if (isDead)
-            {
-                state = BattleState.WON;
-            }
-            else
-            {
-                state = BattleState.ENEMYTURN;
-                StartCoroutine(EnemyTurn());
-            }
         }
+
+        bool isDead = enemyUnit.TakeDamage(move.damage, strongAttack);
+        enemyHUD.setHP(enemyUnit.currentHP);
+        yield return new WaitForSeconds(2f);
+
+        if (isDead)
+        {
+            state = BattleState.WON;
+        }
+        else
+        {
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+
     }
 
     public IEnumerator BuffPlayer(SOMove move)
@@ -275,7 +268,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    void PlayerTurn()
+    public void PlayerTurn()
     {
         dialogueText.text = "Choose an action:";
     }

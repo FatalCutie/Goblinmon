@@ -4,26 +4,36 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
+    #region Variables
     private BattleSystem bs;
+    private ButtonManager bm;
     private Goblinmon self;
     private Goblinmon player;
     private enum EnemyType { TRAINER, WILD }
     private EnemyType enemyType;
+    [SerializeField] private List<Goblinmon> units;
 
-    //TODO: Allow AI to recognize if Trainer or Wild
-    private List<Goblinmon> units;
+    #endregion
 
     void Start()
     {
         bs = FindObjectOfType<BattleSystem>();
+        bm = FindObjectOfType<ButtonManager>();
     }
 
-    //TODO: Find elegant way to initalize enemy, maybe in BattleSystem?
-    //Take List and Goblinmon, initalize from there?
-    public void InitilizeUnits(Goblinmon sf, Goblinmon pr)
+    public void InitilizeUnitsForEnemyAI(Goblinmon sf, Goblinmon pr)
     {
-        sf = self;
-        pr = player;
+        self = sf;
+        player = pr;
+
+        //Check if trainer by seeing if there's any Goblinmon in party
+        if (units.Count > 0) enemyType = EnemyType.TRAINER;
+        else enemyType = EnemyType.WILD;
+    }
+
+    public void UpdatePlayerUnit(Goblinmon pu)
+    {
+        player = pu;
     }
 
     //Find the best action and take it
@@ -33,14 +43,20 @@ public class EnemyAI : MonoBehaviour
         if (enemyType == EnemyType.TRAINER && self.currentHP <= self.currentHP * .15)
         {
             Goblinmon safeSwitch = FindSafeSwitch();
-            if (safeSwitch != null) return;
+            if (safeSwitch != null) StartCoroutine(Switch(safeSwitch));
         }
 
         //Second see if there is a move that kills player
         SOMove lethalMove = IsEnemyKillable();
-        if (lethalMove != null) return;
+        if (lethalMove != null) StartCoroutine(AttackPlayer(lethalMove));
+
+        //TODO: Find a super effective move to attack player
+
+        //TODO: Decide between using an attacking or status move then attacking
 
     }
+
+    #region Switching
 
     //Finds a safe unit to switch into
     private Goblinmon FindSafeSwitch()
@@ -51,13 +67,15 @@ public class EnemyAI : MonoBehaviour
         //Find something strong against the enemy type
         foreach (Goblinmon unit in units)
         {
-            if (playerType.weakAgainstEnemyType(selfType)) return unit;
+            if (playerType.weakAgainstEnemyType(selfType)
+            && unit != self) return unit;
         }
 
         //If nothing then look for something neutral
         foreach (Goblinmon unit in units)
         {
-            if (selfType.weakAgainstEnemyType(playerType))
+            if (selfType.weakAgainstEnemyType(playerType)
+            && unit != self)
             {
                 //Continue
             }
@@ -67,6 +85,33 @@ public class EnemyAI : MonoBehaviour
         //If nothing neutral take another option
         return null;
     }
+
+    //Switch into the safe unit
+    private IEnumerator Switch(Goblinmon unit)
+    {
+        //Makes switching look smooth for player
+        bs.dialogueText.text = "Come back " + bs.enemyUnit.goblinData.gName + "!";
+        yield return new WaitForSeconds(1);
+        bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
+        yield return new WaitForSeconds(2);
+        bs.dialogueText.text = "Go, " + self.goblinData.gName + "!";
+        yield return new WaitForSeconds(1);
+
+        //Switches the active unit
+        self = unit;
+        bs.enemyHUD.SetHUD(unit);
+        bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = self.goblinData.sprite;
+        yield return new WaitForSeconds(1);
+
+        //End the enemys turn
+        bs.state = BattleState.PLAYERTURN;
+        bm.enableBasicButtonsOnPress();
+        bs.PlayerTurn();
+    }
+
+    #endregion
+
+    #region Attack Player
 
     //Checks if there is a move that kills the player and returns it
     private SOMove IsEnemyKillable()
@@ -88,4 +133,46 @@ public class EnemyAI : MonoBehaviour
         }
         return null;
     }
+
+    private IEnumerator AttackPlayer(SOMove move)
+    {
+        bool strongAttack = player.goblinData.type.weakAgainstEnemyType(move.moveType);
+        bs.dialogueText.text = $"{self.goblinData.name} used {move.name}!";
+        yield return new WaitForSeconds(2);
+
+        //Different text/sounds based on attack effectiveness
+        if (strongAttack)
+        {
+            bs.dialogueText.text = "It was super effective!";
+            yield return new WaitForSeconds(1f);
+
+            FindObjectOfType<AudioManager>().Play("superEffective");
+        }
+        else
+        {
+            bs.dialogueText.text = "The attack was successful!";
+            yield return new WaitForSeconds(1f);
+
+            FindObjectOfType<AudioManager>().Play("damage");
+        }
+
+        //Attack player
+        bool isDead = player.TakeDamage(move.damage, strongAttack);
+        bs.playerHUD.setHP(player.currentHP);
+        yield return new WaitForSeconds(2f);
+
+        if (isDead)
+        {   //End turn 
+            bs.state = BattleState.LOST;
+            bs.EndBattle();
+        }
+        else
+        {   //End enemy's turn
+            bs.state = BattleState.PLAYERTURN;
+            bm.enableBasicButtonsOnPress();
+            bs.PlayerTurn();
+        }
+
+    }
+    #endregion
 }

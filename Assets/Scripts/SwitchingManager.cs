@@ -10,7 +10,8 @@ public class SwitchingManager : MonoBehaviour
     public GameObject unitButtonHolder;
     private BattleSystem bs;
     private ButtonManager bm;
-    private SOGoblinmon gobData; //basically a holder to update player info
+    private EnemyAI eAI;
+    private SOGoblinmon gobData; //holder to update player info
 
     void Awake()
     {
@@ -19,6 +20,7 @@ public class SwitchingManager : MonoBehaviour
 
     void Start()
     {
+        eAI = FindObjectOfType<EnemyAI>();
         bm = FindObjectOfType<ButtonManager>();
         bs = FindObjectOfType<BattleSystem>();
     }
@@ -34,7 +36,7 @@ public class SwitchingManager : MonoBehaviour
                 TextMeshProUGUI unitNameText = go.GetChild(0).GetComponent<TextMeshProUGUI>();
                 UnitButton ub = go.GetComponent<UnitButton>();
 
-                //Init button
+                //Initialize switching buttons
                 if (goblinmon[i] != null)
                 {
                     Goblinmon gob = go.gameObject.AddComponent<Goblinmon>();
@@ -48,7 +50,7 @@ public class SwitchingManager : MonoBehaviour
 
             }
         }
-        catch (ArgumentOutOfRangeException) { }
+        catch (ArgumentOutOfRangeException) { } //In case less units than buttons
 
     }
 
@@ -62,7 +64,7 @@ public class SwitchingManager : MonoBehaviour
             Debug.LogWarning("Cannot switch to a unit that is already active!");
             //Makes sure selected unit isn't active unit
         }
-        else//switch unit
+        else //switch unit
         {
             FindObjectOfType<AudioManager>().Play("press");
             StartCoroutine(SwitchUnit(unit));
@@ -88,6 +90,7 @@ public class SwitchingManager : MonoBehaviour
         UpdatePlayerInformation();
         FindObjectOfType<BattleHUD>().SetHUD(unit);
         bs.playerUnit.GetComponent<SpriteRenderer>().sprite = unit.goblinData.sprite;
+        eAI.UpdatePlayerUnit(unit);
         yield return new WaitForSeconds(1);
 
         //End the players turn

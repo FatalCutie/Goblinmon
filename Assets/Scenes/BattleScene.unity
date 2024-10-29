@@ -5758,6 +5758,7 @@ GameObject:
   - component: {fileID: 2087887649}
   - component: {fileID: 2087887650}
   - component: {fileID: 2087887651}
+  - component: {fileID: 2087887652}
   m_Layer: 0
   m_Name: Battle System
   m_TagString: Untagged
@@ -5792,7 +5793,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3693df3fce1eb8447adf575a62cc8268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bMan: {fileID: 0}
   playerPrefab: {fileID: 5602919021908159098, guid: a45828d168bd73c46b3fc53d66c2d049, type: 3}
   enemyPrefab: {fileID: 506481755367594361, guid: a3b4010b03e299b42bf7f705634ca496, type: 3}
   playerBattleStation: {fileID: 2049001894}
@@ -5800,7 +5800,6 @@ MonoBehaviour:
   dialogueText: {fileID: 1803398209}
   playerUnit: {fileID: 0}
   enemyUnit: {fileID: 0}
-  newSprite: {fileID: 21300000, guid: 54af892492a0845498105b368ce8bc3b, type: 3}
   playerHUD: {fileID: 530642187}
   enemyHUD: {fileID: 2049049720}
   state: 0
@@ -5844,6 +5843,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 969f58b3700fbf94391f02cfd94258d8, type: 2}
   - {fileID: 11400000, guid: 969f58b3700fbf94391f02cfd94258d8, type: 2}
   unitButtonHolder: {fileID: 1075037271}
+--- !u!114 &2087887652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087887646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 465b6f63771bf4c439e35ac304ec2a54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  units: []
 --- !u!1 &2128971626
 GameObject:
   m_ObjectHideFlags: 0
