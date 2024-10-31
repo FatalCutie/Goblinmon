@@ -5855,7 +5855,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 465b6f63771bf4c439e35ac304ec2a54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  units: []
+  self: {fileID: 0}
+  player: {fileID: 0}
+  enemyType: 0
+  emptyMove: {fileID: 11400000, guid: 5a7453731f99fc14cbbbc2e2f95e3682, type: 2}
+  units:
+  - {fileID: 0}
 --- !u!1 &2128971626
 GameObject:
   m_ObjectHideFlags: 0

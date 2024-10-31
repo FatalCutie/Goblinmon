@@ -110,7 +110,7 @@ public class BattleSystem : MonoBehaviour
         else
         {
             state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
+            eAI.FindOptimalOption();
         }
 
     }

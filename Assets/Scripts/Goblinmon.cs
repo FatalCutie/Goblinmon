@@ -17,11 +17,14 @@ public class Goblinmon : MonoBehaviour
             currentHP = goblinData.maxHP; //This will need to be changed LOL!
         }
         //I don't remember why this warning exists but I remember that it's not really important LOL!
-        catch (NullReferenceException) { Debug.LogWarning("Goblinmon Unit did not have a data SO at creation! Please disregard if intended"); }
+        catch (NullReferenceException)
+        {
+            //Debug.LogWarning("Goblinmon Unit did not have a data SO at creation! Please disregard if intended"); 
+        }
 
     }
 
-
+    //Unit takes damage
     public bool TakeDamage(int dmg, bool weakness)
     {
         if (weakness)
@@ -36,13 +39,12 @@ public class Goblinmon : MonoBehaviour
             currentHP -= dmg;
         }
 
-
         if (currentHP <= 0) return true;
         else return false;
     }
 
     //Applies stat changes to damage value
-    private int ApplyDamageModifiers(int dmg)
+    public int ApplyDamageModifiers(int dmg)
     {
         int returnDamage = dmg;
         if (attackModifier > defenseModifier)

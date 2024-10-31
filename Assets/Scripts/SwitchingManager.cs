@@ -44,7 +44,6 @@ public class SwitchingManager : MonoBehaviour
                     gob.currentHP = gob.goblinData.maxHP; //This will need to be changed
                     ub.unit = goblinmon[i];
                     unitNameText.text = ub.unit.gName;
-                    Debug.Log(ub.unit.gName);
                     i++;
                 }
 
