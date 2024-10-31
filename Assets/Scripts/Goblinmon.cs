@@ -29,7 +29,6 @@ public class Goblinmon : MonoBehaviour
             dmg *= 2;
             dmg = ApplyDamageModifiers(dmg);
             currentHP -= dmg;
-            Debug.Log(dmg);
         }
         else
         {
@@ -62,11 +61,4 @@ public class Goblinmon : MonoBehaviour
 
         return returnDamage;
     }
-
-    public void Heal(int amount)
-    {
-        currentHP += amount;
-        if (currentHP > goblinData.maxHP) currentHP = goblinData.maxHP;
-    }
-
 }

@@ -34,6 +34,7 @@ public class BattleSystem : MonoBehaviour
     void Start()
     {
         bm = FindObjectOfType<ButtonManager>();
+        eAI = FindObjectOfType<EnemyAI>();
         state = BattleState.START;
         StartCoroutine(SetupBattle());
     }
@@ -82,19 +83,17 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator PlayerAttack(SOMove move)
     {
         dialogueText.text = $"{playerUnit.goblinData.name} used {move.name}!";
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1.5f);
         bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
         if (strongAttack) //If super effective 
         {
             dialogueText.text = "The attack is super effective!";
-            yield return new WaitForSeconds(1f);
 
             FindObjectOfType<AudioManager>().Play("superEffective");
         }
         else
         {
             dialogueText.text = "The attack is successful!";
-            yield return new WaitForSeconds(1f);
 
             FindObjectOfType<AudioManager>().Play("damage");
         }
@@ -106,6 +105,7 @@ public class BattleSystem : MonoBehaviour
         if (isDead)
         {
             state = BattleState.WON;
+            EndBattle();
         }
         else
         {
