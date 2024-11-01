@@ -46,16 +46,31 @@ public class EnemyAI : MonoBehaviour
         //First check if health is low, if so find something to switch to
         if (enemyType == EnemyType.TRAINER && self.currentHP <= self.goblinData.maxHP * .15)
         {
+            Debug.Log("Things look hairy, I'm gonna try and switch");
             SOGoblinmon safeSwitch = FindSafeSwitch();
-            if (safeSwitch != null) StartCoroutine(Switch(safeSwitch));
+            if (safeSwitch != null)
+            {
+                Debug.Log($"{safeSwitch.gName} looks like a safe option, I'm gonna take it!");
+                StartCoroutine(Switch(safeSwitch));
+            }
+            else Debug.Log("Nevermind, I'm not gonna switch");
+            return;
         }
 
         //Second see if there is a move that kills player
         SOMove lethalMove = IsEnemyKillable();
-        if (lethalMove != null) StartCoroutine(AttackPlayer(lethalMove));
+        if (lethalMove != null)
+        {
+            Debug.Log($"Found a lethal move {lethalMove.moveName}, using it");
+            StartCoroutine(AttackPlayer(lethalMove));
+            return;
+        }
+
 
         //TODO: Find a super effective move to attack player
         SOMove bestAttackingMove = FindAttackingMove();
+        Debug.Log($"Using best move {bestAttackingMove.moveName}, using it");
+        StartCoroutine(AttackPlayer(bestAttackingMove));
         //TODO: Decide between using an attacking or status move then attacking
 
     }
@@ -86,7 +101,7 @@ public class EnemyAI : MonoBehaviour
             else return unit;
         }
 
-        //If nothing neutral take another option
+        //If nothing neutral pick another option
         return null;
     }
 
@@ -134,14 +149,14 @@ public class EnemyAI : MonoBehaviour
             if (playerType.weakAgainstEnemyType(move.moveType) && move.moveAction == SOMove.MoveAction.ATTACK)
             {
                 //Factor in damage modifiers with calculation
-                int moveDamage = this.GetComponent<Goblinmon>().ApplyDamageModifiers(move.damage * 2);
+                int moveDamage = self.ApplyDamageModifiers(move.damage * 2, self);
                 if (moveDamage > playerHP) return move;
             }
-            else
+            else if (move.moveAction == SOMove.MoveAction.ATTACK)
             //If move kills return move
             {
                 //Factor in damage modifiers with calculation
-                int moveDamage = this.GetComponent<Goblinmon>().ApplyDamageModifiers(move.damage);
+                int moveDamage = self.ApplyDamageModifiers(move.damage, self);
                 if (moveDamage > playerHP) return move;
             }
         }
@@ -162,13 +177,13 @@ public class EnemyAI : MonoBehaviour
             if (playerType.weakAgainstEnemyType(move.moveType) && move.moveAction == SOMove.MoveAction.ATTACK)
             {
                 //Factor in damage modifiers with calculation
-                int moveDamage = this.GetComponent<Goblinmon>().ApplyDamageModifiers(move.damage * 2);
+                int moveDamage = self.ApplyDamageModifiers(move.damage * 2, self);
                 if (moveDamage * 2 > returnMove.damage) returnMove = move;
             }
             else
             {
                 //Factor in damage modifiers with calculation
-                int moveDamage = this.GetComponent<Goblinmon>().ApplyDamageModifiers(move.damage);
+                int moveDamage = self.ApplyDamageModifiers(move.damage, self);
                 if (moveDamage > returnMove.damage) returnMove = move;
             }
         }
@@ -177,11 +192,16 @@ public class EnemyAI : MonoBehaviour
 
     private bool DoesUnitHaveBuffingMove()
     {
+        foreach (SOMove move in self.goblinData.moveset)
+        {
+            if (move.moveAction == SOMove.MoveAction.BUFF || move.moveAction == SOMove.MoveAction.DEBUFF) return true;
+        }
         return false;
     }
 
     private SOMove FindBuffingMove()
     {
+
         return null;
     }
 
@@ -209,7 +229,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         //Attack player
-        bool isDead = player.TakeDamage(move.damage, strongAttack);
+        bool isDead = player.TakeDamage(move.damage, strongAttack, self);
         bs.playerHUD.setHP(player.currentHP);
         yield return new WaitForSeconds(2f);
 

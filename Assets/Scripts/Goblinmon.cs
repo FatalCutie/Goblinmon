@@ -25,17 +25,17 @@ public class Goblinmon : MonoBehaviour
     }
 
     //Unit takes damage
-    public bool TakeDamage(int dmg, bool weakness)
+    public bool TakeDamage(int dmg, bool weakness, Goblinmon attacker)
     {
         if (weakness)
         {
             dmg *= 2;
-            dmg = ApplyDamageModifiers(dmg);
+            dmg = ApplyDamageModifiers(dmg, attacker);
             currentHP -= dmg;
         }
         else
         {
-            dmg = ApplyDamageModifiers(dmg);
+            dmg = ApplyDamageModifiers(dmg, attacker);
             currentHP -= dmg;
         }
 
@@ -44,20 +44,22 @@ public class Goblinmon : MonoBehaviour
     }
 
     //Applies stat changes to damage value
-    public int ApplyDamageModifiers(int dmg)
+
+    public int ApplyDamageModifiers(int dmg, Goblinmon attacker)
     {
+        //TODO: Take enemy defense into consideration when attacking, not own
         int returnDamage = dmg;
-        if (attackModifier > defenseModifier)
+
+        //Compare modifiers to see if they cancel out (one attack swinging into one defense is neutral damage)
+        if (attacker.attackModifier > defenseModifier)
         {
-            int atkModTemp = attackModifier - defenseModifier;
+            int atkModTemp = attacker.attackModifier - defenseModifier;
             returnDamage = (int)(returnDamage * (1 + .5 * atkModTemp)); //Each attack point = roughly 50% more damage
-            Debug.Log($"Attack Modifier: {atkModTemp}");
         }
-        else if (defenseModifier > attackModifier)
+        else if (defenseModifier > attacker.attackModifier)
         {
-            int defModTemp = defenseModifier - attackModifier;
+            int defModTemp = defenseModifier - attacker.attackModifier;
             returnDamage = (int)(returnDamage * Math.Pow(.5, defModTemp)); //each defense point = roughly 50% less damage
-            Debug.Log($"Defense Modifier: {defModTemp}");
         }
         else return returnDamage;
 

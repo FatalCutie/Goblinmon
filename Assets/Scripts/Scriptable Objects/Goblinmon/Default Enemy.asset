@@ -19,4 +19,7 @@ MonoBehaviour:
   type: {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
   moveset:
   - {fileID: 11400000, guid: db8d5fb63d66fd5448450b43d6cf4b94, type: 2}
+  - {fileID: 11400000, guid: b1a04a2c067a2704c8c7e4c7375791ce, type: 2}
+  - {fileID: 11400000, guid: 6f83e9ce1420827458e8b1e6aed71c36, type: 2}
+  - {fileID: 11400000, guid: 97193ecd0c309b943a7cd7bff2c3517c, type: 2}
   weakness: []

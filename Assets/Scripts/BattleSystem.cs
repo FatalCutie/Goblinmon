@@ -72,11 +72,22 @@ public class BattleSystem : MonoBehaviour
 
     #region Player Attacks
 
-    //Runs correct function based on move info
+    //Runs correct Coroutine based on move action
     public void StartPlayerAttack(SOMove move)
     {
         bm.disableButtonsDuringAttack();
-        StartCoroutine(PlayerAttack(move));
+        switch (move.moveAction)
+        {
+            case SOMove.MoveAction.ATTACK:
+                StartCoroutine(PlayerAttack(move));
+                break;
+            case SOMove.MoveAction.BUFF:
+                StartCoroutine(BuffPlayer(move));
+                break;
+            case SOMove.MoveAction.DEBUFF:
+                StartCoroutine(DebuffEnemy(move));
+                break;
+        }
     }
 
 
@@ -98,7 +109,7 @@ public class BattleSystem : MonoBehaviour
             FindObjectOfType<AudioManager>().Play("damage");
         }
 
-        bool isDead = enemyUnit.TakeDamage(move.damage, strongAttack);
+        bool isDead = enemyUnit.TakeDamage(move.damage, strongAttack, playerUnit);
         enemyHUD.setHP(enemyUnit.currentHP);
         yield return new WaitForSeconds(2f);
 
@@ -169,7 +180,8 @@ public class BattleSystem : MonoBehaviour
         }
 
         //End Turn
-        StartCoroutine(EnemyTurn());
+        state = BattleState.ENEMYTURN;
+        eAI.FindOptimalOption();
     }
 
     public IEnumerator DebuffEnemy(SOMove move)
@@ -225,11 +237,12 @@ public class BattleSystem : MonoBehaviour
         }
 
         //End Turn
-        StartCoroutine(EnemyTurn());
+        state = BattleState.ENEMYTURN;
+        eAI.FindOptimalOption();
     }
     #endregion
 
-    public IEnumerator EnemyTurn()
+    public IEnumerator TempEnemyTurn()
     {
         //dialogueText.text = enemyUnit.goblinData.gName + " attacks!";
         dialogueText.text = "Enemy attacking is not implemented yet!";

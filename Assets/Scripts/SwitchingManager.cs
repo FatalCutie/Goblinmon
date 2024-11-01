@@ -94,8 +94,7 @@ public class SwitchingManager : MonoBehaviour
 
         //End the players turn
         bs.state = BattleState.ENEMYTURN;
-        Debug.Log("enemy turn");
-        StartCoroutine(bs.EnemyTurn());
+        eAI.FindOptimalOption();
     }
 
         //Updates player data after switch
