@@ -6,22 +6,13 @@ using UnityEngine;
 public class Goblinmon : MonoBehaviour
 {
     [SerializeField] public SOGoblinmon goblinData;
-    public int currentHP;
     public int attackModifier;
     public int defenseModifier;
 
     void Awake()
     {
-        try
-        {
-            currentHP = goblinData.maxHP; //This will need to be changed LOL!
-        }
-        //I don't remember why this warning exists but I remember that it's not really important LOL!
-        catch (NullReferenceException)
-        {
-            //Debug.LogWarning("Goblinmon Unit did not have a data SO at creation! Please disregard if intended"); 
-        }
-
+        //Set current HP to max HP at start of battle
+        //goblinData.InitilizeGoblinmonHP();
     }
 
     //Unit takes damage
@@ -31,15 +22,15 @@ public class Goblinmon : MonoBehaviour
         {
             dmg *= 2;
             dmg = ApplyDamageModifiers(dmg, attacker);
-            currentHP -= dmg;
+            goblinData.currentHP -= dmg;
         }
         else
         {
             dmg = ApplyDamageModifiers(dmg, attacker);
-            currentHP -= dmg;
+            goblinData.currentHP -= dmg;
         }
 
-        if (currentHP <= 0) return true;
+        if (goblinData.currentHP <= 0) return true;
         else return false;
     }
 
@@ -65,4 +56,5 @@ public class Goblinmon : MonoBehaviour
 
         return returnDamage;
     }
+
 }

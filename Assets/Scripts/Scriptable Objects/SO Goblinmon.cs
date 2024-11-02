@@ -10,11 +10,17 @@ public class SOGoblinmon : ScriptableObject
 
     public Sprite sprite;
     public int maxHP;
-
+    public int currentHP;
 
     public SOType type;
     public List<SOMove> moveset;
 
     public List<SOType> weakness; //Take more damage from
+
+    //Reset current unit HP to max health
+    public void InitilizeGoblinmonHP()
+    {
+        currentHP = maxHP;
+    }
 
 }

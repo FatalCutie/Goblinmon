@@ -1,6 +1,7 @@
 
 using System.Collections;
 using TMPro;
+using TreeEditor;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class BattleSystem : MonoBehaviour
     #region Variables
     ButtonManager bm;
     private EnemyAI eAI;
+    SwitchingManager sm;
 
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
@@ -35,6 +37,7 @@ public class BattleSystem : MonoBehaviour
     {
         bm = FindObjectOfType<ButtonManager>();
         eAI = FindObjectOfType<EnemyAI>();
+        sm = FindObjectOfType<SwitchingManager>();
         state = BattleState.START;
         StartCoroutine(SetupBattle());
     }
@@ -44,6 +47,7 @@ public class BattleSystem : MonoBehaviour
     
         //Instantiate player
         GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
+        playerGO.GetComponent<Goblinmon>().goblinData = sm.goblinmon[0];
         playerUnit = playerGO.GetComponent<Goblinmon>();
         //Will have to adjust sprite positions during sprite production
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
@@ -110,7 +114,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         bool isDead = enemyUnit.TakeDamage(move.damage, strongAttack, playerUnit);
-        enemyHUD.setHP(enemyUnit.currentHP);
+        enemyHUD.setHP(enemyUnit.goblinData.currentHP);
         yield return new WaitForSeconds(2f);
 
         if (isDead)

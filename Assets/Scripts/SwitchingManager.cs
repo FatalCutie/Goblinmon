@@ -12,6 +12,7 @@ public class SwitchingManager : MonoBehaviour
     private ButtonManager bm;
     private EnemyAI eAI;
     private SOGoblinmon gobData; //holder to update player info
+    private int activeUnitID;
 
     void Awake()
     {
@@ -28,6 +29,7 @@ public class SwitchingManager : MonoBehaviour
     //Populates the switching menu
     public void PopulateUnits()
     {
+        activeUnitID = 0;
         int i = 0;
         try
         {
@@ -36,14 +38,15 @@ public class SwitchingManager : MonoBehaviour
                 TextMeshProUGUI unitNameText = go.GetChild(0).GetComponent<TextMeshProUGUI>();
                 UnitButton ub = go.GetComponent<UnitButton>();
 
-                //Initialize switching buttons
+                //Initialize switching buttons and units tied to them
                 if (goblinmon[i] != null)
                 {
                     Goblinmon gob = go.gameObject.AddComponent<Goblinmon>();
                     gob.goblinData = goblinmon[i];
-                    gob.currentHP = gob.goblinData.maxHP; //This will need to be changed
+                    gob.goblinData.InitilizeGoblinmonHP();
                     ub.unit = goblinmon[i];
                     unitNameText.text = ub.unit.gName;
+                    ub.ID = i;
                     i++;
                 }
 
@@ -73,10 +76,9 @@ public class SwitchingManager : MonoBehaviour
 
     }
 
+    //TODO: Save current SO to proper button when switching so health is persistant between switches
     public IEnumerator SwitchUnit(Goblinmon unit)
     {
-        gobData = unit.goblinData;
-
         //Makes switching look smooth for player
         bs.dialogueText.text = "Come back " + bs.playerUnit.goblinData.gName + "!";
         yield return new WaitForSeconds(1);
@@ -86,9 +88,10 @@ public class SwitchingManager : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         //Switches the active unit
-        UpdatePlayerInformation();
+        UpdatePlayerInformation(unit.goblinData);
         FindObjectOfType<BattleHUD>().SetHUD(unit);
         bs.playerUnit.GetComponent<SpriteRenderer>().sprite = unit.goblinData.sprite;
+        //TODO: Delay this so the opponent doesn't just lead with something super effective after a switch
         eAI.UpdatePlayerUnit(unit);
         yield return new WaitForSeconds(1);
 
@@ -97,11 +100,10 @@ public class SwitchingManager : MonoBehaviour
         eAI.FindOptimalOption();
     }
 
-        //Updates player data after switch
-        public void UpdatePlayerInformation()
+    //Updates player data after switch
+    public void UpdatePlayerInformation(SOGoblinmon newData)
     {
         Goblinmon playerGob = bs.playerUnit.GetComponent<Goblinmon>();
-        playerGob.goblinData = gobData;
-        playerGob.currentHP = playerGob.goblinData.maxHP; //This will need to be changed
+        playerGob.goblinData = newData;
     }
 }

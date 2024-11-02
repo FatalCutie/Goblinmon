@@ -1,9 +1,11 @@
+using System.Data;
 using TMPro;
 using UnityEngine;
 
 public class UnitButton : MonoBehaviour
 {
     public SOGoblinmon unit;
+    public int ID;
     private TextMeshProUGUI text;
     private SwitchingManager sm;
 

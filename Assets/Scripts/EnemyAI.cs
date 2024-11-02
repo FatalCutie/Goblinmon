@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -16,6 +18,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private EnemyType enemyType;
     [SerializeField] SOMove emptyMove;
     [SerializeField] private List<SOGoblinmon> units;
+    System.Random rnd = new System.Random();
 
     #endregion
 
@@ -23,6 +26,7 @@ public class EnemyAI : MonoBehaviour
     {
         bs = FindObjectOfType<BattleSystem>();
         bm = FindObjectOfType<ButtonManager>();
+
     }
 
     public void InitilizeUnitsForEnemyAI(Goblinmon sf, Goblinmon pr)
@@ -44,13 +48,13 @@ public class EnemyAI : MonoBehaviour
     public void FindOptimalOption()
     {
         //First check if health is low, if so find something to switch to
-        if (enemyType == EnemyType.TRAINER && self.currentHP <= self.goblinData.maxHP * .15)
+        if (enemyType == EnemyType.TRAINER && self.goblinData.currentHP <= self.goblinData.maxHP * .15)
         {
             Debug.Log("Things look hairy, I'm gonna try and switch");
             SOGoblinmon safeSwitch = FindSafeSwitch();
             if (safeSwitch != null)
             {
-                Debug.Log($"{safeSwitch.gName} looks like a safe option, I'm gonna take it!");
+                Debug.Log($"{safeSwitch.gName} looks like a safe option, I'm gonna switch!");
                 StartCoroutine(Switch(safeSwitch));
             }
             else Debug.Log("Nevermind, I'm not gonna switch");
@@ -67,12 +71,12 @@ public class EnemyAI : MonoBehaviour
         }
 
 
-        //TODO: Find a super effective move to attack player
+
+        //TODO: Decide between using an attacking or status move then attacking
+        //TODO: Add chance to use random move instead of best move if attacking (80/20), scales with health?
         SOMove bestAttackingMove = FindAttackingMove();
         Debug.Log($"Using best move {bestAttackingMove.moveName}, using it");
         StartCoroutine(AttackPlayer(bestAttackingMove));
-        //TODO: Decide between using an attacking or status move then attacking
-
     }
 
     #region Switching
@@ -119,8 +123,6 @@ public class EnemyAI : MonoBehaviour
         //Initilize new unit
         Goblinmon gob = this.gameObject.AddComponent<Goblinmon>();
         gob.goblinData = unit;
-        //TODO: Store current HP in SO somehow to save data
-        gob.currentHP = gob.goblinData.maxHP; //This will need to be changed
 
         //Switches the active unit
         self = gob;
@@ -141,7 +143,7 @@ public class EnemyAI : MonoBehaviour
     //Checks if there is a move that kills the player and returns it
     private SOMove IsEnemyKillable()
     {
-        int playerHP = player.currentHP;
+        int playerHP = player.goblinData.currentHP;
         SOType playerType = player.goblinData.type;
         foreach (SOMove move in self.goblinData.moveset)
         {
@@ -190,6 +192,7 @@ public class EnemyAI : MonoBehaviour
         return returnMove;
     }
 
+    //Loop through each move to check if any of them buff/debuff
     private bool DoesUnitHaveBuffingMove()
     {
         foreach (SOMove move in self.goblinData.moveset)
@@ -199,10 +202,21 @@ public class EnemyAI : MonoBehaviour
         return false;
     }
 
+    //Returns a buff/debuff move
     private SOMove FindBuffingMove()
     {
+        List<SOMove> movePool = new List<SOMove>();
+        foreach (SOMove move in self.goblinData.moveset)
+        {
+            if (move.moveAction == SOMove.MoveAction.BUFF || move.moveAction == SOMove.MoveAction.DEBUFF) movePool.Add(move);
+        }
+        //Skip number generation if there's only one option
+        if (movePool.Count == 1) return movePool[0];
+        //Generate a random number which decides which move from movepool to return
+        int selection = rnd.Next(0, movePool.Count);
 
-        return null;
+
+        return movePool[selection];
     }
 
     //Use an attacking move against the player
@@ -230,7 +244,7 @@ public class EnemyAI : MonoBehaviour
 
         //Attack player
         bool isDead = player.TakeDamage(move.damage, strongAttack, self);
-        bs.playerHUD.setHP(player.currentHP);
+        bs.playerHUD.setHP(player.goblinData.currentHP);
         yield return new WaitForSeconds(2f);
 
         if (isDead)
