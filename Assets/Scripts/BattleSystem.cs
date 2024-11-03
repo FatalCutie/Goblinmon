@@ -47,6 +47,7 @@ public class BattleSystem : MonoBehaviour
     
         //Instantiate player
         GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
+        //First goblinmon in Goblinmon Array sent out first
         playerGO.GetComponent<Goblinmon>().goblinData = sm.goblinmon[0];
         playerUnit = playerGO.GetComponent<Goblinmon>();
         //Will have to adjust sprite positions during sprite production
@@ -114,7 +115,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         bool isDead = enemyUnit.TakeDamage(move.damage, strongAttack, playerUnit);
-        enemyHUD.setHP(enemyUnit.goblinData.currentHP);
+        enemyHUD.setHP(enemyUnit.goblinData.currentHP, enemyUnit);
         yield return new WaitForSeconds(2f);
 
         if (isDead)

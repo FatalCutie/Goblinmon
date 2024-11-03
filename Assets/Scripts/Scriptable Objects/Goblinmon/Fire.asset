@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0188a8dcd8e881646856901b1bae9163, type: 3}
+  m_Name: Fire
+  m_EditorClassIdentifier: 
+  gName: Fire
+  gLevel: 69
+  sprite: {fileID: 21300000, guid: 54af892492a0845498105b368ce8bc3b, type: 3}
+  maxHP: 69
+  currentHP: 69
+  type: {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: db8d5fb63d66fd5448450b43d6cf4b94, type: 2}
+  - {fileID: 11400000, guid: b1a04a2c067a2704c8c7e4c7375791ce, type: 2}
+  - {fileID: 11400000, guid: 6f83e9ce1420827458e8b1e6aed71c36, type: 2}
+  - {fileID: 11400000, guid: 97193ecd0c309b943a7cd7bff2c3517c, type: 2}
+  weakness: []
+  resistance: []

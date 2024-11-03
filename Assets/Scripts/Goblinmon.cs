@@ -16,13 +16,18 @@ public class Goblinmon : MonoBehaviour
     }
 
     //Unit takes damage
+    //TODO:
+    //SCRIPTABLE OBJECTS FOR GOBLINMON DATA MEANS THAT THERE CANNOT BE MORE THAN ONE OF ANY UNIT
+    //IN A FIGHT AT ANY GIVEN TIME WITHOUT COMPLETELY SCREWING OVER THE ENTIRE BATTLE
+    //FIX THAT YESTERDAY
     public bool TakeDamage(int dmg, bool weakness, Goblinmon attacker)
     {
+        int damageToDeal = dmg;
         if (weakness)
         {
-            dmg *= 2;
-            dmg = ApplyDamageModifiers(dmg, attacker);
-            goblinData.currentHP -= dmg;
+            damageToDeal = ApplyDamageModifiers(damageToDeal, attacker);
+            damageToDeal *= 2;
+            goblinData.currentHP = goblinData.currentHP - damageToDeal;
         }
         else
         {
@@ -35,13 +40,11 @@ public class Goblinmon : MonoBehaviour
     }
 
     //Applies stat changes to damage value
-
     public int ApplyDamageModifiers(int dmg, Goblinmon attacker)
     {
-        //TODO: Take enemy defense into consideration when attacking, not own
         int returnDamage = dmg;
 
-        //Compare modifiers to see if they cancel out (one attack swinging into one defense is neutral damage)
+        //Compare modifiers to see if they cancel out (+1 attack swinging into +1 defense is neutral damage)
         if (attacker.attackModifier > defenseModifier)
         {
             int atkModTemp = attacker.attackModifier - defenseModifier;

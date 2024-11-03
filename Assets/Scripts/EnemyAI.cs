@@ -18,9 +18,13 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private EnemyType enemyType;
     [SerializeField] SOMove emptyMove;
     [SerializeField] private List<SOGoblinmon> units;
+    [SerializeField] private Goblinmon updatedPlayerUnit;
     System.Random rnd = new System.Random();
 
     #endregion
+
+    //SOMETHING SOMEWHERE IS UPDATING PLAYER AND I HAVE NO CLUE WHAT THE FUCK IT IS OR WHERE IT IS
+    //BUT I SWEAR I WILL FIND IT AND TEAR IT OUT IF I HAVE TO SHRED THE ENTIRITY OF THIS SCRIPT TO DO IT
 
     void Start()
     {
@@ -39,9 +43,16 @@ public class EnemyAI : MonoBehaviour
         else enemyType = EnemyType.WILD;
     }
 
+    //Adds new player unit as a variable to be updated after turn
     public void UpdatePlayerUnit(Goblinmon pu)
     {
-        player = pu;
+        updatedPlayerUnit = pu;
+    }
+
+    //Updates player unit after turn to prevent AI "predicting" the switch
+    private void UpdateInternalPlayerUnit()
+    {
+        player = updatedPlayerUnit;
     }
 
     //Find the best action and take it
@@ -55,10 +66,9 @@ public class EnemyAI : MonoBehaviour
             if (safeSwitch != null)
             {
                 Debug.Log($"{safeSwitch.gName} looks like a safe option, I'm gonna switch!");
-                StartCoroutine(Switch(safeSwitch));
+                StartCoroutine(SwitchAction(safeSwitch));
             }
             else Debug.Log("Nevermind, I'm not gonna switch");
-            return;
         }
 
         //Second see if there is a move that kills player
@@ -66,7 +76,7 @@ public class EnemyAI : MonoBehaviour
         if (lethalMove != null)
         {
             Debug.Log($"Found a lethal move {lethalMove.moveName}, using it");
-            StartCoroutine(AttackPlayer(lethalMove));
+            StartCoroutine(AttackPlayerAction(lethalMove));
             return;
         }
 
@@ -75,8 +85,8 @@ public class EnemyAI : MonoBehaviour
         //TODO: Decide between using an attacking or status move then attacking
         //TODO: Add chance to use random move instead of best move if attacking (80/20), scales with health?
         SOMove bestAttackingMove = FindAttackingMove();
-        Debug.Log($"Using best move {bestAttackingMove.moveName}, using it");
-        StartCoroutine(AttackPlayer(bestAttackingMove));
+        Debug.Log($"Using best move {bestAttackingMove.moveName}");
+        StartCoroutine(AttackPlayerAction(bestAttackingMove));
     }
 
     #region Switching
@@ -110,7 +120,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     //Switch into the safe unit
-    private IEnumerator Switch(SOGoblinmon unit)
+    private IEnumerator SwitchAction(SOGoblinmon unit)
     {
         //Makes switching look smooth for player
         bs.dialogueText.text = "Come back " + bs.enemyUnit.goblinData.gName + "!";
@@ -132,6 +142,7 @@ public class EnemyAI : MonoBehaviour
 
         //End the enemys turn
         bs.state = BattleState.PLAYERTURN;
+        if (updatedPlayerUnit != null && updatedPlayerUnit != player) UpdateInternalPlayerUnit();
         bm.enableBasicButtonsOnPress();
         bs.PlayerTurn();
     }
@@ -141,6 +152,7 @@ public class EnemyAI : MonoBehaviour
     #region Attack Player
 
     //Checks if there is a move that kills the player and returns it
+    //Somehow this isnt using internal player
     private SOMove IsEnemyKillable()
     {
         int playerHP = player.goblinData.currentHP;
@@ -220,9 +232,15 @@ public class EnemyAI : MonoBehaviour
     }
 
     //Use an attacking move against the player
-    private IEnumerator AttackPlayer(SOMove move)
+    private IEnumerator AttackPlayerAction(SOMove move)
     {
-        bool strongAttack = player.goblinData.type.weakAgainstEnemyType(move.moveType);
+
+        //Update player unit for accurate damage calcutations/changes
+        if (updatedPlayerUnit != null && updatedPlayerUnit != player) UpdateInternalPlayerUnit();
+
+        //TODO: Attack based on BattleSystem instead of internal tracking of player?
+        bool strongAttack = player.goblinData.type.weakAgainstEnemyType(move.moveType); ;
+
         bs.dialogueText.text = $"{self.goblinData.name} used {move.name}!";
         yield return new WaitForSeconds(2);
 
@@ -244,7 +262,7 @@ public class EnemyAI : MonoBehaviour
 
         //Attack player
         bool isDead = player.TakeDamage(move.damage, strongAttack, self);
-        bs.playerHUD.setHP(player.goblinData.currentHP);
+        bs.playerHUD.setHP(player.goblinData.currentHP, player);
         yield return new WaitForSeconds(2f);
 
         if (isDead)
@@ -260,7 +278,9 @@ public class EnemyAI : MonoBehaviour
         }
 
     }
-    #endregion
 
+    //TODO: Write function for enemy to buff/debuff
+
+    #endregion
 
 }

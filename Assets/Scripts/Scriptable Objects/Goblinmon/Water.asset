@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0188a8dcd8e881646856901b1bae9163, type: 3}
-  m_Name: Default
+  m_Name: Water
   m_EditorClassIdentifier: 
-  gName: Default
-  gLevel: 5
-  sprite: {fileID: 21300000, guid: c63f7ca2add8b72448892553a8ad689a, type: 3}
+  gName: Water
+  gLevel: 1
+  sprite: {fileID: 21300000, guid: 0ecc6e6b3b747e7469ce6673ca34f752, type: 3}
   maxHP: 70
-  type: {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
+  currentHP: 0
+  type: {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
   moveset:
-  - {fileID: 11400000, guid: 20f3e8ccfd1846f4595ddb10ae5b0d1c, type: 2}
   - {fileID: 11400000, guid: db8d5fb63d66fd5448450b43d6cf4b94, type: 2}
-  - {fileID: 11400000, guid: 6f83e9ce1420827458e8b1e6aed71c36, type: 2}
   - {fileID: 11400000, guid: 97193ecd0c309b943a7cd7bff2c3517c, type: 2}
-  weakness: []
+  - {fileID: 11400000, guid: 6f83e9ce1420827458e8b1e6aed71c36, type: 2}

@@ -15,9 +15,7 @@ public class SOGoblinmon : ScriptableObject
     public SOType type;
     public List<SOMove> moveset;
 
-    public List<SOType> weakness; //Take more damage from
-
-    //Reset current unit HP to max health
+    //Reset current unit HP to max health, called during initilization in SwitchingManager
     public void InitilizeGoblinmonHP()
     {
         currentHP = maxHP;
