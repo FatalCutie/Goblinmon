@@ -40,11 +40,12 @@ public class SwitchingManager : MonoBehaviour
                 //Initialize switching buttons and units tied to them
                 if (goblinmon[i] != null)
                 {
+                    //Create a Goblinmon script on the Unit Button to hold data
                     Goblinmon gob = go.gameObject.AddComponent<Goblinmon>();
                     gob.goblinData = goblinmon[i];
-                    gob.goblinData.InitilizeGoblinmonHP();
                     ub.unit = goblinmon[i];
                     unitNameText.text = ub.unit.gName;
+                    gob.currentHP = gob.goblinData.maxHP; //Set units to Max HP at start of battle
                     unitButtons.Add(ub);
                     i++;
                 }
@@ -75,7 +76,6 @@ public class SwitchingManager : MonoBehaviour
 
     }
 
-    //TODO: Save current SO to proper button when switching so health is persistant between switches
     public IEnumerator SwitchUnit(Goblinmon unit)
     {
         //Makes switching look smooth for player
@@ -87,13 +87,13 @@ public class SwitchingManager : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         //Save health data of Unit being swapped
-        SOGoblinmon playerUnitData = bs.playerUnit.GetComponent<Goblinmon>().goblinData;
+        Goblinmon playerUnitToSave = bs.playerUnit.GetComponent<Goblinmon>();
         int unitID = 0;
         //Gets the index for unit being switched out to save data
-        //NOTE: This does not account for multiple Goblinmon of the same type being on the team!!
+        //NOTE: This does not account for multiple Goblinmon of the same type being in game!!
         foreach (SOGoblinmon un in goblinmon)
         {
-            if (un.gName == playerUnitData.gName)
+            if (un.gName == playerUnitToSave.goblinData.gName)
             {
                 break;
             }
@@ -101,13 +101,13 @@ public class SwitchingManager : MonoBehaviour
 
         }
         //Update health of unit being switched out
-        goblinmon[unitID].currentHP = playerUnitData.currentHP;
+        unitButtons[unitID].GetComponent<Goblinmon>().currentHP = playerUnitToSave.currentHP;
 
         //Switches the active unit
-        UpdatePlayerInformation(unit.goblinData);
+        UpdatePlayerInformation(unit);
         FindObjectOfType<BattleHUD>().SetHUD(unit);
         bs.playerUnit.GetComponent<SpriteRenderer>().sprite = unit.goblinData.sprite;
-        //eAI.UpdatePlayerUnit(unit);
+        eAI.UpdatePlayerUnit(unit);
         yield return new WaitForSeconds(1);
 
         //End the players turn
@@ -116,10 +116,12 @@ public class SwitchingManager : MonoBehaviour
     }
 
     //Updates player data after switch
-    public void UpdatePlayerInformation(SOGoblinmon newData)
+    public void UpdatePlayerInformation(Goblinmon newData)
     {
         Goblinmon playerGob = bs.playerUnit.GetComponent<Goblinmon>();
-        playerGob.goblinData = newData;
+        playerGob.goblinData = newData.goblinData;
+        playerGob.currentHP = newData.currentHP;
+
         //Reset stat changes
         playerGob.attackModifier = 0;
         playerGob.defenseModifier = 0;

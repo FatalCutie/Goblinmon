@@ -15,32 +15,49 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Goblinmon self;
     [SerializeField] private Goblinmon player;
     private enum EnemyType { TRAINER, WILD }
-    [SerializeField] private EnemyType enemyType;
+    private EnemyType enemyType;
     [SerializeField] SOMove emptyMove;
     [SerializeField] private List<SOGoblinmon> units;
-    [SerializeField] private Goblinmon updatedPlayerUnit;
+    [SerializeField] private GameObject unitHolder; //This is so fucking awful
+    [SerializeField] private List<Goblinmon> party;
+    private Goblinmon updatedPlayerUnit;
     System.Random rnd = new System.Random();
 
     #endregion
 
     //SOMETHING SOMEWHERE IS UPDATING PLAYER AND I HAVE NO CLUE WHAT THE FUCK IT IS OR WHERE IT IS
-    //BUT I SWEAR I WILL FIND IT AND TEAR IT OUT IF I HAVE TO SHRED THE ENTIRITY OF THIS SCRIPT TO DO IT
+    //BUT I SWEAR I WILL FIND IT AND TEAR IT OUT EVEN IF I HAVE TO SHRED THE ENTIRITY OF THIS SCRIPT TO DO IT
 
     void Start()
     {
         bs = FindObjectOfType<BattleSystem>();
         bm = FindObjectOfType<ButtonManager>();
-
     }
 
-    public void InitilizeUnitsForEnemyAI(Goblinmon sf, Goblinmon pr)
+    //Initilizes EnemyAI, returns Goblinmon for BattleSystem to set hud
+    public Goblinmon InitilizeUnitsForEnemyAI(Goblinmon eu, Goblinmon pr)
     {
-        self = sf;
-        player = pr;
+        //Self initilized as first Goblinmon in array
+        self = eu;
+        self.goblinData = units[0];
+        self.currentHP = self.goblinData.maxHP;
+        //bs.enemyHUD.SetHUD(self);
+        player = pr; //This is the leak
 
         //Check if trainer by seeing if there's any Goblinmon in party
-        if (units.Count > 0) enemyType = EnemyType.TRAINER;
+        if (units.Count > 1) enemyType = EnemyType.TRAINER;
         else enemyType = EnemyType.WILD;
+
+        //Initilizes a list of Goblinmon for enemy to save their health totals
+        foreach (SOGoblinmon unit in units)
+        {
+            Goblinmon newUnit = unitHolder.AddComponent<Goblinmon>();
+            newUnit.goblinData = unit;
+            newUnit.currentHP = unit.maxHP;
+            party.Add(newUnit);
+        }
+
+        return self;
     }
 
     //Adds new player unit as a variable to be updated after turn
@@ -59,14 +76,15 @@ public class EnemyAI : MonoBehaviour
     public void FindOptimalOption()
     {
         //First check if health is low, if so find something to switch to
-        if (enemyType == EnemyType.TRAINER && self.goblinData.currentHP <= self.goblinData.maxHP * .15)
+        if (enemyType == EnemyType.TRAINER && self.currentHP <= self.goblinData.maxHP * .15)
         {
             Debug.Log("Things look hairy, I'm gonna try and switch");
-            SOGoblinmon safeSwitch = FindSafeSwitch();
+            Goblinmon safeSwitch = FindSafeSwitch();
             if (safeSwitch != null)
             {
-                Debug.Log($"{safeSwitch.gName} looks like a safe option, I'm gonna switch!");
+                Debug.Log($"{safeSwitch.goblinData.gName} looks like a safe option, I'm gonna switch!");
                 StartCoroutine(SwitchAction(safeSwitch));
+                return;
             }
             else Debug.Log("Nevermind, I'm not gonna switch");
         }
@@ -92,21 +110,22 @@ public class EnemyAI : MonoBehaviour
     #region Switching
 
     //Finds a safe unit to switch into
-    private SOGoblinmon FindSafeSwitch()
+    private Goblinmon FindSafeSwitch()
     {
         SOType playerType = player.goblinData.type;
-        SOType selfType = self.goblinData.type;
+
 
         //Find something strong against the enemy type
-        foreach (SOGoblinmon unit in units)
+        foreach (Goblinmon unit in party)
         {
-            if (playerType.weakAgainstEnemyType(selfType)
+            if (playerType.weakAgainstEnemyType(unit.goblinData.type)
             && unit != self) return unit;
         }
 
         //If nothing then look for something neutral
-        foreach (SOGoblinmon unit in units)
+        foreach (Goblinmon unit in party)
         {
+            SOType selfType = unit.goblinData.type;
             if (selfType.weakAgainstEnemyType(playerType)
             && unit != self)
             {
@@ -120,22 +139,36 @@ public class EnemyAI : MonoBehaviour
     }
 
     //Switch into the safe unit
-    private IEnumerator SwitchAction(SOGoblinmon unit)
+    private IEnumerator SwitchAction(Goblinmon unit)
     {
         //Makes switching look smooth for player
         bs.dialogueText.text = "Come back " + bs.enemyUnit.goblinData.gName + "!";
         yield return new WaitForSeconds(1);
         bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
         yield return new WaitForSeconds(2);
-        bs.dialogueText.text = "Go, " + self.goblinData.gName + "!";
+        bs.dialogueText.text = "Go, " + unit.goblinData.gName + "!";
         yield return new WaitForSeconds(1);
 
-        //Initilize new unit
-        Goblinmon gob = this.gameObject.AddComponent<Goblinmon>();
-        gob.goblinData = unit;
+        //Saves data before switching
+        Goblinmon unitToSave = self;
+        int unitID = 0;
+        //This does not account for having multiple of the same Goblinmon on your team
+        foreach (Goblinmon un in party)
+        {
+            if (un.goblinData == self.goblinData)
+            {
+                break;
+            }
+            unitID++;
+        }
+        party[unitID].currentHP = unitToSave.currentHP;
 
         //Switches the active unit
-        self = gob;
+        Goblinmon gob = bs.enemyUnit;
+        gob.goblinData = unit.goblinData;
+        gob.currentHP = unit.currentHP;
+
+        //Update HUD
         bs.enemyHUD.SetHUD(gob);
         bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = self.goblinData.sprite;
         yield return new WaitForSeconds(1);
@@ -155,7 +188,7 @@ public class EnemyAI : MonoBehaviour
     //Somehow this isnt using internal player
     private SOMove IsEnemyKillable()
     {
-        int playerHP = player.goblinData.currentHP;
+        int playerHP = player.currentHP;
         SOType playerType = player.goblinData.type;
         foreach (SOMove move in self.goblinData.moveset)
         {
@@ -262,7 +295,7 @@ public class EnemyAI : MonoBehaviour
 
         //Attack player
         bool isDead = player.TakeDamage(move.damage, strongAttack, self);
-        bs.playerHUD.setHP(player.goblinData.currentHP, player);
+        bs.playerHUD.setHP(player.currentHP, player);
         yield return new WaitForSeconds(2f);
 
         if (isDead)

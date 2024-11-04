@@ -6,8 +6,10 @@ using UnityEngine;
 public class Goblinmon : MonoBehaviour
 {
     [SerializeField] public SOGoblinmon goblinData;
+    public int currentHP;
     public int attackModifier;
     public int defenseModifier;
+
 
     void Awake()
     {
@@ -16,10 +18,6 @@ public class Goblinmon : MonoBehaviour
     }
 
     //Unit takes damage
-    //TODO:
-    //SCRIPTABLE OBJECTS FOR GOBLINMON DATA MEANS THAT THERE CANNOT BE MORE THAN ONE OF ANY UNIT
-    //IN A FIGHT AT ANY GIVEN TIME WITHOUT COMPLETELY SCREWING OVER THE ENTIRE BATTLE
-    //FIX THAT YESTERDAY
     public bool TakeDamage(int dmg, bool weakness, Goblinmon attacker)
     {
         int damageToDeal = dmg;
@@ -27,15 +25,15 @@ public class Goblinmon : MonoBehaviour
         {
             damageToDeal = ApplyDamageModifiers(damageToDeal, attacker);
             damageToDeal *= 2;
-            goblinData.currentHP = goblinData.currentHP - damageToDeal;
+            currentHP = currentHP - damageToDeal;
         }
         else
         {
             dmg = ApplyDamageModifiers(dmg, attacker);
-            goblinData.currentHP -= dmg;
+            currentHP -= dmg;
         }
 
-        if (goblinData.currentHP <= 0) return true;
+        if (currentHP <= 0) return true;
         else return false;
     }
 

@@ -10,15 +10,15 @@ public class SOGoblinmon : ScriptableObject
 
     public Sprite sprite;
     public int maxHP;
-    public int currentHP;
+    // public int currentHP;
 
     public SOType type;
     public List<SOMove> moveset;
 
     //Reset current unit HP to max health, called during initilization in SwitchingManager
-    public void InitilizeGoblinmonHP()
-    {
-        currentHP = maxHP;
-    }
+    // public void InitilizeGoblinmonHP()
+    // {
+    //     currentHP = maxHP;
+    // }
 
 }

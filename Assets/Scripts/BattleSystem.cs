@@ -50,6 +50,7 @@ public class BattleSystem : MonoBehaviour
         //First goblinmon in Goblinmon Array sent out first
         playerGO.GetComponent<Goblinmon>().goblinData = sm.goblinmon[0];
         playerUnit = playerGO.GetComponent<Goblinmon>();
+        playerUnit.currentHP = playerUnit.goblinData.maxHP; //Quick fix for a bug I don't feel like solving rn LOL!
         //Will have to adjust sprite positions during sprite production
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
         pSpriteR.sprite = playerUnit.goblinData.sprite;
@@ -59,7 +60,7 @@ public class BattleSystem : MonoBehaviour
         enemyUnit = enemyGO.GetComponent<Goblinmon>();
         eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
         eSpriteR.sprite = enemyUnit.goblinData.sprite;
-        eAI.InitilizeUnitsForEnemyAI(enemyUnit, playerUnit);
+        eAI.InitilizeUnitsForEnemyAI(enemyUnit, playerUnit); //Returns enemy Goblinmon 
 
 
         dialogueText.text = "A wild " + enemyUnit.goblinData.gName + " approches!";
@@ -115,7 +116,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         bool isDead = enemyUnit.TakeDamage(move.damage, strongAttack, playerUnit);
-        enemyHUD.setHP(enemyUnit.goblinData.currentHP, enemyUnit);
+        enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
         yield return new WaitForSeconds(2f);
 
         if (isDead)

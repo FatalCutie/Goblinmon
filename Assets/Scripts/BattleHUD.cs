@@ -19,13 +19,13 @@ public class BattleHUD : MonoBehaviour
         nameText.text = unit.goblinData.gName;
         levelText.text = "Lvl " + unit.goblinData.gLevel;
         hpSlider.maxValue = unit.goblinData.maxHP;
-        hpSlider.value = unit.goblinData.currentHP;
-        healthText.text = $"{unit.goblinData.currentHP}/{unit.goblinData.maxHP}";
+        hpSlider.value = unit.currentHP;
+        healthText.text = $"{unit.currentHP}/{unit.goblinData.maxHP}";
     }
 
     public void setHP(int hp, Goblinmon victim)
     {
-        healthText.text = $"{victim.goblinData.currentHP}/{victim.goblinData.maxHP}";
+        healthText.text = $"{victim.currentHP}/{victim.goblinData.maxHP}";
         hpSlider.value = hp;
     }
 }
