@@ -112,11 +112,13 @@ public class EnemyAI : MonoBehaviour
                 SOMove chosenBuffingMove = FindBuffingMove();
                 if (chosenBuffingMove.moveAction == SOMove.MoveAction.BUFF)
                 {
-                    BuffEnemyAction(chosenBuffingMove);
+                    Debug.Log("I'm gonna buff myself!");
+                    StartCoroutine(BuffEnemyAction(chosenBuffingMove));
                 }
                 else if (chosenBuffingMove.moveAction == SOMove.MoveAction.DEBUFF)
                 {
-                    DebuffPlayerAction(chosenBuffingMove);
+                    Debug.Log("I'm gonna debuff the player!");
+                    StartCoroutine(DebuffPlayerAction(chosenBuffingMove));
                 }
                 else
                 {
@@ -126,7 +128,7 @@ public class EnemyAI : MonoBehaviour
             else //If no buffing move just attack
             {
                 SOMove bestAttackingMove = FindAttackingMove();
-                Debug.Log($"Using best move {bestAttackingMove.moveName}");
+                Debug.Log($"I don't have any buffing moves so I am going to attack using {bestAttackingMove.moveName} instead!");
                 StartCoroutine(AttackPlayerAction(bestAttackingMove));
             }
         }
@@ -344,7 +346,7 @@ public class EnemyAI : MonoBehaviour
     //Buffs enemy
     public IEnumerator BuffEnemyAction(SOMove move)
     {
-        bs.dialogueText.text = $"{self.goblinData.gName}";
+        bs.dialogueText.text = $"{self.goblinData.gName} used {move.moveName}!";
         yield return new WaitForSeconds(2f);
 
         //Buff Player
