@@ -25,9 +25,6 @@ public class EnemyAI : MonoBehaviour
 
     #endregion
 
-    //SOMETHING SOMEWHERE IS UPDATING PLAYER AND I HAVE NO CLUE WHAT THE FUCK IT IS OR WHERE IT IS
-    //BUT I SWEAR I WILL FIND IT AND TEAR IT OUT EVEN IF I HAVE TO SHRED THE ENTIRITY OF THIS SCRIPT TO DO IT
-
     void Start()
     {
         bs = FindObjectOfType<BattleSystem>();
@@ -42,7 +39,8 @@ public class EnemyAI : MonoBehaviour
         self.goblinData = units[0];
         self.currentHP = self.goblinData.maxHP;
         //bs.enemyHUD.SetHUD(self);
-        player = pr; //This is the leak
+        Goblinmon buffer = pr;
+        player = buffer; //TODO: Update this to 
 
         //Check if trainer by seeing if there's any Goblinmon in party
         if (units.Count > 1) enemyType = EnemyType.TRAINER;
@@ -63,7 +61,7 @@ public class EnemyAI : MonoBehaviour
     //Adds new player unit as a variable to be updated after turn
     public void UpdatePlayerUnit(Goblinmon pu)
     {
-        updatedPlayerUnit = pu;
+        updatedPlayerUnit = pu; //TODO: Update this to a variable that is not used in damage calculations
     }
 
     //Updates player unit after turn to prevent AI "predicting" the switch
@@ -73,6 +71,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     //Find the best action and take it
+    //TODO: Introduce point system to weigh tactics? (Buff/Debuff if high health? Switch if in bad situation?)
     public void FindOptimalOption()
     {
         //First check if health is low, if so find something to switch to
@@ -98,13 +97,42 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-
-
+        //If neither generate a random number and decide action based on that
+        int decider = rnd.Next(1, 11); //Create number between 1 and 10
+        if (decider <= 5 || decider > 8) //70% chance to attack
+        {
+            SOMove bestAttackingMove = FindAttackingMove();
+            Debug.Log($"Using best move {bestAttackingMove.moveName}");
+            StartCoroutine(AttackPlayerAction(bestAttackingMove));
+        }
+        else //if rnd rolls between a 6 and 8
+        {
+            if (DoesUnitHaveBuffingMove())
+            {
+                SOMove chosenBuffingMove = FindBuffingMove();
+                if (chosenBuffingMove.moveAction == SOMove.MoveAction.BUFF)
+                {
+                    BuffEnemyAction(chosenBuffingMove);
+                }
+                else if (chosenBuffingMove.moveAction == SOMove.MoveAction.DEBUFF)
+                {
+                    DebuffPlayerAction(chosenBuffingMove);
+                }
+                else
+                {
+                    Debug.LogWarning($"{chosenBuffingMove.moveName} does not have a proper move action... How did this even happen?");
+                }
+            }
+            else //If no buffing move just attack
+            {
+                SOMove bestAttackingMove = FindAttackingMove();
+                Debug.Log($"Using best move {bestAttackingMove.moveName}");
+                StartCoroutine(AttackPlayerAction(bestAttackingMove));
+            }
+        }
         //TODO: Decide between using an attacking or status move then attacking
         //TODO: Add chance to use random move instead of best move if attacking (80/20), scales with health?
-        SOMove bestAttackingMove = FindAttackingMove();
-        Debug.Log($"Using best move {bestAttackingMove.moveName}");
-        StartCoroutine(AttackPlayerAction(bestAttackingMove));
+
     }
 
     #region Switching
@@ -167,6 +195,9 @@ public class EnemyAI : MonoBehaviour
         Goblinmon gob = bs.enemyUnit;
         gob.goblinData = unit.goblinData;
         gob.currentHP = unit.currentHP;
+        //Clear stat changes
+        gob.defenseModifier = 0;
+        gob.attackModifier = 0;
 
         //Update HUD
         bs.enemyHUD.SetHUD(gob);
@@ -182,10 +213,9 @@ public class EnemyAI : MonoBehaviour
 
     #endregion
 
-    #region Attack Player
+    #region Attacking
 
     //Checks if there is a move that kills the player and returns it
-    //Somehow this isnt using internal player
     private SOMove IsEnemyKillable()
     {
         int playerHP = player.currentHP;
@@ -258,8 +288,7 @@ public class EnemyAI : MonoBehaviour
         //Skip number generation if there's only one option
         if (movePool.Count == 1) return movePool[0];
         //Generate a random number which decides which move from movepool to return
-        int selection = rnd.Next(0, movePool.Count);
-
+        int selection = rnd.Next(0, movePool.Count - 1);
 
         return movePool[selection];
     }
@@ -312,8 +341,123 @@ public class EnemyAI : MonoBehaviour
 
     }
 
-    //TODO: Write function for enemy to buff/debuff
+    //Buffs enemy
+    public IEnumerator BuffEnemyAction(SOMove move)
+    {
+        bs.dialogueText.text = $"{self.goblinData.gName}";
+        yield return new WaitForSeconds(2f);
 
+        //Buff Player
+        switch (move.statModified)
+        {
+            case SOMove.StatModified.ATTACK:
+                {
+                    self.attackModifier += move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
+                    if (self.attackModifier > 6)
+                    {
+                        //clamp buff at 6
+                        self.attackModifier = 6;
+                        bs.dialogueText.text = $"{self.goblinData.gName}'s attack can't go any higher!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        bs.dialogueText.text = $"{self.goblinData.gName}'s attack was increased!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    break;
+                }
+
+            case SOMove.StatModified.DEFENSE:
+                {
+                    self.defenseModifier += move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
+                    if (self.defenseModifier > 6)
+                    {
+                        //clamp buff at 6
+                        self.defenseModifier = 6;
+                        bs.dialogueText.text = $"{self.goblinData.gName}'s defense can't go any higher!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        bs.dialogueText.text = $"{self.goblinData.gName}'s defense was increased!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    break;
+                }
+            case SOMove.StatModified.NONE:
+                {
+                    Debug.LogWarning("WARNING:" + move.moveName + " does not have an assigned stat to modify. Check SO!");
+                    break;
+                }
+        }
+
+        //End Turn
+        bs.state = BattleState.PLAYERTURN;
+        bm.enableBasicButtonsOnPress();
+        bs.PlayerTurn();
+    }
+
+    //Debuffs Player
+    public IEnumerator DebuffPlayerAction(SOMove move)
+    {
+        bs.dialogueText.text = $"{self.goblinData.gName} used {move.moveName}!";
+        yield return new WaitForSeconds(2f);
+
+        //Debuff Enemy
+        switch (move.statModified)
+        {
+            case SOMove.StatModified.ATTACK:
+                {
+                    player.attackModifier -= move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning($"WARNING: {move.moveName}s stat modifier is 0. Is this intentional?");
+                    if (player.attackModifier < -6)
+                    {
+                        //clamp debuff at 6
+                        player.attackModifier = -6;
+                        bs.dialogueText.text = $"{player.goblinData.gName}'s attack can't go any lower!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        bs.dialogueText.text = $"{player.goblinData.gName}'s attack was lowered!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    break;
+                }
+
+            case SOMove.StatModified.DEFENSE:
+                {
+                    bs.enemyUnit.defenseModifier -= move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning($"WARNING: {move.moveName}s stat modifier is 0. Is this intentional?");
+                    if (player.defenseModifier < -6)
+                    {
+                        player.defenseModifier = -6; //clamp
+                        bs.dialogueText.text = $"{player.goblinData.gName}'s defense can't go any lower!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        bs.dialogueText.text = $"{player.goblinData.gName}'s defense was lowered!";
+                        yield return new WaitForSeconds(2f);
+                    }
+                    break;
+                }
+
+            case SOMove.StatModified.NONE:
+                {
+                    Debug.LogWarning($"WARNING: {move.moveName} does not have an assigned stat to modify. Check SO!");
+                    break;
+                }
+        }
+
+        //End Turn
+        bs.state = BattleState.PLAYERTURN;
+        bm.enableBasicButtonsOnPress();
+        bs.PlayerTurn();
+    }
     #endregion
 
 }

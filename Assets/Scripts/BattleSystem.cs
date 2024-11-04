@@ -229,7 +229,7 @@ public class BattleSystem : MonoBehaviour
                     }
                     else
                     {
-                        dialogueText.text = $"{playerUnit.goblinData.gName}'s defense was lowered!";
+                        dialogueText.text = $"{enemyUnit.goblinData.gName}'s defense was lowered!";
                         yield return new WaitForSeconds(2f);
                     }
                     break;

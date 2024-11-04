@@ -98,7 +98,6 @@ public class SwitchingManager : MonoBehaviour
                 break;
             }
             unitID++;
-
         }
         //Update health of unit being switched out
         unitButtons[unitID].GetComponent<Goblinmon>().currentHP = playerUnitToSave.currentHP;
@@ -107,7 +106,7 @@ public class SwitchingManager : MonoBehaviour
         UpdatePlayerInformation(unit);
         FindObjectOfType<BattleHUD>().SetHUD(unit);
         bs.playerUnit.GetComponent<SpriteRenderer>().sprite = unit.goblinData.sprite;
-        eAI.UpdatePlayerUnit(unit);
+        eAI.UpdatePlayerUnit(unit); //TODO: Update version of player that is not used in damage calculations
         yield return new WaitForSeconds(1);
 
         //End the players turn

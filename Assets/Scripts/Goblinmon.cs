@@ -25,7 +25,7 @@ public class Goblinmon : MonoBehaviour
         {
             damageToDeal = ApplyDamageModifiers(damageToDeal, attacker);
             damageToDeal *= 2;
-            currentHP = currentHP - damageToDeal;
+            currentHP -= damageToDeal;
         }
         else
         {
