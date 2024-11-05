@@ -56,15 +56,32 @@ public class SwitchingManager : MonoBehaviour
 
     }
 
+    public bool DoesPlayerHaveUnits()
+    {
+        foreach (Transform go in unitButtonHolder.transform)
+        {
+            //Initialize switching buttons and units tied to them
+            if (go.GetComponent<Goblinmon>().currentHP >= 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void GetNewPlayerUnit()
+    {
+        bm.enableSwitchingMenu();
+    }
+
     //Makes sure player is not switching to active unit
     public void CheckUnitBeforeSwitching(Goblinmon unit)
     {
         if (unit.goblinData == bs.playerUnit.GetComponent<Goblinmon>().goblinData)
-        { //This will need to be adjusted if you can catch multiple of the same Goblinmon
-            //Maybe introduce id system?
+        {
             FindObjectOfType<AudioManager>().Play("damage");
             Debug.LogWarning("Cannot switch to a unit that is already active!");
-            //Makes sure selected unit isn't active unit
+
         }
         else //switch unit
         {
@@ -87,6 +104,33 @@ public class SwitchingManager : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         //Save health data of Unit being swapped
+        SavePlayerData();
+
+        //Switches the active unit
+        UpdatePlayerInformation(unit);
+        FindObjectOfType<BattleHUD>().SetHUD(unit);
+        bs.playerUnit.GetComponent<SpriteRenderer>().sprite = unit.goblinData.sprite;
+        eAI.UpdatePlayerUnit(unit); //TODO: Update version of player that is not used in damage calculations
+        yield return new WaitForSeconds(1);
+
+        //End the players turn unless just switched from KO
+        if (bs.state == BattleState.ENEMYTURN)
+        {
+            //eAI.UpdatePlayerUnit(null);
+            bs.PlayerTurn();
+            bm.enableBasicButtonsOnPress();
+        }
+        else
+        {
+            bs.state = BattleState.ENEMYTURN;
+            eAI.FindOptimalOption();
+        }
+
+    }
+
+    //Saves active units current HP
+    public void SavePlayerData()
+    {
         Goblinmon playerUnitToSave = bs.playerUnit.GetComponent<Goblinmon>();
         int unitID = 0;
         //Gets the index for unit being switched out to save data
@@ -101,22 +145,15 @@ public class SwitchingManager : MonoBehaviour
         }
         //Update health of unit being switched out
         unitButtons[unitID].GetComponent<Goblinmon>().currentHP = playerUnitToSave.currentHP;
-
-        //Switches the active unit
-        UpdatePlayerInformation(unit);
-        FindObjectOfType<BattleHUD>().SetHUD(unit);
-        bs.playerUnit.GetComponent<SpriteRenderer>().sprite = unit.goblinData.sprite;
-        eAI.UpdatePlayerUnit(unit); //TODO: Update version of player that is not used in damage calculations
-        yield return new WaitForSeconds(1);
-
-        //End the players turn
-        bs.state = BattleState.ENEMYTURN;
-        eAI.FindOptimalOption();
     }
 
     //Updates player data after switch
     public void UpdatePlayerInformation(Goblinmon newData)
     {
+        //Sets Goblinmon script to be Unit button, not player unit
+        //TODO: Fix that
+        //SOLUTIONS: Offload player Goblinmon onto an asset like Enemy and use ID system for buttons?
+        //Add Unit Buttons to Array and call from there?
         Goblinmon playerGob = bs.playerUnit.GetComponent<Goblinmon>();
         playerGob.goblinData = newData.goblinData;
         playerGob.currentHP = newData.currentHP;

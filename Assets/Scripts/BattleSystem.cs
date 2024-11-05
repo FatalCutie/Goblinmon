@@ -121,8 +121,24 @@ public class BattleSystem : MonoBehaviour
 
         if (isDead)
         {
-            state = BattleState.WON;
-            EndBattle();
+            //Unit dies
+            enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
+            dialogueText.text = $"{enemyUnit.goblinData.name} fainted!";
+            yield return new WaitForSeconds(2f);
+
+            //Check for more units
+            eAI.SaveUnitData();
+            if (eAI.CheckForMoreUnits())
+            {
+                Goblinmon switchIn = eAI.FindSafeSwitch(true);
+                StartCoroutine(eAI.SwitchAction(switchIn, true));
+            }
+            else
+            {
+                state = BattleState.WON;
+                EndBattle();
+            }
+
         }
         else
         {
@@ -246,7 +262,13 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.ENEMYTURN;
         eAI.FindOptimalOption();
     }
+
     #endregion
+
+    // public void DoesPlayerHaveUnits()
+    // {
+    //     foreach (Goblinmon unit in )
+    // }
 
     public IEnumerator TempEnemyTurn()
     {

@@ -26,11 +26,13 @@ public class Goblinmon : MonoBehaviour
             damageToDeal = ApplyDamageModifiers(damageToDeal, attacker);
             damageToDeal *= 2;
             currentHP -= damageToDeal;
+            if (currentHP < 0) currentHP = 0; //clamp damage min
         }
         else
         {
             dmg = ApplyDamageModifiers(dmg, attacker);
             currentHP -= dmg;
+            if (currentHP < 0) currentHP = 0; //clamp damage min
         }
 
         if (currentHP <= 0) return true;

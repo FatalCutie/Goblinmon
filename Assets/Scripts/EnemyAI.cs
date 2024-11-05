@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour
     #region Variables
     private BattleSystem bs;
     private ButtonManager bm;
+    private SwitchingManager sm;
     [SerializeField] private Goblinmon self;
     [SerializeField] private Goblinmon player;
     private enum EnemyType { TRAINER, WILD }
@@ -29,6 +30,7 @@ public class EnemyAI : MonoBehaviour
     {
         bs = FindObjectOfType<BattleSystem>();
         bm = FindObjectOfType<ButtonManager>();
+        sm = FindObjectOfType<SwitchingManager>();
     }
 
     //Initilizes EnemyAI, returns Goblinmon for BattleSystem to set hud
@@ -78,11 +80,11 @@ public class EnemyAI : MonoBehaviour
         if (enemyType == EnemyType.TRAINER && self.currentHP <= self.goblinData.maxHP * .15)
         {
             Debug.Log("Things look hairy, I'm gonna try and switch");
-            Goblinmon safeSwitch = FindSafeSwitch();
+            Goblinmon safeSwitch = FindSafeSwitch(false);
             if (safeSwitch != null)
             {
                 Debug.Log($"{safeSwitch.goblinData.gName} looks like a safe option, I'm gonna switch!");
-                StartCoroutine(SwitchAction(safeSwitch));
+                StartCoroutine(SwitchAction(safeSwitch, false));
                 return;
             }
             else Debug.Log("Nevermind, I'm not gonna switch");
@@ -140,7 +142,7 @@ public class EnemyAI : MonoBehaviour
     #region Switching
 
     //Finds a safe unit to switch into
-    private Goblinmon FindSafeSwitch()
+    public Goblinmon FindSafeSwitch(bool needUnitForSwitch)
     {
         SOType playerType = player.goblinData.type;
 
@@ -149,7 +151,9 @@ public class EnemyAI : MonoBehaviour
         foreach (Goblinmon unit in party)
         {
             if (playerType.weakAgainstEnemyType(unit.goblinData.type)
-            && unit != self) return unit;
+            && unit != self
+            && unit.currentHP > 0)
+                return unit;
         }
 
         //If nothing then look for something neutral
@@ -157,41 +161,84 @@ public class EnemyAI : MonoBehaviour
         {
             SOType selfType = unit.goblinData.type;
             if (selfType.weakAgainstEnemyType(playerType)
-            && unit != self)
+            && unit != self
+            && unit.currentHP > 0)
             {
                 //Continue
             }
-            else return unit;
+            else
+            {
+                if (unit.currentHP > 0) return unit;
+            }
         }
 
-        //If nothing neutral pick another option
-        return null;
+        if (needUnitForSwitch) //Only true if previous unit was knocked out
+        {
+            foreach (Goblinmon unit in party)
+            {
+                if (unit.currentHP > 0) return unit;
+            }
+        }
+
+        return null; //If nothing neutral pick another option
+
     }
 
-    //Switch into the safe unit
-    private IEnumerator SwitchAction(Goblinmon unit)
+    //Returns true if there are alive units, returns false otherwise
+    public bool CheckForMoreUnits()
     {
-        //Makes switching look smooth for player
-        bs.dialogueText.text = "Come back " + bs.enemyUnit.goblinData.gName + "!";
-        yield return new WaitForSeconds(1);
-        bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
-        yield return new WaitForSeconds(2);
-        bs.dialogueText.text = "Go, " + unit.goblinData.gName + "!";
-        yield return new WaitForSeconds(1);
+        if (enemyType == EnemyType.WILD) return false; //fast track process if nothing in party
 
-        //Saves data before switching
+        foreach (Goblinmon unit in party)
+        {
+            if (unit.currentHP > 0 && unit.goblinData != null)
+            {
+                Debug.Log(unit.goblinData.gName);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void SaveUnitData()
+    {
         Goblinmon unitToSave = self;
         int unitID = 0;
-        //This does not account for having multiple of the same Goblinmon on your team
         foreach (Goblinmon un in party)
         {
-            if (un.goblinData == self.goblinData)
+            if (un.goblinData == unitToSave.goblinData)
             {
                 break;
             }
             unitID++;
         }
+        Debug.Log($"Saving unit {unitID}!");
         party[unitID].currentHP = unitToSave.currentHP;
+        Debug.Log(party[unitID].currentHP);
+    }
+
+    //Switch into the safe unit
+    public IEnumerator SwitchAction(Goblinmon unit, bool justDied)
+    {
+        //Makes switching look smooth for player
+        if (justDied)
+        {
+            bs.dialogueText.text = "Go, " + unit.goblinData.gName + "!";
+            yield return new WaitForSeconds(2);
+        }
+        else
+        {
+            bs.dialogueText.text = "Come back " + bs.enemyUnit.goblinData.gName + "!";
+            yield return new WaitForSeconds(1);
+            bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
+            yield return new WaitForSeconds(2);
+            bs.dialogueText.text = "Go, " + unit.goblinData.gName + "!";
+            yield return new WaitForSeconds(1);
+        }
+
+
+        //Saves data before switching
+        SaveUnitData();
 
         //Switches the active unit
         Goblinmon gob = bs.enemyUnit;
@@ -212,6 +259,7 @@ public class EnemyAI : MonoBehaviour
         bm.enableBasicButtonsOnPress();
         bs.PlayerTurn();
     }
+
 
     #endregion
 
@@ -330,9 +378,21 @@ public class EnemyAI : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         if (isDead)
-        {   //End battle
-            bs.state = BattleState.LOST;
-            bs.EndBattle();
+        {   //Check if player has available units
+            bs.playerUnit.GetComponent<SpriteRenderer>().sprite = null;
+            bs.dialogueText.text = $"{player.goblinData.gName} Fainted!";
+            yield return new WaitForSeconds(2f);
+            sm.SavePlayerData();
+            if (sm.DoesPlayerHaveUnits())
+            {
+                sm.GetNewPlayerUnit();
+                //Continue Battle
+            }
+            else
+            {
+                bs.state = BattleState.LOST;
+                bs.EndBattle();
+            }
         }
         else
         {   //End enemy's turn
