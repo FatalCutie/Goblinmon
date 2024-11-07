@@ -12,7 +12,6 @@ public class SwitchingManager : MonoBehaviour
     private ButtonManager bm;
     private EnemyAI eAI;
     [SerializeField] private List<UnitButton> unitButtons = new List<UnitButton>(); //For easy access and saving HP
-    private SOGoblinmon gobData; //holder to update player info
 
     void Awake()
     {

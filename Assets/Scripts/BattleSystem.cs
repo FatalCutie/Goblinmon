@@ -2,8 +2,6 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using System;
-using Unity.VisualScripting.Antlr3.Runtime;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleSystem : MonoBehaviour
@@ -19,7 +17,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private Transform playerBattleStation;
     [SerializeField] private Transform enemyBattleStation;
 
-    public TextMeshProUGUI dialogueText;
+    [SerializeField] private TextMeshProUGUI dialogueText;
 
     public Goblinmon playerUnit;
     public GameObject playerGO;
@@ -266,36 +264,6 @@ public class BattleSystem : MonoBehaviour
 
     #endregion
 
-    // public void DoesPlayerHaveUnits()
-    // {
-    //     foreach (Goblinmon unit in )
-    // }
-
-    public IEnumerator TempEnemyTurn()
-    {
-        //dialogueText.text = enemyUnit.goblinData.gName + " attacks!";
-        dialogueText.text = "Enemy attacking is not implemented yet!";
-
-        yield return new WaitForSeconds(1f);
-
-        bool isDead = false;//playerUnit.TakeDamage(enemyUnit.damage);
-
-        //playerHUD.setHP(playerUnit.currentHP);
-
-        yield return new WaitForSeconds(1f);
-        if (isDead)
-        {
-            state = BattleState.LOST;
-            EndBattle();
-        }
-        else
-        {
-            state = BattleState.PLAYERTURN;
-            bm.enableBasicButtonsOnPress();
-            PlayerTurn();
-        }
-    }
-
     public void EndBattle()
     {
         if (state == BattleState.WON)
@@ -329,7 +297,33 @@ public class BattleSystem : MonoBehaviour
             // }
             // else if (Char.ToString(letter) == ",") yield return new WaitForSeconds(.1f);
             //else
+
             yield return new WaitForSeconds(.01f); //wait a bit to continue (number subject to change)
+        }
+    }
+
+    public IEnumerator TempEnemyTurn()
+    {
+        //dialogueText.text = enemyUnit.goblinData.gName + " attacks!";
+        dialogueText.text = "Enemy attacking is not implemented yet!";
+
+        yield return new WaitForSeconds(1f);
+
+        bool isDead = false;//playerUnit.TakeDamage(enemyUnit.damage);
+
+        //playerHUD.setHP(playerUnit.currentHP);
+
+        yield return new WaitForSeconds(1f);
+        if (isDead)
+        {
+            state = BattleState.LOST;
+            EndBattle();
+        }
+        else
+        {
+            state = BattleState.PLAYERTURN;
+            bm.enableBasicButtonsOnPress();
+            PlayerTurn();
         }
     }
 

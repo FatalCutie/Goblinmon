@@ -1,9 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -28,7 +24,6 @@ public class EnemyAI : MonoBehaviour
 
     void Start()
     {
-
         bs = FindObjectOfType<BattleSystem>();
         bm = FindObjectOfType<ButtonManager>();
         sm = FindObjectOfType<SwitchingManager>();

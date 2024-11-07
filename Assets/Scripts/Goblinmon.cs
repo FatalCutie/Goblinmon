@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -9,7 +8,7 @@ public class Goblinmon : MonoBehaviour
     public int currentHP;
     public int attackModifier;
     public int defenseModifier;
-
+    System.Random rnd = new System.Random();
 
     void Awake()
     {
@@ -42,6 +41,10 @@ public class Goblinmon : MonoBehaviour
     //Applies stat changes to damage value
     public int ApplyDamageModifiers(int dmg, Goblinmon attacker)
     {
+        //Creates random modifier to multiply damage with
+        float decider = rnd.Next(1, 16);
+        float randomDamageModifier = 0.84f + decider * 0.01f; //Creates damage range of .85 and 1
+
         int returnDamage = dmg;
 
         //Compare modifiers to see if they cancel out (+1 attack swinging into +1 defense is neutral damage)
@@ -49,13 +52,15 @@ public class Goblinmon : MonoBehaviour
         {
             int atkModTemp = attacker.attackModifier - defenseModifier;
             returnDamage = (int)(returnDamage * (1 + .5 * atkModTemp)); //Each attack point = roughly 50% more damage
+            returnDamage = (int)(returnDamage * randomDamageModifier);
         }
         else if (defenseModifier > attacker.attackModifier)
         {
             int defModTemp = defenseModifier - attacker.attackModifier;
             returnDamage = (int)(returnDamage * Math.Pow(.5, defModTemp)); //each defense point = roughly 50% less damage
+            returnDamage = (int)(returnDamage * randomDamageModifier);
         }
-        else return returnDamage;
+        else return (int)(returnDamage * randomDamageModifier);
 
         return returnDamage;
     }
