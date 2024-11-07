@@ -1,10 +1,9 @@
 
 using System.Collections;
 using TMPro;
-using TreeEditor;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using System;
+using Unity.VisualScripting.Antlr3.Runtime;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleSystem : MonoBehaviour
@@ -64,7 +63,8 @@ public class BattleSystem : MonoBehaviour
         eAI.InitilizeUnitsForEnemyAI(enemyUnit, playerUnit); //Returns enemy Goblinmon 
 
 
-        dialogueText.text = "A wild " + enemyUnit.goblinData.gName + " approches!";
+        //dialogueText.text = "A wild " + enemyUnit.goblinData.gName + " approches!";
+        StartCoroutine(ScrollText($"A wild {enemyUnit.goblinData.gName} approches!"));
 
         //Updates the HUD
         playerHUD.SetHUD(playerUnit);
@@ -100,19 +100,19 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator PlayerAttack(SOMove move)
     {
-        dialogueText.text = $"{playerUnit.goblinData.name} used {move.name}!";
+        StartCoroutine(ScrollText($"{playerUnit.goblinData.name} used {move.name}!"));
         yield return new WaitForSeconds(1.5f);
         bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
         if (strongAttack) //If super effective 
         {
-            dialogueText.text = "The attack is super effective!";
-
+            StartCoroutine(ScrollText("The attack is super effective!"));
+            yield return new WaitForSeconds(1f);
             FindObjectOfType<AudioManager>().Play("superEffective");
         }
         else
         {
-            dialogueText.text = "The attack is successful!";
-
+            StartCoroutine(ScrollText("The attack is successful!"));
+            yield return new WaitForSeconds(1f);
             FindObjectOfType<AudioManager>().Play("damage");
         }
 
@@ -124,7 +124,7 @@ public class BattleSystem : MonoBehaviour
         {
             //Unit dies
             enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
-            dialogueText.text = $"{enemyUnit.goblinData.name} fainted!";
+            StartCoroutine(ScrollText($"{enemyUnit.goblinData.name} fainted!"));
             yield return new WaitForSeconds(2f);
 
             //Check for more units
@@ -151,7 +151,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator BuffPlayer(SOMove move)
     {
-        dialogueText.text = "Player used " + move.moveName + "!";
+        StartCoroutine(ScrollText("Player used " + move.moveName + "!"));
         yield return new WaitForSeconds(2f);
 
         //Buff Player
@@ -165,12 +165,12 @@ public class BattleSystem : MonoBehaviour
                     {
                         //clamp buff at 6
                         playerUnit.attackModifier = 6;
-                        dialogueText.text = $"{playerUnit.goblinData.gName}'s attack can't go any higher!";
+                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack can't go any higher!"));
                         yield return new WaitForSeconds(2f);
                     }
                     else
                     {
-                        dialogueText.text = $"{playerUnit.goblinData.gName}'s attack was increased!";
+                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack was increased!"));
                         yield return new WaitForSeconds(2f);
                     }
                     break;
@@ -184,12 +184,12 @@ public class BattleSystem : MonoBehaviour
                     {
                         //clamp buff at 6
                         playerUnit.defenseModifier = 6;
-                        dialogueText.text = $"{playerUnit.goblinData.gName}'s defense can't go any higher!";
+                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s defense can't go any higher!"));
                         yield return new WaitForSeconds(2f);
                     }
                     else
                     {
-                        dialogueText.text = $"{playerUnit.goblinData.gName}'s defense was increased!";
+                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s defense was increased!"));
                         yield return new WaitForSeconds(2f);
                     }
                     break;
@@ -209,7 +209,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator DebuffEnemy(SOMove move)
     {
-        dialogueText.text = $"Player used {move.moveName}!";
+        StartCoroutine(ScrollText($"Player used {move.moveName}!"));
         yield return new WaitForSeconds(2f);
 
         //Debuff Enemy
@@ -223,12 +223,12 @@ public class BattleSystem : MonoBehaviour
                     {
                         //clamp debuff at 6
                         enemyUnit.attackModifier = -6;
-                        dialogueText.text = $"{enemyUnit.goblinData.gName}'s attack can't go any lower!";
+                        StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName}'s attack can't go any lower!"));
                         yield return new WaitForSeconds(2f);
                     }
                     else
                     {
-                        dialogueText.text = $"{enemyUnit.goblinData.gName}'s attack was lowered!";
+                        StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName}'s attack was lowered!"));
                         yield return new WaitForSeconds(2f);
                     }
                     break;
@@ -241,12 +241,12 @@ public class BattleSystem : MonoBehaviour
                     if (enemyUnit.defenseModifier < -6)
                     {
                         enemyUnit.defenseModifier = -6; //clamp
-                        dialogueText.text = $"{enemyUnit.goblinData.gName}'s defense can't go any lower!";
+                        StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName}'s defense can't go any lower!"));
                         yield return new WaitForSeconds(2f);
                     }
                     else
                     {
-                        dialogueText.text = $"{enemyUnit.goblinData.gName}'s defense was lowered!";
+                        StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName}'s defense was lowered!"));
                         yield return new WaitForSeconds(2f);
                     }
                     break;
@@ -301,35 +301,36 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.WON)
         {
             FindObjectOfType<AudioManager>().Play("win");
-            dialogueText.text = "You won the battle!";
+            StartCoroutine(ScrollText("You won the battle!"));
         }
         else if (state == BattleState.LOST)
         {
             FindObjectOfType<AudioManager>().Play("run");
-            dialogueText.text = "You were defeated.";
+            StartCoroutine(ScrollText("You were defeated."));
         }
     }
 
     public void PlayerTurn()
     {
-        dialogueText.text = "Choose an action:";
+        StartCoroutine(ScrollText("Choose an action:"));
     }
 
+    //Makes text scroll across dialogue box
+    public IEnumerator ScrollText(string sentence)
+    {
+        dialogueText.text = "";
+        foreach (char letter in sentence.ToCharArray())
+        {
+            dialogueText.text += letter;
 
-    // public void OnAttackButton()
-    // {
-    //     if (state != BattleState.PLAYERTURN) return;
-
-    //     StartCoroutine(PlayerAttack());
-    // }
-
-    // public void OnHealButton()
-    // {
-    //     if (state != BattleState.PLAYERTURN) return;
-
-    //     StartCoroutine(PlayerHeal());
-    // }
-
-
+            // if (Char.ToString(letter) == "." || Char.ToString(letter) == "!" || Char.ToString(letter) == "?")
+            // {
+            //     yield return new WaitForSeconds(.15f); //pause text with sentance completion, give dialogue a better flow
+            // }
+            // else if (Char.ToString(letter) == ",") yield return new WaitForSeconds(.1f);
+            //else
+            yield return new WaitForSeconds(.01f); //wait a bit to continue (number subject to change)
+        }
+    }
 
 }

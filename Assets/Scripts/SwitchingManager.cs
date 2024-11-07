@@ -96,11 +96,11 @@ public class SwitchingManager : MonoBehaviour
     public IEnumerator SwitchUnit(Goblinmon unit)
     {
         //Makes switching look smooth for player
-        bs.dialogueText.text = "Come back " + bs.playerUnit.goblinData.gName + "!";
+        StartCoroutine(bs.ScrollText("Come back " + bs.playerUnit.goblinData.gName + "!"));
         yield return new WaitForSeconds(1);
         bs.playerUnit.GetComponent<SpriteRenderer>().sprite = null;
         yield return new WaitForSeconds(2);
-        bs.dialogueText.text = "Go, " + unit.goblinData.gName + "!";
+        StartCoroutine(bs.ScrollText("Go, " + unit.goblinData.gName + "!"));
         yield return new WaitForSeconds(1);
 
         //Save health data of Unit being swapped

@@ -225,16 +225,16 @@ public class EnemyAI : MonoBehaviour
         //Makes switching look smooth for player
         if (justDied)
         {
-            bs.dialogueText.text = "Go, " + unit.goblinData.gName + "!";
+            StartCoroutine(bs.ScrollText($"Go, {unit.goblinData.gName}!"));
             yield return new WaitForSeconds(2);
         }
         else
         {
-            bs.dialogueText.text = "Come back " + bs.enemyUnit.goblinData.gName + "!";
+            StartCoroutine(bs.ScrollText($"Come back{bs.enemyUnit.goblinData.gName}!"));
             yield return new WaitForSeconds(1);
             bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
             yield return new WaitForSeconds(2);
-            bs.dialogueText.text = "Go, " + unit.goblinData.gName + "!";
+            StartCoroutine(bs.ScrollText($"Go, {unit.goblinData.gName}!"));
             yield return new WaitForSeconds(1);
         }
 
@@ -355,20 +355,20 @@ public class EnemyAI : MonoBehaviour
         //TODO: Attack based on BattleSystem instead of internal tracking of player?
         bool strongAttack = actualPlayer.goblinData.type.weakAgainstEnemyType(move.moveType); ;
 
-        bs.dialogueText.text = $"{self.goblinData.name} used {move.name}!";
+        StartCoroutine(bs.ScrollText($"{self.goblinData.name} used {move.name}!"));
         yield return new WaitForSeconds(2);
 
         //Different text/sounds based on attack effectiveness
         if (strongAttack)
         {
-            bs.dialogueText.text = "It was super effective!";
+            StartCoroutine(bs.ScrollText("It was super effective!"));
             yield return new WaitForSeconds(1f);
 
             FindObjectOfType<AudioManager>().Play("superEffective");
         }
         else
         {
-            bs.dialogueText.text = "The attack was successful!";
+            StartCoroutine(bs.ScrollText("The attack was successful!"));
             yield return new WaitForSeconds(1f);
 
             FindObjectOfType<AudioManager>().Play("damage");
@@ -382,7 +382,7 @@ public class EnemyAI : MonoBehaviour
         if (isDead)
         {   //Check if player has available units
             bs.playerUnit.GetComponent<SpriteRenderer>().sprite = null;
-            bs.dialogueText.text = $"{actualPlayer.goblinData.gName} Fainted!";
+            StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName} Fainted!"));
             yield return new WaitForSeconds(2f);
             sm.SavePlayerData();
             if (sm.DoesPlayerHaveUnits())
@@ -409,7 +409,7 @@ public class EnemyAI : MonoBehaviour
     //Buffs enemy
     public IEnumerator BuffEnemyAction(SOMove move)
     {
-        bs.dialogueText.text = $"{self.goblinData.gName} used {move.moveName}!";
+        StartCoroutine(bs.ScrollText($"{self.goblinData.gName} used {move.moveName}!"));
         yield return new WaitForSeconds(2f);
 
         //Buff Player
@@ -423,12 +423,12 @@ public class EnemyAI : MonoBehaviour
                     {
                         //clamp buff at 6
                         self.attackModifier = 6;
-                        bs.dialogueText.text = $"{self.goblinData.gName}'s attack can't go any higher!";
+                        StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack can't go any higher!"));
                         yield return new WaitForSeconds(2f);
                     }
                     else
                     {
-                        bs.dialogueText.text = $"{self.goblinData.gName}'s attack was increased!";
+                        StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack was increased!"));
                         yield return new WaitForSeconds(2f);
                     }
                     break;
@@ -442,12 +442,12 @@ public class EnemyAI : MonoBehaviour
                     {
                         //clamp buff at 6
                         self.defenseModifier = 6;
-                        bs.dialogueText.text = $"{self.goblinData.gName}'s defense can't go any higher!";
+                        StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s defense can't go any higher!"));
                         yield return new WaitForSeconds(2f);
                     }
                     else
                     {
-                        bs.dialogueText.text = $"{self.goblinData.gName}'s defense was increased!";
+                        StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s defense was increased!"));
                         yield return new WaitForSeconds(2f);
                     }
                     break;
@@ -468,7 +468,7 @@ public class EnemyAI : MonoBehaviour
     //Debuffs Player
     public IEnumerator DebuffPlayerAction(SOMove move)
     {
-        bs.dialogueText.text = $"{self.goblinData.gName} used {move.moveName}!";
+        StartCoroutine(bs.ScrollText($"{self.goblinData.gName} used {move.moveName}!"));
         yield return new WaitForSeconds(2f);
 
         //Debuff Enemy
@@ -482,12 +482,12 @@ public class EnemyAI : MonoBehaviour
                     {
                         //clamp debuff at 6
                         actualPlayer.attackModifier = -6;
-                        bs.dialogueText.text = $"{actualPlayer.goblinData.gName}'s attack can't go any lower!";
+                        StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName}'s attack can't go any lower!"));
                         yield return new WaitForSeconds(2f);
                     }
                     else
                     {
-                        bs.dialogueText.text = $"{actualPlayer.goblinData.gName}'s attack was lowered!";
+                        StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName}'s attack was lowered!"));
                         yield return new WaitForSeconds(2f);
                     }
                     break;
@@ -500,12 +500,12 @@ public class EnemyAI : MonoBehaviour
                     if (actualPlayer.defenseModifier < -6)
                     {
                         actualPlayer.defenseModifier = -6; //clamp
-                        bs.dialogueText.text = $"{actualPlayer.goblinData.gName}'s defense can't go any lower!";
+                        StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName}'s defense can't go any lower!"));
                         yield return new WaitForSeconds(2f);
                     }
                     else
                     {
-                        bs.dialogueText.text = $"{actualPlayer.goblinData.gName}'s defense was lowered!";
+                        StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName}'s defense was lowered!"));
                         yield return new WaitForSeconds(2f);
                     }
                     break;
