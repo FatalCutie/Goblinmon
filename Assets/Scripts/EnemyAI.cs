@@ -14,20 +14,21 @@ public class EnemyAI : MonoBehaviour
     private ButtonManager bm;
     private SwitchingManager sm;
     [SerializeField] private Goblinmon self;
-    [SerializeField] private Goblinmon player;
+    [SerializeField] private Goblinmon internalPlayer; //Player used in calculations, updates at end of enemy turn
     private enum EnemyType { TRAINER, WILD }
     private EnemyType enemyType;
     [SerializeField] SOMove emptyMove;
     [SerializeField] private List<SOGoblinmon> units;
     [SerializeField] private GameObject unitHolder; //This is so fucking awful
     [SerializeField] private List<Goblinmon> party;
-    private Goblinmon updatedPlayerUnit;
+    private Goblinmon actualPlayer;
     System.Random rnd = new System.Random();
 
     #endregion
 
     void Start()
     {
+
         bs = FindObjectOfType<BattleSystem>();
         bm = FindObjectOfType<ButtonManager>();
         sm = FindObjectOfType<SwitchingManager>();
@@ -37,12 +38,16 @@ public class EnemyAI : MonoBehaviour
     public Goblinmon InitilizeUnitsForEnemyAI(Goblinmon eu, Goblinmon pr)
     {
         //Self initilized as first Goblinmon in array
+        internalPlayer = this.AddComponent<Goblinmon>();
         self = eu;
         self.goblinData = units[0];
         self.currentHP = self.goblinData.maxHP;
-        //bs.enemyHUD.SetHUD(self);
-        Goblinmon buffer = pr;
-        player = buffer; //TODO: Update this to 
+
+        //Set up internal and actual player for damage calculations/ai decisionmaking
+        actualPlayer = pr;
+
+        internalPlayer.currentHP = pr.currentHP;
+        internalPlayer.goblinData = pr.goblinData;
 
         //Check if trainer by seeing if there's any Goblinmon in party
         if (units.Count > 1) enemyType = EnemyType.TRAINER;
@@ -60,16 +65,14 @@ public class EnemyAI : MonoBehaviour
         return self;
     }
 
-    //Adds new player unit as a variable to be updated after turn
-    public void UpdatePlayerUnit(Goblinmon pu)
+    //Updates player in calculations to actual player
+    //In place to prevent "predicting" a switch in
+    public void UpdateInternalPlayerUnit()
     {
-        updatedPlayerUnit = pu; //TODO: Update this to a variable that is not used in damage calculations
-    }
-
-    //Updates player unit after turn to prevent AI "predicting" the switch
-    private void UpdateInternalPlayerUnit()
-    {
-        player = updatedPlayerUnit;
+        internalPlayer.goblinData = actualPlayer.goblinData;
+        internalPlayer.currentHP = actualPlayer.currentHP;
+        internalPlayer.attackModifier = actualPlayer.attackModifier;
+        internalPlayer.defenseModifier = actualPlayer.attackModifier;
     }
 
     //Find the best action and take it
@@ -144,7 +147,7 @@ public class EnemyAI : MonoBehaviour
     //Finds a safe unit to switch into
     public Goblinmon FindSafeSwitch(bool needUnitForSwitch)
     {
-        SOType playerType = player.goblinData.type;
+        SOType playerType = internalPlayer.goblinData.type;
 
 
         //Find something strong against the enemy type
@@ -200,6 +203,7 @@ public class EnemyAI : MonoBehaviour
         return false;
     }
 
+    //Finds unit place in party and saves their current HP
     public void SaveUnitData()
     {
         Goblinmon unitToSave = self;
@@ -217,7 +221,7 @@ public class EnemyAI : MonoBehaviour
         Debug.Log(party[unitID].currentHP);
     }
 
-    //Switch into the safe unit
+    //Switch into the given safe unit
     public IEnumerator SwitchAction(Goblinmon unit, bool justDied)
     {
         //Makes switching look smooth for player
@@ -255,7 +259,7 @@ public class EnemyAI : MonoBehaviour
 
         //End the enemys turn
         bs.state = BattleState.PLAYERTURN;
-        if (updatedPlayerUnit != null && updatedPlayerUnit != player) UpdateInternalPlayerUnit();
+        if (internalPlayer != actualPlayer) UpdateInternalPlayerUnit();
         bm.enableBasicButtonsOnPress();
         bs.PlayerTurn();
     }
@@ -268,8 +272,8 @@ public class EnemyAI : MonoBehaviour
     //Checks if there is a move that kills the player and returns it
     private SOMove IsEnemyKillable()
     {
-        int playerHP = player.currentHP;
-        SOType playerType = player.goblinData.type;
+        int playerHP = internalPlayer.currentHP;
+        SOType playerType = internalPlayer.goblinData.type;
         foreach (SOMove move in self.goblinData.moveset)
         {
             //If attack super effective & kills return move
@@ -294,7 +298,7 @@ public class EnemyAI : MonoBehaviour
     //TODO: Add randomized damage modifier range (.85 - 1) for more random choices
     private SOMove FindAttackingMove()
     {
-        SOType playerType = player.goblinData.type;
+        SOType playerType = internalPlayer.goblinData.type;
         SOMove returnMove = emptyMove;
 
         //Loop through all attacks to find highest damage
@@ -348,10 +352,10 @@ public class EnemyAI : MonoBehaviour
     {
 
         //Update player unit for accurate damage calcutations/changes
-        if (updatedPlayerUnit != null && updatedPlayerUnit != player) UpdateInternalPlayerUnit();
+        if (internalPlayer != actualPlayer) UpdateInternalPlayerUnit();
 
         //TODO: Attack based on BattleSystem instead of internal tracking of player?
-        bool strongAttack = player.goblinData.type.weakAgainstEnemyType(move.moveType); ;
+        bool strongAttack = actualPlayer.goblinData.type.weakAgainstEnemyType(move.moveType); ;
 
         bs.dialogueText.text = $"{self.goblinData.name} used {move.name}!";
         yield return new WaitForSeconds(2);
@@ -373,14 +377,14 @@ public class EnemyAI : MonoBehaviour
         }
 
         //Attack player
-        bool isDead = player.TakeDamage(move.damage, strongAttack, self);
-        bs.playerHUD.setHP(player.currentHP, player);
+        bool isDead = actualPlayer.TakeDamage(move.damage, strongAttack, self);
+        bs.playerHUD.setHP(actualPlayer.currentHP, actualPlayer);
         yield return new WaitForSeconds(2f);
 
         if (isDead)
         {   //Check if player has available units
             bs.playerUnit.GetComponent<SpriteRenderer>().sprite = null;
-            bs.dialogueText.text = $"{player.goblinData.gName} Fainted!";
+            bs.dialogueText.text = $"{actualPlayer.goblinData.gName} Fainted!";
             yield return new WaitForSeconds(2f);
             sm.SavePlayerData();
             if (sm.DoesPlayerHaveUnits())
@@ -397,6 +401,7 @@ public class EnemyAI : MonoBehaviour
         else
         {   //End enemy's turn
             bs.state = BattleState.PLAYERTURN;
+            UpdateInternalPlayerUnit();
             bm.enableBasicButtonsOnPress();
             bs.PlayerTurn();
         }
@@ -473,18 +478,18 @@ public class EnemyAI : MonoBehaviour
         {
             case SOMove.StatModified.ATTACK:
                 {
-                    player.attackModifier -= move.statModifier;
+                    actualPlayer.attackModifier -= move.statModifier;
                     if (move.statModifier <= 0) Debug.LogWarning($"WARNING: {move.moveName}s stat modifier is 0. Is this intentional?");
-                    if (player.attackModifier < -6)
+                    if (actualPlayer.attackModifier < -6)
                     {
                         //clamp debuff at 6
-                        player.attackModifier = -6;
-                        bs.dialogueText.text = $"{player.goblinData.gName}'s attack can't go any lower!";
+                        actualPlayer.attackModifier = -6;
+                        bs.dialogueText.text = $"{actualPlayer.goblinData.gName}'s attack can't go any lower!";
                         yield return new WaitForSeconds(2f);
                     }
                     else
                     {
-                        bs.dialogueText.text = $"{player.goblinData.gName}'s attack was lowered!";
+                        bs.dialogueText.text = $"{actualPlayer.goblinData.gName}'s attack was lowered!";
                         yield return new WaitForSeconds(2f);
                     }
                     break;
@@ -494,15 +499,15 @@ public class EnemyAI : MonoBehaviour
                 {
                     bs.enemyUnit.defenseModifier -= move.statModifier;
                     if (move.statModifier <= 0) Debug.LogWarning($"WARNING: {move.moveName}s stat modifier is 0. Is this intentional?");
-                    if (player.defenseModifier < -6)
+                    if (actualPlayer.defenseModifier < -6)
                     {
-                        player.defenseModifier = -6; //clamp
-                        bs.dialogueText.text = $"{player.goblinData.gName}'s defense can't go any lower!";
+                        actualPlayer.defenseModifier = -6; //clamp
+                        bs.dialogueText.text = $"{actualPlayer.goblinData.gName}'s defense can't go any lower!";
                         yield return new WaitForSeconds(2f);
                     }
                     else
                     {
-                        bs.dialogueText.text = $"{player.goblinData.gName}'s defense was lowered!";
+                        bs.dialogueText.text = $"{actualPlayer.goblinData.gName}'s defense was lowered!";
                         yield return new WaitForSeconds(2f);
                     }
                     break;

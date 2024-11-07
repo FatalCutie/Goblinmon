@@ -110,7 +110,6 @@ public class SwitchingManager : MonoBehaviour
         UpdatePlayerInformation(unit);
         FindObjectOfType<BattleHUD>().SetHUD(unit);
         bs.playerUnit.GetComponent<SpriteRenderer>().sprite = unit.goblinData.sprite;
-        eAI.UpdatePlayerUnit(unit); //TODO: Update version of player that is not used in damage calculations
         yield return new WaitForSeconds(1);
 
         //End the players turn unless just switched from KO
