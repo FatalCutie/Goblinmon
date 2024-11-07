@@ -66,7 +66,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     //Updates player in calculations to actual player
-    //In place to prevent "predicting" a switch in
+    //Prevents ai from "predicting" a switch in
     public void UpdateInternalPlayerUnit()
     {
         internalPlayer.goblinData = actualPlayer.goblinData;
@@ -144,7 +144,7 @@ public class EnemyAI : MonoBehaviour
 
     #region Switching
 
-    //Finds a safe unit to switch into
+    //Finds a safe unit (relative to internal player) to switch into
     public Goblinmon FindSafeSwitch(bool needUnitForSwitch)
     {
         SOType playerType = internalPlayer.goblinData.type;
@@ -203,7 +203,7 @@ public class EnemyAI : MonoBehaviour
         return false;
     }
 
-    //Finds unit place in party and saves their current HP
+    //Finds active units place in party and saves their current HP
     public void SaveUnitData()
     {
         Goblinmon unitToSave = self;
@@ -216,9 +216,7 @@ public class EnemyAI : MonoBehaviour
             }
             unitID++;
         }
-        Debug.Log($"Saving unit {unitID}!");
         party[unitID].currentHP = unitToSave.currentHP;
-        Debug.Log(party[unitID].currentHP);
     }
 
     //Switch into the given safe unit
@@ -269,7 +267,7 @@ public class EnemyAI : MonoBehaviour
 
     #region Attacking
 
-    //Checks if there is a move that kills the player and returns it
+    //Checks if there is a move that kills the internal player and returns it
     private SOMove IsEnemyKillable()
     {
         int playerHP = internalPlayer.currentHP;
@@ -347,7 +345,7 @@ public class EnemyAI : MonoBehaviour
         return movePool[selection];
     }
 
-    //Use an attacking move against the player
+    //Use an attacking move against the actual player
     private IEnumerator AttackPlayerAction(SOMove move)
     {
 

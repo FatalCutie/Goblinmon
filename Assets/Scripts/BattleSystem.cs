@@ -23,6 +23,7 @@ public class BattleSystem : MonoBehaviour
     public TextMeshProUGUI dialogueText;
 
     public Goblinmon playerUnit;
+    public GameObject playerGO;
     public Goblinmon enemyUnit;
     SpriteRenderer pSpriteR;
     SpriteRenderer eSpriteR;
@@ -44,9 +45,9 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SetupBattle()
     { //Prefab scales with battle station, fix is unclear
-    
+
         //Instantiate player
-        GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
+        playerGO = Instantiate(playerPrefab, playerBattleStation);
         //First goblinmon in Goblinmon Array sent out first
         playerGO.GetComponent<Goblinmon>().goblinData = sm.goblinmon[0];
         playerUnit = playerGO.GetComponent<Goblinmon>();

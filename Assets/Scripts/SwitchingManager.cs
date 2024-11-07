@@ -11,7 +11,7 @@ public class SwitchingManager : MonoBehaviour
     private BattleSystem bs;
     private ButtonManager bm;
     private EnemyAI eAI;
-    [SerializeField] private List<UnitButton> unitButtons = new List<UnitButton>();
+    [SerializeField] private List<UnitButton> unitButtons = new List<UnitButton>(); //For easy access and saving HP
     private SOGoblinmon gobData; //holder to update player info
 
     void Awake()
@@ -60,7 +60,7 @@ public class SwitchingManager : MonoBehaviour
     {
         foreach (Transform go in unitButtonHolder.transform)
         {
-            //Initialize switching buttons and units tied to them
+            //Look for a unit that isn't dead
             if (go.GetComponent<Goblinmon>().currentHP >= 0)
             {
                 return true;
@@ -115,7 +115,6 @@ public class SwitchingManager : MonoBehaviour
         //End the players turn unless just switched from KO
         if (bs.state == BattleState.ENEMYTURN)
         {
-            //eAI.UpdatePlayerUnit(null);
             bs.PlayerTurn();
             bm.enableBasicButtonsOnPress();
         }
@@ -149,11 +148,7 @@ public class SwitchingManager : MonoBehaviour
     //Updates player data after switch
     public void UpdatePlayerInformation(Goblinmon newData)
     {
-        //Sets Goblinmon script to be Unit button, not player unit
-        //TODO: Fix that
-        //SOLUTIONS: Offload player Goblinmon onto an asset like Enemy and use ID system for buttons?
-        //Add Unit Buttons to Array and call from there?
-        Goblinmon playerGob = bs.playerUnit.GetComponent<Goblinmon>();
+        Goblinmon playerGob = bs.playerUnit;
         playerGob.goblinData = newData.goblinData;
         playerGob.currentHP = newData.currentHP;
 
