@@ -75,7 +75,8 @@ public class EnemyAI : MonoBehaviour
     public void FindOptimalOption()
     {
         //First check if health is low, if so find something to switch to
-        if (enemyType == EnemyType.TRAINER && self.currentHP <= self.goblinData.maxHP * .15)
+        float healthRangeModifier = rnd.Next(1, 21); //Will switch randomly between 10% health and 30% health
+        if (enemyType == EnemyType.TRAINER && self.currentHP <= self.goblinData.maxHP * (.09 + healthRangeModifier * 0.01))
         {
             Debug.Log("Things look hairy, I'm gonna try and switch");
             Goblinmon safeSwitch = FindSafeSwitch(false);
