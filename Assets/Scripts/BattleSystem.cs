@@ -57,8 +57,8 @@ public class BattleSystem : MonoBehaviour
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Goblinmon>();
         eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
+        eAI.InitilizeUnitsForEnemyAI(enemyUnit, playerUnit);
         eSpriteR.sprite = enemyUnit.goblinData.sprite;
-        eAI.InitilizeUnitsForEnemyAI(enemyUnit, playerUnit); //Returns enemy Goblinmon 
 
 
         //dialogueText.text = "A wild " + enemyUnit.goblinData.gName + " approches!";

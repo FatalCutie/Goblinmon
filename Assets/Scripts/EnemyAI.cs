@@ -30,7 +30,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     //Initilizes EnemyAI, returns Goblinmon for BattleSystem to set hud
-    public Goblinmon InitilizeUnitsForEnemyAI(Goblinmon eu, Goblinmon pr)
+    public Goblinmon InitilizeUnitsForEnemyAI(Goblinmon eu, Goblinmon pr) //this is spelled wrong
     {
         //Self initilized as first Goblinmon in array
         internalPlayer = this.AddComponent<Goblinmon>();
@@ -144,40 +144,50 @@ public class EnemyAI : MonoBehaviour
     public Goblinmon FindSafeSwitch(bool needUnitForSwitch)
     {
         SOType playerType = internalPlayer.goblinData.type;
-
-
         //Find something strong against the enemy type
         foreach (Goblinmon unit in party)
         {
-            if (playerType.weakAgainstEnemyType(unit.goblinData.type)
-            && unit != self
-            && unit.currentHP > 0)
+            SOType selfType = unit.goblinData.type;
+            if (unit.goblinData.gName != self.goblinData.gName
+            && unit.currentHP > unit.goblinData.maxHP * 0.4 //only switch in if above 40% health
+            && playerType.weakAgainstEnemyType(selfType))
+            {
                 return unit;
+            }
+
         }
+        Debug.Log("Nothing strong, Looking for neutral");
 
         //If nothing then look for something neutral
         foreach (Goblinmon unit in party)
         {
             SOType selfType = unit.goblinData.type;
-            if (selfType.weakAgainstEnemyType(playerType)
-            && unit != self
-            && unit.currentHP > 0)
+            if (unit.goblinData.gName != self.goblinData.gName
+            && unit.currentHP > unit.goblinData.maxHP * 0.4
+            && !selfType.weakAgainstEnemyType(playerType))
             {
-                //Continue
-            }
-            else
-            {
-                if (unit.currentHP > 0) return unit;
+                return unit;
             }
         }
+        Debug.Log("Nothing neutral, do I need to switch?");
 
-        if (needUnitForSwitch) //Only true if previous unit was knocked out
+        if (needUnitForSwitch) //Look for the highest HP unit and switch to it
         {
+            List<Goblinmon> availableUnits = new List<Goblinmon>();
             foreach (Goblinmon unit in party)
             {
-                if (unit.currentHP > 0) return unit;
+                if (unit.currentHP > 0) availableUnits.Add(unit);
             }
+            int highestHP = -1;
+            Goblinmon highestHPUnit = null;
+            foreach (Goblinmon unit in availableUnits)
+            {
+
+                if (unit.currentHP > highestHP) highestHPUnit = unit;
+            }
+            return highestHPUnit;
         }
+        Debug.Log("I don't need to switch");
 
         return null; //If nothing neutral pick another option
 
@@ -226,7 +236,7 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            StartCoroutine(bs.ScrollText($"Come back{bs.enemyUnit.goblinData.gName}!"));
+            StartCoroutine(bs.ScrollText($"Come back {bs.enemyUnit.goblinData.gName}!"));
             yield return new WaitForSeconds(1);
             bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
             yield return new WaitForSeconds(2);
