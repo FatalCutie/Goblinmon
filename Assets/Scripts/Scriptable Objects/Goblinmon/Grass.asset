@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0188a8dcd8e881646856901b1bae9163, type: 3}
   m_Name: Grass
   m_EditorClassIdentifier: 
-  gName: Grass / Water
+  gName: Grass
   gLevel: 5
   sprite: {fileID: 21300000, guid: c63f7ca2add8b72448892553a8ad689a, type: 3}
   maxHP: 70

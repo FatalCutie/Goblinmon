@@ -141,6 +141,7 @@ public class EnemyAI : MonoBehaviour
     #region Switching
 
     //Finds a safe unit (relative to internal player) to switch into
+    //TODO; Transition to point based system?
     public Goblinmon FindSafeSwitch(bool needUnitForSwitch)
     {
         SOType playerType = internalPlayer.goblinData.type;
