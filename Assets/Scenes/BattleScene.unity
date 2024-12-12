@@ -1910,7 +1910,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2087887650}
         m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-        m_MethodName: unimplementedButtonError
+        m_MethodName: unimplementedRun
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3218,7 +3218,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pussy Out
+  m_text: Run
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4271,7 +4271,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2087887650}
         m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-        m_MethodName: unimplementedButtonError
+        m_MethodName: unimplementedBag
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5388,7 +5388,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -219.6116, y: 0}
+  m_AnchoredPosition: {x: -219.6116, y: 25}
   m_SizeDelta: {x: 714.7768, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1803398209
@@ -5902,6 +5902,7 @@ MonoBehaviour:
   enemyBattleStation: {fileID: 1220717678}
   dialogueText: {fileID: 1803398209}
   playerUnit: {fileID: 0}
+  playerGO: {fileID: 0}
   enemyUnit: {fileID: 0}
   playerHUD: {fileID: 530642187}
   enemyHUD: {fileID: 2049049720}
@@ -6251,7 +6252,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2825816154538640254, guid: 7a264e50bf540a84193d820f4ca7ca03, type: 3}
       propertyPath: sounds.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2825816154538640254, guid: 7a264e50bf540a84193d820f4ca7ca03, type: 3}
       propertyPath: sounds.Array.data[0].clip
@@ -6298,6 +6299,18 @@ PrefabInstance:
       value: win
       objectReference: {fileID: 0}
     - target: {fileID: 2825816154538640254, guid: 7a264e50bf540a84193d820f4ca7ca03, type: 3}
+      propertyPath: sounds.Array.data[5].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: cc634489087a45042b37f70b1f928006, type: 3}
+    - target: {fileID: 2825816154538640254, guid: 7a264e50bf540a84193d820f4ca7ca03, type: 3}
+      propertyPath: sounds.Array.data[5].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825816154538640254, guid: 7a264e50bf540a84193d820f4ca7ca03, type: 3}
+      propertyPath: sounds.Array.data[5].name
+      value: battle
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825816154538640254, guid: 7a264e50bf540a84193d820f4ca7ca03, type: 3}
       propertyPath: sounds.Array.data[0].pitch
       value: 1
       objectReference: {fileID: 0}
@@ -6315,6 +6328,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2825816154538640254, guid: 7a264e50bf540a84193d820f4ca7ca03, type: 3}
       propertyPath: sounds.Array.data[4].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825816154538640254, guid: 7a264e50bf540a84193d820f4ca7ca03, type: 3}
+      propertyPath: sounds.Array.data[5].pitch
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2825816154538640254, guid: 7a264e50bf540a84193d820f4ca7ca03, type: 3}
@@ -6336,6 +6353,10 @@ PrefabInstance:
     - target: {fileID: 2825816154538640254, guid: 7a264e50bf540a84193d820f4ca7ca03, type: 3}
       propertyPath: sounds.Array.data[4].volume
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825816154538640254, guid: 7a264e50bf540a84193d820f4ca7ca03, type: 3}
+      propertyPath: sounds.Array.data[5].volume
+      value: 0.15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

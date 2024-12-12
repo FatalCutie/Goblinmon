@@ -2,6 +2,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleSystem : MonoBehaviour
@@ -37,7 +38,19 @@ public class BattleSystem : MonoBehaviour
         eAI = FindObjectOfType<EnemyAI>();
         sm = FindObjectOfType<SwitchingManager>();
         state = BattleState.START;
+        FindObjectOfType<AudioManager>().Play("battle");
         StartCoroutine(SetupBattle());
+    }
+
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.I)){
+            state = BattleState.WON;
+            EndBattle();
+        }
+        if(Input.GetKeyDown(KeyCode.O)){
+            state = BattleState.LOST;
+            EndBattle();
+        }
     }
 
     IEnumerator SetupBattle()
@@ -98,7 +111,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator PlayerAttack(SOMove move)
     {
-        StartCoroutine(ScrollText($"{playerUnit.goblinData.name} used {move.name}!"));
+        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} used {move.name}!"));
         yield return new WaitForSeconds(1.5f);
         bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
         if (strongAttack) //If super effective 
@@ -122,7 +135,7 @@ public class BattleSystem : MonoBehaviour
         {
             //Unit dies
             enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
-            StartCoroutine(ScrollText($"{enemyUnit.goblinData.name} fainted!"));
+            StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName} fainted!"));
             yield return new WaitForSeconds(2f);
 
             //Check for more units
@@ -268,14 +281,25 @@ public class BattleSystem : MonoBehaviour
     {
         if (state == BattleState.WON)
         {
+            FindObjectOfType<AudioManager>().Stop("battle");
             FindObjectOfType<AudioManager>().Play("win");
             StartCoroutine(ScrollText("You won the battle!"));
+            StartCoroutine(BackToTitle());
         }
         else if (state == BattleState.LOST)
         {
+            FindObjectOfType<AudioManager>().Stop("battle");
             FindObjectOfType<AudioManager>().Play("run");
             StartCoroutine(ScrollText("You were defeated."));
+            StartCoroutine(BackToTitle());
         }
+    }
+
+    public IEnumerator BackToTitle()
+    {
+        yield return new WaitForSeconds(10f);
+        FindObjectOfType<AudioManager>().Stop("win");
+        SceneManager.LoadScene("Title Screen");
     }
 
     public void PlayerTurn()
