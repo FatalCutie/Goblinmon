@@ -311,6 +311,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator ScrollText(string sentence)
     {
         dialogueText.text = "";
+        //TODO: This isn't properly clearing. Fix it 
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;

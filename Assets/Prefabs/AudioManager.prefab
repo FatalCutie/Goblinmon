@@ -44,4 +44,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31dfafbabd6e58a40a5a18adb2eb9dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds: []
+  sounds:
+  - name: damage
+    clip: {fileID: 8300000, guid: 013de593ea2bc27459a6955eb70521e6, type: 3}
+    volume: 1
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: press
+    clip: {fileID: 8300000, guid: 334d8f10abdd337498b5df379073120f, type: 3}
+    volume: 1
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: run
+    clip: {fileID: 8300000, guid: 08a79f7365ad2154fa7ca3ed37a267e3, type: 3}
+    volume: 1
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: superEffective
+    clip: {fileID: 8300000, guid: 980fcb103d8491b4fae45ed46d60679a, type: 3}
+    volume: 1
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: win
+    clip: {fileID: 8300000, guid: 7f3aaaca4d7929c4292c68387360010c, type: 3}
+    volume: 1
+    pitch: 1
+    sBlend: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: battle
+    clip: {fileID: 8300000, guid: cc634489087a45042b37f70b1f928006, type: 3}
+    volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 1
+    source: {fileID: 0}

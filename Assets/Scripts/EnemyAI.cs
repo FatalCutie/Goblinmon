@@ -362,7 +362,7 @@ public class EnemyAI : MonoBehaviour
         //TODO: Attack based on BattleSystem instead of internal tracking of player?
         bool strongAttack = actualPlayer.goblinData.type.weakAgainstEnemyType(move.moveType); ;
 
-        StartCoroutine(bs.ScrollText($"{self.goblinData.name} used {move.name}!"));
+        StartCoroutine(bs.ScrollText($"{self.goblinData.gName} used {move.name}!"));
         yield return new WaitForSeconds(2);
 
         //Different text/sounds based on attack effectiveness
