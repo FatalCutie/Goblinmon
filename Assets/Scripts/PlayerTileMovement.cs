@@ -20,58 +20,72 @@ public class PlayerTileMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, movepoint.position, movespeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, movepoint.position + new Vector3(0, 0.5f, 0), movespeed * Time.deltaTime);
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
         //Movement
-        if (Vector3.Distance(transform.position, movepoint.position) <= 0.05f)
+        if (Vector3.Distance(transform.position, movepoint.position + new Vector3(0, 0.5f, 0)) <= 0.05f)
         {
             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
             {
+                UpdateAnimator('x');
                 if (!IsMovementBlocked('x'))
                 {
+                    Debug.Log("Movement not blocked!");
                     movepoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
-                    UpdateAnimator('x');
+
                     //animator.SetFloat("Horizontal", )
                 }
 
             }
             else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
             {
+                UpdateAnimator('y');
                 if (!IsMovementBlocked('y'))
                 {
+                    Debug.Log("Movement not blocked!");
                     movepoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f);
-                    UpdateAnimator('y');
+
                 }
             }
-
-
-            animator.SetFloat("Speed", movement.sqrMagnitude);
         }
+        //TODO This plays even if player can't move. Figure it out later
+        animator.SetFloat("Speed", movement.sqrMagnitude);
     }
 
     //Makes sure player can move to object
+    //NOTE: It's way more optimal to check Used By Composite in Tilemap Collider 2D but then the collision checking doesn't work
+    //I don't know if this will be relevant to performance problems later but I'm leaving the note here just in case
     bool IsMovementBlocked(char axis)
     {
         if (axis == 'x')
         {
-            if (Physics2D.OverlapCircle(movepoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), 2f, movementStopperLayer))
+            if (!Physics2D.OverlapCircle(movepoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), .3f, movementStopperLayer))
+                return false;
+            else
+            {
+                Debug.Log($"Tried to move to {movepoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f)}.");
+                FindObjectOfType<AudioManager>().Play("damage");
                 return true;
+            }
         }
         else if (axis == 'y')
         {
-            if (Physics2D.OverlapCircle(movepoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f), 2f, movementStopperLayer))
+            if (!Physics2D.OverlapCircle(movepoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f), .3f, movementStopperLayer))
+                return false;
+            else
+            {
+                Debug.Log($"Tried to move to {movepoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f)}");
+                FindObjectOfType<AudioManager>().Play("damage");
                 return true;
+            }
         }
         else
         {
             Debug.LogWarning("IsMovementBlocked fed unrecognized character. Please check PlayerTileMovment.");
-            return false;
+            return true;
         }
-
-        //TODO: Play bump audio
-        return false;
     }
 
     //Called to update player animator based on movement
@@ -87,6 +101,7 @@ public class PlayerTileMovement : MonoBehaviour
         {
             animator.SetFloat("Vertical", movement.y);
             animator.SetFloat("Horizontal", 0);
+
         }
         else
         {
