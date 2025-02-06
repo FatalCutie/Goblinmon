@@ -32,7 +32,6 @@ public class PlayerTileMovement : MonoBehaviour
                 UpdateAnimator('x');
                 if (!IsMovementBlocked('x'))
                 {
-                    Debug.Log("Movement not blocked!");
                     movepoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
 
                     //animator.SetFloat("Horizontal", )
@@ -44,7 +43,6 @@ public class PlayerTileMovement : MonoBehaviour
                 UpdateAnimator('y');
                 if (!IsMovementBlocked('y'))
                 {
-                    Debug.Log("Movement not blocked!");
                     movepoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f);
 
                 }
@@ -65,7 +63,6 @@ public class PlayerTileMovement : MonoBehaviour
                 return false;
             else
             {
-                Debug.Log($"Tried to move to {movepoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f)}.");
                 FindObjectOfType<AudioManager>().Play("damage");
                 return true;
             }
@@ -76,7 +73,6 @@ public class PlayerTileMovement : MonoBehaviour
                 return false;
             else
             {
-                Debug.Log($"Tried to move to {movepoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f)}");
                 FindObjectOfType<AudioManager>().Play("damage");
                 return true;
             }

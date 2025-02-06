@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UnitButton : MonoBehaviour
 {
-    public SOGoblinmon unit;
+    public Goblinmon unit;
     private TextMeshProUGUI text;
     private SwitchingManager sm;
     [SerializeField] private ColorBlock colorBlock;
@@ -27,7 +27,7 @@ public class UnitButton : MonoBehaviour
         }
 
         //If attached unit is dead button is red
-        if (this.GetComponent<Goblinmon>() != null && gameObject.GetComponent<Goblinmon>().currentHP <= 0)
+        if (unit != null && unit.currentHP <= 0)
         {
             //TODO: this isn't changing color 
             if (this.GetComponent<Button>().colors.normalColor != Color.red)
@@ -43,12 +43,19 @@ public class UnitButton : MonoBehaviour
 
     public void SwitchUnitOnPress()
     {
+        Debug.Log("Attempting to Switch!");
         //Don't switch if no attached unit or attached unit is dead
-        if (this.GetComponent<Goblinmon>() == null || this.GetComponent<Goblinmon>().currentHP <= 0)
+        if (unit == null || unit.currentHP <= 0)
         {
+            Debug.Log("Failed to switch!");
+            Debug.Log($"{this.GetComponent<Goblinmon>()} is null or {this.GetComponent<Goblinmon>().currentHP} is 0");
             FindObjectOfType<AudioManager>().Play("damage");
         }
-        else sm.CheckUnitBeforeSwitching(this.GetComponent<Goblinmon>());
+        else
+        {
+            Debug.Log($"Switching to {unit.goblinData.gName} which has {unit.currentHP}!");
+            sm.CheckUnitBeforeSwitching(unit);
+        }
 
     }
 

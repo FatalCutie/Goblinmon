@@ -10,12 +10,13 @@ public class SwitchingManager : MonoBehaviour
     public GameObject unitButtonHolder;
     private BattleSystem bs;
     private ButtonManager bm;
+    private PartyStorage ps;
     private EnemyAI eAI;
     [SerializeField] private List<UnitButton> unitButtons = new List<UnitButton>(); //For easy access and saving HP
 
     void Awake()
     {
-        PopulateUnits(); 
+        //PopulateUnits(); 
     }
 
     void Start()
@@ -23,6 +24,8 @@ public class SwitchingManager : MonoBehaviour
         eAI = FindObjectOfType<EnemyAI>();
         bm = FindObjectOfType<ButtonManager>();
         bs = FindObjectOfType<BattleSystem>();
+        ps = FindAnyObjectByType<PartyStorage>();
+        PopulateUnits();
     }
 
     //Populates the switching menu
@@ -37,18 +40,18 @@ public class SwitchingManager : MonoBehaviour
                 UnitButton ub = go.GetComponent<UnitButton>();
 
                 //Initialize switching buttons and units tied to them
+                //TODO: Update this so it doesn't run off of internal goblinmon but ps.goblinmon
                 if (goblinmon[i] != null)
                 {
                     //Create a Goblinmon script on the Unit Button to hold data
-                    Goblinmon gob = go.gameObject.AddComponent<Goblinmon>();
-                    gob.goblinData = goblinmon[i];
-                    ub.unit = goblinmon[i];
-                    unitNameText.text = ub.unit.gName;
-                    gob.currentHP = gob.goblinData.maxHP; //Set units to Max HP at start of battle
+                    // Goblinmon gob = go.gameObject.AddComponent<Goblinmon>();
+                    // gob.goblinData = goblinmon[i];
+                    ub.unit = ps.goblinmon[i];
+                    unitNameText.text = ub.unit.goblinData.gName;
+                    // gob.currentHP = gob.goblinData.maxHP; //Set units to Max HP at start of battle
                     unitButtons.Add(ub);
                     i++;
                 }
-
             }
         }
         catch (ArgumentOutOfRangeException) { } //In case less units than buttons
@@ -84,6 +87,7 @@ public class SwitchingManager : MonoBehaviour
         }
         else //switch unit
         {
+            Debug.Log($"Switching to {unit.goblinData.gName} which has {unit.currentHP}");
             FindObjectOfType<AudioManager>().Play("press");
             StartCoroutine(SwitchUnit(unit));
             bm.disableButtonsDuringAttack();
@@ -132,6 +136,7 @@ public class SwitchingManager : MonoBehaviour
         int unitID = 0;
         //Gets the index for unit being switched out to save data
         //NOTE: This does not account for multiple Goblinmon of the same type being in game!!
+        //TODO: Adjust this so that it doesn't use internal Goblinmon but ps.goblinmon
         foreach (SOGoblinmon un in goblinmon)
         {
             if (un.gName == playerUnitToSave.goblinData.gName)
@@ -141,7 +146,7 @@ public class SwitchingManager : MonoBehaviour
             unitID++;
         }
         //Update health of unit being switched out
-        unitButtons[unitID].GetComponent<Goblinmon>().currentHP = playerUnitToSave.currentHP;
+        ps.goblinmon[unitID].currentHP = playerUnitToSave.currentHP;
     }
 
     //Updates player data after switch
@@ -149,6 +154,7 @@ public class SwitchingManager : MonoBehaviour
     {
         Goblinmon playerGob = bs.playerUnit;
         playerGob.goblinData = newData.goblinData;
+        Debug.Log($"Updating current HP from {playerGob.currentHP} to {newData.currentHP}");
         playerGob.currentHP = newData.currentHP;
 
         //Reset stat changes

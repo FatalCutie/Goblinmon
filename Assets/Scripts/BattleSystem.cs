@@ -11,12 +11,14 @@ public class BattleSystem : MonoBehaviour
     ButtonManager bm;
     private EnemyAI eAI;
     SwitchingManager sm;
+    [SerializeField] private PartyStorage ps;
 
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
 
     [SerializeField] private Transform playerBattleStation;
     [SerializeField] private Transform enemyBattleStation;
+
 
     [SerializeField] private TextMeshProUGUI dialogueText;
 
@@ -37,6 +39,7 @@ public class BattleSystem : MonoBehaviour
         bm = FindObjectOfType<ButtonManager>();
         eAI = FindObjectOfType<EnemyAI>();
         sm = FindObjectOfType<SwitchingManager>();
+        ps = FindObjectOfType<PartyStorage>();
         state = BattleState.START;
         FindObjectOfType<AudioManager>().Play("battle");
         StartCoroutine(SetupBattle());
@@ -59,9 +62,9 @@ public class BattleSystem : MonoBehaviour
         //Instantiate player
         playerGO = Instantiate(playerPrefab, playerBattleStation);
         //First goblinmon in Goblinmon Array sent out first
-        playerGO.GetComponent<Goblinmon>().goblinData = sm.goblinmon[0];
+        playerGO.GetComponent<Goblinmon>().goblinData = ps.goblinmon[0].goblinData;
         playerUnit = playerGO.GetComponent<Goblinmon>();
-        playerUnit.currentHP = playerUnit.goblinData.maxHP; //Quick fix for a bug I don't feel like solving rn LOL!
+        playerUnit.currentHP = ps.goblinmon[0].currentHP; //Quick fix for a bug I don't feel like solving rn LOL!
         //Will have to adjust sprite positions during sprite production
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
         pSpriteR.sprite = playerUnit.goblinData.sprite;
