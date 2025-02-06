@@ -17,7 +17,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private List<SOGoblinmon> units;
     [SerializeField] private GameObject unitHolder; //This is so fucking awful
     [SerializeField] private List<Goblinmon> party;
-    private Goblinmon actualPlayer;
+    [SerializeField] private Goblinmon actualPlayer;
     System.Random rnd = new System.Random();
 
     #endregion
@@ -277,6 +277,7 @@ public class EnemyAI : MonoBehaviour
     //Checks if there is a move that kills the internal player and returns it
     private SOMove IsEnemyKillable()
     {
+        Debug.Log($"I'm about to look at my internal player's hp, which is {internalPlayer.currentHP}");
         int playerHP = internalPlayer.currentHP;
         SOType playerType = internalPlayer.goblinData.type;
         foreach (SOMove move in self.goblinData.moveset)
@@ -303,6 +304,7 @@ public class EnemyAI : MonoBehaviour
     //TODO: Add randomized damage modifier range (.85 - 1) for more random choices
     private SOMove FindAttackingMove()
     {
+        Debug.Log($"Looking at internal player HP while finding attack move, which is {internalPlayer.currentHP}");
         SOType playerType = internalPlayer.goblinData.type;
         SOMove returnMove = emptyMove;
 
@@ -323,6 +325,7 @@ public class EnemyAI : MonoBehaviour
                 if (moveDamage > returnMove.damage) returnMove = move;
             }
         }
+        Debug.Log($"Looking at internal player HP after finding attack move, which is {internalPlayer.currentHP}");
         return returnMove;
     }
 
@@ -357,7 +360,8 @@ public class EnemyAI : MonoBehaviour
     {
 
         //Update player unit for accurate damage calcutations/changes
-        if (internalPlayer != actualPlayer) UpdateInternalPlayerUnit();
+        //TODO: This is resetting internal player health
+        //if (internalPlayer != actualPlayer) UpdateInternalPlayerUnit();
 
         //TODO: Attack based on BattleSystem instead of internal tracking of player?
         bool strongAttack = actualPlayer.goblinData.type.weakAgainstEnemyType(move.moveType); ;
@@ -382,7 +386,9 @@ public class EnemyAI : MonoBehaviour
         }
 
         //Attack player
+        Debug.Log($"Actual player HP: {actualPlayer.currentHP}");
         bool isDead = actualPlayer.TakeDamage(move.damage, strongAttack, self);
+        Debug.Log($"Actual player HP after TakeDamage: {actualPlayer.currentHP}");
         bs.playerHUD.setHP(actualPlayer.currentHP, actualPlayer);
         yield return new WaitForSeconds(2f);
 
@@ -406,7 +412,7 @@ public class EnemyAI : MonoBehaviour
         else
         {   //End enemy's turn
             bs.state = BattleState.PLAYERTURN;
-            UpdateInternalPlayerUnit();
+            //UpdateInternalPlayerUnit();
             bm.enableBasicButtonsOnPress();
             bs.PlayerTurn();
         }

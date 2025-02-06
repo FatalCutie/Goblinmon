@@ -48,12 +48,11 @@ public class UnitButton : MonoBehaviour
         if (unit == null || unit.currentHP <= 0)
         {
             Debug.Log("Failed to switch!");
-            Debug.Log($"{this.GetComponent<Goblinmon>()} is null or {this.GetComponent<Goblinmon>().currentHP} is 0");
             FindObjectOfType<AudioManager>().Play("damage");
         }
         else
         {
-            Debug.Log($"Switching to {unit.goblinData.gName} which has {unit.currentHP}!");
+            // Debug.Log($"Switching to {unit.goblinData.gName} which has {unit.currentHP}!");
             sm.CheckUnitBeforeSwitching(unit);
         }
 

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class PartyStorage : MonoBehaviour
 {
     public PartyStorage instance;
-    [SerializeField] private List<SOGoblinmon> goblinmonSO;
+    [SerializeField] public List<SOGoblinmon> goblinmonSO;
     public List<Goblinmon> goblinmon;
     [SerializeField] private bool hasGottenGoblinmon = true;
     void Awake()

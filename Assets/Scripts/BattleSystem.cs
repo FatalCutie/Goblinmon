@@ -58,13 +58,14 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SetupBattle()
     { //Prefab scales with battle station, fix is unclear
-
+        //TODO: This throws out the first unit in the party. In the future add
+        //protection in case the first unit is fainted
         //Instantiate player
         playerGO = Instantiate(playerPrefab, playerBattleStation);
         //First goblinmon in Goblinmon Array sent out first
         playerGO.GetComponent<Goblinmon>().goblinData = ps.goblinmon[0].goblinData;
         playerUnit = playerGO.GetComponent<Goblinmon>();
-        playerUnit.currentHP = ps.goblinmon[0].currentHP; //Quick fix for a bug I don't feel like solving rn LOL!
+        playerUnit.currentHP = ps.goblinmon[0].currentHP;
         //Will have to adjust sprite positions during sprite production
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
         pSpriteR.sprite = playerUnit.goblinData.sprite;

@@ -41,7 +41,7 @@ public class SwitchingManager : MonoBehaviour
 
                 //Initialize switching buttons and units tied to them
                 //TODO: Update this so it doesn't run off of internal goblinmon but ps.goblinmon
-                if (goblinmon[i] != null)
+                if (ps.goblinmon[i] != null)
                 {
                     //Create a Goblinmon script on the Unit Button to hold data
                     // Goblinmon gob = go.gameObject.AddComponent<Goblinmon>();
@@ -60,10 +60,10 @@ public class SwitchingManager : MonoBehaviour
 
     public bool DoesPlayerHaveUnits()
     {
-        foreach (Transform go in unitButtonHolder.transform)
+        foreach (Goblinmon go in ps.goblinmon)
         {
             //Look for a unit that isn't dead
-            if (go.GetComponent<Goblinmon>().currentHP >= 0)
+            if (go.currentHP >= 0)
             {
                 return true;
             }
@@ -133,11 +133,12 @@ public class SwitchingManager : MonoBehaviour
     public void SavePlayerData()
     {
         Goblinmon playerUnitToSave = bs.playerUnit.GetComponent<Goblinmon>();
+        //I think the unitID system is redundent but 
         int unitID = 0;
         //Gets the index for unit being switched out to save data
         //NOTE: This does not account for multiple Goblinmon of the same type being in game!!
         //TODO: Adjust this so that it doesn't use internal Goblinmon but ps.goblinmon
-        foreach (SOGoblinmon un in goblinmon)
+        foreach (SOGoblinmon un in ps.goblinmonSO)
         {
             if (un.gName == playerUnitToSave.goblinData.gName)
             {
