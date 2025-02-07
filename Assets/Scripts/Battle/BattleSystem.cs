@@ -294,14 +294,17 @@ public class BattleSystem : MonoBehaviour
             FindObjectOfType<AudioManager>().Stop("battle");
             FindObjectOfType<AudioManager>().Play("win");
             StartCoroutine(ScrollText("You won the battle!"));
-            StartCoroutine(BackToTitle());
+            sm.SavePlayerData(); //Save health of active Goblinmon
+            StartCoroutine(ReturnToOverworld());
+            //StartCoroutine(BackToTitle());
         }
         else if (state == BattleState.LOST)
         {
             FindObjectOfType<AudioManager>().Stop("battle");
             FindObjectOfType<AudioManager>().Play("run");
             StartCoroutine(ScrollText("You were defeated."));
-            StartCoroutine(BackToTitle());
+            StartCoroutine(ReturnToOverworld());
+            //StartCoroutine(BackToTitle());
         }
     }
 
@@ -310,6 +313,13 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(10f);
         FindObjectOfType<AudioManager>().Stop("win");
         SceneManager.LoadScene("Title Screen");
+    }
+
+    public IEnumerator ReturnToOverworld()
+    {
+        yield return new WaitForSeconds(3f);
+        FindObjectOfType<AudioManager>().Stop("win");
+        SceneManager.LoadScene("OverworldScene");
     }
 
     public void PlayerTurn()

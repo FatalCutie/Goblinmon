@@ -28,4 +28,9 @@ public class EnemyPartyStorage : MonoBehaviour
             goblinmon.Add(u);
         }
     }
+
+    public void PopulateEnemy(Goblinmon unit)
+    {
+        goblinmon.Add(unit);
+    }
 }

@@ -8,7 +8,7 @@ public class Goblinmon : MonoBehaviour
     public int currentHP;
     public int attackModifier;
     public int defenseModifier;
-    System.Random rnd = new System.Random();
+    System.Random rnd = new System.Random(); //This is really inefficient LOL!
 
     void Awake()
     {
