@@ -26,14 +26,6 @@ public class PartyStorage : MonoBehaviour
         InitilizeGoblinmonParty();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            SceneManager.LoadScene("BattleScene");
-        }
-    }
-
     //If goblinmon list is not populated then populate it with info from goblinmonSO
     void InitilizeGoblinmonParty()
     {
@@ -61,12 +53,6 @@ public class PartyStorage : MonoBehaviour
 
 
         }
-
-    }
-
-    //Update the battle system with the current goblinmon party
-    void UpdateBattleSystem(List<Goblinmon> newList)
-    {
 
     }
 

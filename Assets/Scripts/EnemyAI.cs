@@ -14,7 +14,7 @@ public class EnemyAI : MonoBehaviour
     private enum EnemyType { TRAINER, WILD }
     private EnemyType enemyType;
     [SerializeField] SOMove emptyMove;
-    [SerializeField] private List<SOGoblinmon> units;
+    //[SerializeField] private List<SOGoblinmon> units;
     [SerializeField] private GameObject unitHolder; //This is so fucking awful
     [SerializeField] private List<Goblinmon> party;
     [SerializeField] private Goblinmon actualPlayer;
@@ -22,11 +22,17 @@ public class EnemyAI : MonoBehaviour
 
     #endregion
 
+    void Awake()
+    {
+        party = FindObjectOfType<EnemyPartyStorage>().goblinmon;
+    }
+
     void Start()
     {
         bs = FindObjectOfType<BattleSystem>();
         bm = FindObjectOfType<ButtonManager>();
         sm = FindObjectOfType<SwitchingManager>();
+
     }
 
     //Initilizes EnemyAI, returns Goblinmon for BattleSystem to set hud
@@ -35,7 +41,7 @@ public class EnemyAI : MonoBehaviour
         //Self initilized as first Goblinmon in array
         internalPlayer = this.AddComponent<Goblinmon>();
         self = eu;
-        self.goblinData = units[0];
+        self.goblinData = party[0].goblinData;
         self.currentHP = self.goblinData.maxHP;
 
         //Set up internal and actual player for damage calculations/ai decisionmaking
@@ -45,17 +51,18 @@ public class EnemyAI : MonoBehaviour
         internalPlayer.goblinData = pr.goblinData;
 
         //Check if trainer by seeing if there's any Goblinmon in party
-        if (units.Count > 1) enemyType = EnemyType.TRAINER;
+        if (party.Count > 1) enemyType = EnemyType.TRAINER;
         else enemyType = EnemyType.WILD;
 
         //Initilizes a list of Goblinmon for enemy to save their health totals
-        foreach (SOGoblinmon unit in units)
-        {
-            Goblinmon newUnit = unitHolder.AddComponent<Goblinmon>();
-            newUnit.goblinData = unit;
-            newUnit.currentHP = unit.maxHP;
-            party.Add(newUnit);
-        }
+        //This code is now redundent as initilization is happened before the battle is started
+        // foreach (SOGoblinmon unit in units)
+        // {
+        //     Goblinmon newUnit = unitHolder.AddComponent<Goblinmon>();
+        //     newUnit.goblinData = unit;
+        //     newUnit.currentHP = unit.maxHP;
+        //     party.Add(newUnit);
+        // }
 
         return self;
     }

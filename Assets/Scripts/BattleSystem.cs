@@ -1,5 +1,6 @@
 
 using System.Collections;
+using System.Numerics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -61,7 +62,9 @@ public class BattleSystem : MonoBehaviour
         //TODO: This throws out the first unit in the party. In the future add
         //protection in case the first unit is fainted
         //Instantiate player
-        playerGO = Instantiate(playerPrefab, playerBattleStation);
+        playerGO = Instantiate(playerPrefab, new UnityEngine.Vector3(
+        playerBattleStation.transform.position.x, playerBattleStation.transform.position.y + 1f,
+        playerBattleStation.transform.position.z), UnityEngine.Quaternion.identity, playerBattleStation);
         //First goblinmon in Goblinmon Array sent out first
         playerGO.GetComponent<Goblinmon>().goblinData = ps.goblinmon[0].goblinData;
         playerUnit = playerGO.GetComponent<Goblinmon>();
@@ -71,7 +74,10 @@ public class BattleSystem : MonoBehaviour
         pSpriteR.sprite = playerUnit.goblinData.sprite;
 
         //Instantiate enemy
-        GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
+        GameObject enemyGO = Instantiate(enemyPrefab, new UnityEngine.Vector3(
+        enemyBattleStation.transform.position.x, enemyBattleStation.transform.position.y + 1f,
+        enemyBattleStation.transform.position.z), UnityEngine.Quaternion.identity, enemyBattleStation);
+        // new Vector3(enemyBattleStation.transform.position.x, enemyBattleStation.transform.position.y + 50, enemyBattleStation.transform.position.z
         enemyUnit = enemyGO.GetComponent<Goblinmon>();
         eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
         eAI.InitilizeUnitsForEnemyAI(enemyUnit, playerUnit);
