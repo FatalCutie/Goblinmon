@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerTileMovement : MonoBehaviour
 {
     public float movespeed = 5f;
     public Transform movepoint;
     public Animator animator;
+    public bool movementLocked = false;
     Vector2 movement; //This is sloppy and a bandaid port. Fix this later
+    private Vector3 currentTilePosition;
+    [SerializeField] private Tilemap longGrassTilemap;
+    [SerializeField] private GameObject tilemapDetector;
+    public bool inGrass;
 
     public LayerMask movementStopperLayer;
 
@@ -20,12 +26,18 @@ public class PlayerTileMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Movement
+        PlayerMovement();
+    }
+
+    void PlayerMovement()
+    {
         transform.position = Vector3.MoveTowards(transform.position, movepoint.position + new Vector3(0, 0.5f, 0), movespeed * Time.deltaTime);
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        //Movement
-        if (Vector3.Distance(transform.position, movepoint.position + new Vector3(0, 0.5f, 0)) <= 0.05f)
+        if (Vector3.Distance(transform.position, movepoint.position + new Vector3(0, 0.5f, 0)) <= 0.05f
+        && !movementLocked)
         {
             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
             {
@@ -50,6 +62,26 @@ public class PlayerTileMovement : MonoBehaviour
         }
         //TODO This plays even if player can't move. Figure it out later
         animator.SetFloat("Speed", movement.sqrMagnitude);
+        //CheckTallGrass();
+    }
+
+    //This code is worthless because I am a stupid idiot who made an
+    //ass out of you AND me
+    void CheckTallGrass()
+    {
+        if (!inGrass) return;
+
+        Vector3Int cellPosition = longGrassTilemap.WorldToCell(tilemapDetector.transform.position);
+        TileBase tile = longGrassTilemap.GetTile(cellPosition);
+
+        //If on the same tile do not do an encounter check
+        if (tile == null || !tile.name.Equals("Tall Grass") || currentTilePosition == cellPosition)
+            return;
+
+        currentTilePosition = cellPosition;
+
+        Debug.Log("I'm on a new grass tile!");
+        //other.GetComponent<TallGrass>().RandomEncounter();
     }
 
     //Makes sure player can move to object
@@ -105,29 +137,25 @@ public class PlayerTileMovement : MonoBehaviour
         }
     }
 
-    // private void OnCollisionEnter2D(Collision2D collision)
-    // {
-    //     Debug.Log("COLLISION!!!!");
-    //     // Check if the player collides with a tile
-    //     if (collision.collider.CompareTag("Tall Grass"))
-    //     {
-    //         // Run your script or logic here
-    //         Debug.Log("Player touched the tile!");
-    //     }
-    // }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //TODO: This only triggers once when the player enters tall grass. Going to need
-        //To add a trigger on every grass individually or find another way
-        Debug.Log("COLLISION!!!!");
+        //Flip inGrass bool
         if (other.CompareTag("Tall Grass"))
         {
+            // Debug.Log("Entering tall grass!");
+            // inGrass = true;
             other.GetComponent<TallGrass>().RandomEncounter();
         }
     }
-    private void OnTriggerStay2D(Collider2D other)
-    {
 
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Tall Grass"))
+        {
+            // Debug.Log("Exiting tall grass!");
+            // inGrass = false;
+            // currentTilePosition = new Vector3(-100, -100, -100); //reset currentTilePosition
+        }
     }
+
 }
