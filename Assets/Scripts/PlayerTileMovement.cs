@@ -104,4 +104,30 @@ public class PlayerTileMovement : MonoBehaviour
             Debug.LogWarning("UpdateAnimator fed unrecognized character. Please check PlayerTileMovement.");
         }
     }
+
+    // private void OnCollisionEnter2D(Collision2D collision)
+    // {
+    //     Debug.Log("COLLISION!!!!");
+    //     // Check if the player collides with a tile
+    //     if (collision.collider.CompareTag("Tall Grass"))
+    //     {
+    //         // Run your script or logic here
+    //         Debug.Log("Player touched the tile!");
+    //     }
+    // }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        //TODO: This only triggers once when the player enters tall grass. Going to need
+        //To add a trigger on every grass individually or find another way
+        Debug.Log("COLLISION!!!!");
+        if (other.CompareTag("Tall Grass"))
+        {
+            other.GetComponent<TallGrass>().RandomEncounter();
+        }
+    }
+    private void OnTriggerStay2D(Collider2D other)
+    {
+
+    }
 }

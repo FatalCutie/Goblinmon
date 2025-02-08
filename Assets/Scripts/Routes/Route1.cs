@@ -1,9 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Route1 : RandomEncounter
 {
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            GenerateRandomEncounter();
+        }
+    }
+
     public override void GenerateRandomEncounter()
     {
         int i = rnd.Next(0, 100);
