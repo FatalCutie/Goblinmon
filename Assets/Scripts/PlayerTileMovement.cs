@@ -148,14 +148,14 @@ public class PlayerTileMovement : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Tall Grass"))
-        {
-            // Debug.Log("Exiting tall grass!");
-            // inGrass = false;
-            // currentTilePosition = new Vector3(-100, -100, -100); //reset currentTilePosition
-        }
-    }
+    // private void OnTriggerExit2D(Collider2D other)
+    // {
+    //     if (other.CompareTag("Tall Grass"))
+    //     {
+    //         // Debug.Log("Exiting tall grass!");
+    //         // inGrass = false;
+    //         // currentTilePosition = new Vector3(-100, -100, -100); //reset currentTilePosition
+    //     }
+    // }
 
 }

@@ -20,9 +20,12 @@ public abstract class RandomEncounter : MonoBehaviour
         GameObject go = Instantiate(enemyPartyStoragePrefab); //Instantiate Object
         Goblinmon g = CreateGoblinmon(unit, go); //Create Goblinmon unit
         go.GetComponent<EnemyPartyStorage>().PopulateEnemy(g); //Adds goblinmon to party
+
         //Load Scene
-        //TODO: Battle transition fade
-        SceneManager.LoadScene("BattleScene");
+        FindObjectOfType<PlayerTileMovement>().movementLocked = true; //Lock player movement during transition
+        FindObjectOfType<AudioManager>().Play("battle"); //Battle music needs to be trimmed, plays as scene transitions
+        FindObjectOfType<SceneController>().TransitionScene("BattleScene");
+        // SceneManager.LoadScene("BattleScene");
     }
 
     //Creates the Goblinmon component and adds it to enemyPartyStoragePrefab

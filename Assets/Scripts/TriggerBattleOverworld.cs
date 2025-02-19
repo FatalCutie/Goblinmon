@@ -4,6 +4,8 @@ using System;
 using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
 
+//This script is for Trainer Battles. Check the appropriate Route RandomEncounter script
+//For wild battles.
 public class TriggerBattleOverworld : MonoBehaviour
 {
     private List<Goblinmon> enemyTeam = new List<Goblinmon>();
@@ -26,7 +28,6 @@ public class TriggerBattleOverworld : MonoBehaviour
      void InitilizeGoblinmonParty(GameObject go)
     {
         //Check if list is empty before running
-
         try
         {
             for (int i = 0; i < 6; i++) //party maximum is 6 units
@@ -55,7 +56,9 @@ public class TriggerBattleOverworld : MonoBehaviour
         go.GetComponent<EnemyPartyStorage>().PopulateEnemyParty(enemyTeam); //
 
         //Load Scene
-        //TODO: Battle transition fade
-        SceneManager.LoadScene("BattleScene");
+        FindObjectOfType<PlayerTileMovement>().movementLocked = true; //Lock player movement during transition
+        FindObjectOfType<AudioManager>().Play("battle"); //Battle music needs to be trimmed, plays as scene transitions
+        FindObjectOfType<SceneController>().TransitionScene("BattleScene");
+        // SceneManager.LoadScene("BattleScene");
     }
 }
