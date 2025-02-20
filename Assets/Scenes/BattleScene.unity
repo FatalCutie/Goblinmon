@@ -1910,7 +1910,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2087887650}
         m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-        m_MethodName: unimplementedRun
+        m_MethodName: TestingRun
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

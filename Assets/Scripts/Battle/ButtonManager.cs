@@ -72,6 +72,13 @@ public class ButtonManager : MonoBehaviour
         StartCoroutine(bs.ScrollText("You can't run from a trainer fight!"));
     }
 
+    public void TestingRun()
+    {
+        FindObjectOfType<AudioManager>().Play("press");
+        FindObjectOfType<AudioManager>().Stop("battle");
+        FindObjectOfType<SceneController>().TransitionScene("OverworldScene");
+    }
+
     public void disableSwitchingMenuAfterSwitch(){
         switchingMenu.SetActive(false);
     }

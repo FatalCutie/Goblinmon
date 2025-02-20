@@ -57,6 +57,7 @@ public class TriggerBattleOverworld : MonoBehaviour
 
         //Load Scene
         FindObjectOfType<PlayerTileMovement>().movementLocked = true; //Lock player movement during transition
+        FindObjectOfType<PlayerPositionManager>().SavePlayersPosition(); //Save players position for after battle
         FindObjectOfType<AudioManager>().Play("battle"); //Battle music needs to be trimmed, plays as scene transitions
         FindObjectOfType<SceneController>().TransitionScene("BattleScene");
         // SceneManager.LoadScene("BattleScene");

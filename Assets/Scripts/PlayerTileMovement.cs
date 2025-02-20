@@ -8,7 +8,7 @@ public class PlayerTileMovement : MonoBehaviour
     public float movespeed = 5f;
     public Transform movepoint;
     public Animator animator;
-    public bool movementLocked = false;
+    public bool movementLocked = true;
     Vector2 movement; //This is sloppy and a bandaid port. Fix this later
     private Vector3 currentTilePosition;
     [SerializeField] private Tilemap longGrassTilemap;
@@ -21,6 +21,7 @@ public class PlayerTileMovement : MonoBehaviour
     void Start()
     {
         movepoint.parent = null;
+        StartCoroutine(UnlockPlayerMovement()); //Unlock player movement after transition
     }
 
     // Update is called once per frame
@@ -28,6 +29,12 @@ public class PlayerTileMovement : MonoBehaviour
     {
         //Movement
         PlayerMovement();
+    }
+
+    IEnumerator UnlockPlayerMovement()
+    {
+        FindObjectOfType<PlayerPositionManager>().RememberPlayerPosition(); //Sets player position
+        yield return new WaitForSeconds(2); //This is hardcoded. Adjust this with animation speed
     }
 
     void PlayerMovement()

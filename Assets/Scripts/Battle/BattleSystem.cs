@@ -42,7 +42,7 @@ public class BattleSystem : MonoBehaviour
         sm = FindObjectOfType<SwitchingManager>();
         ps = FindObjectOfType<PartyStorage>();
         state = BattleState.START;
-        FindObjectOfType<AudioManager>().Play("battle");
+        //FindObjectOfType<AudioManager>().Play("battle");
         StartCoroutine(SetupBattle());
     }
 

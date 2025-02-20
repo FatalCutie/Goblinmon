@@ -311,7 +311,6 @@ public class EnemyAI : MonoBehaviour
     //TODO: Add randomized damage modifier range (.85 - 1) for more random choices
     private SOMove FindAttackingMove()
     {
-        Debug.Log($"Looking at internal player HP while finding attack move, which is {internalPlayer.currentHP}");
         SOType playerType = internalPlayer.goblinData.type;
         SOMove returnMove = emptyMove;
 
@@ -332,7 +331,6 @@ public class EnemyAI : MonoBehaviour
                 if (moveDamage > returnMove.damage) returnMove = move;
             }
         }
-        Debug.Log($"Looking at internal player HP after finding attack move, which is {internalPlayer.currentHP}");
         return returnMove;
     }
 
@@ -393,9 +391,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         //Attack player
-        Debug.Log($"Actual player HP: {actualPlayer.currentHP}");
         bool isDead = actualPlayer.TakeDamage(move.damage, strongAttack, self);
-        Debug.Log($"Actual player HP after TakeDamage: {actualPlayer.currentHP}");
         bs.playerHUD.setHP(actualPlayer.currentHP, actualPlayer);
         yield return new WaitForSeconds(2f);
 
