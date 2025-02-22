@@ -8,7 +8,7 @@ public class Goblinmon : MonoBehaviour
     public int currentHP;
     public int attackModifier;
     public int defenseModifier;
-    System.Random rnd = new System.Random(); //This is really inefficient LOL!
+    //This is really inefficient LOL!
 
     void Awake()
     {
@@ -42,7 +42,7 @@ public class Goblinmon : MonoBehaviour
     public int ApplyDamageModifiers(int dmg, Goblinmon attacker)
     {
         //Creates random modifier to multiply damage with
-        float decider = rnd.Next(1, 16);
+        float decider = FindObjectOfType<BattleSystem>().rnd.Next(1, 16);
         float randomDamageModifier = 0.84f + decider * 0.01f; //Creates damage range of .85 and 1
 
         int returnDamage = dmg;

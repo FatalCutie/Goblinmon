@@ -62,16 +62,22 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SetupBattle()
     { //Prefab scales with battle station, fix is unclear
-        //TODO: This throws out the first unit in the party. In the future add
-        //protection in case the first unit is fainted
-        //Instantiate player
-        // playerGO = Instantiate(playerPrefab, new UnityEngine.Vector3(
-        // playerBattleStation.transform.position.x, playerBattleStation.transform.position.y + 1f,
-        // playerBattleStation.transform.position.z), UnityEngine.Quaternion.identity, playerBattleStation);
-        //First goblinmon in Goblinmon Array sent out first
-        playerGO.GetComponent<Goblinmon>().goblinData = ps.goblinmon[0].goblinData;
+
+        //Check for first unit that isn't dead
+        int j = 0;
+        for (int i = 0; i < 6; i++)
+        {
+            if (ps.goblinmon[i].currentHP > 0)
+            {
+                j = i;
+                break;
+            }
+        }
+
+        //Instantiate battle based on above unit
+        playerGO.GetComponent<Goblinmon>().goblinData = ps.goblinmon[j].goblinData;
         playerUnit = playerGO.GetComponent<Goblinmon>();
-        playerUnit.currentHP = ps.goblinmon[0].currentHP;
+        playerUnit.currentHP = ps.goblinmon[j].currentHP;
         //Will have to adjust sprite positions during sprite production
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
         pSpriteR.sprite = playerUnit.goblinData.sprite;
@@ -86,14 +92,13 @@ public class BattleSystem : MonoBehaviour
         eAI.InitilizeUnitsForEnemyAI(enemyUnit, playerUnit);
         eSpriteR.sprite = enemyUnit.goblinData.sprite;
 
-
-        //dialogueText.text = "A wild " + enemyUnit.goblinData.gName + " approches!";
-        StartCoroutine(ScrollText($"A wild {enemyUnit.goblinData.gName} approches!"));
-
         //Updates the HUD
         playerHUD.SetHUD(playerUnit);
         bm.SetPlayerMoves(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
+
+        yield return new WaitForSeconds(.5f); //to account for transition
+        StartCoroutine(ScrollText($"A wild {enemyUnit.goblinData.gName} approches!"));
 
         yield return new WaitForSeconds(2f);
 
@@ -320,9 +325,10 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator ReturnToOverworld()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
+        FindObjectOfType<SceneController>().TransitionScene("OverworldScene");
+        yield return new WaitForSeconds(2f); //Hardcoded with transition time
         FindObjectOfType<AudioManager>().Stop("win");
-        SceneManager.LoadScene("OverworldScene");
     }
 
     public void PlayerTurn()

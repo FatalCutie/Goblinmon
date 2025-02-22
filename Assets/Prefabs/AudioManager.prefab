@@ -87,3 +87,17 @@ MonoBehaviour:
     sBlend: 0
     loop: 1
     source: {fileID: 0}
+  - name: shake
+    clip: {fileID: 8300000, guid: d7fd96ebfc1c1044c86edfd96ad4cabc, type: 3}
+    volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: catch
+    clip: {fileID: 8300000, guid: 7b199ca3e48ff1843960bc9ac7307999, type: 3}
+    volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}

@@ -60,21 +60,11 @@ public class ButtonManager : MonoBehaviour
         buttonsBasic.SetActive(true);
     }
 
-    public void unimplementedBag()
-    {
-        FindObjectOfType<AudioManager>().Play("press");
-        StartCoroutine(bs.ScrollText("You have no items!"));
-    }
-
     public void Catch()
     {
-        StartCoroutine(FindObjectOfType<CatchSystem>().AttemptToCatch(bs.playerUnit));
-    }
-
-    public void unimplementedRun()
-    {
         FindObjectOfType<AudioManager>().Play("press");
-        StartCoroutine(bs.ScrollText("You can't run from a trainer fight!"));
+        disableButtonsDuringAttack();
+        StartCoroutine(FindObjectOfType<CatchSystem>().AttemptToCatch(bs.enemyUnit));
     }
 
     public void TestingRun()
