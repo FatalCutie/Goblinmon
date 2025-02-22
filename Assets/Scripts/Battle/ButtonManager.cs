@@ -66,6 +66,11 @@ public class ButtonManager : MonoBehaviour
         StartCoroutine(bs.ScrollText("You have no items!"));
     }
 
+    public void Catch()
+    {
+        StartCoroutine(FindObjectOfType<CatchSystem>().AttemptToCatch(bs.playerUnit));
+    }
+
     public void unimplementedRun()
     {
         FindObjectOfType<AudioManager>().Play("press");

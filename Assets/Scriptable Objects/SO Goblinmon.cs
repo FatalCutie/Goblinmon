@@ -11,7 +11,7 @@ public class SOGoblinmon : ScriptableObject
     public Sprite sprite;
     public int maxHP;
     // public int currentHP;
-
+    public int catchRate = 255;
     public SOType type;
     public List<SOMove> moveset;
 
