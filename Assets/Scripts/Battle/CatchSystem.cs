@@ -5,12 +5,15 @@ using UnityEngine;
 public class CatchSystem : MonoBehaviour
 {
     BattleSystem bs;
+    PartyStorage ps;
     [SerializeField] Animator battleAnimator;
     [SerializeField] Animator enemyAnimator;
+    public Goblinmon tempHoler;
     float captureScore;
 
     void Start()
     {
+        ps = FindObjectOfType<PartyStorage>();
         bs = FindObjectOfType<BattleSystem>();
     }
     public IEnumerator AttemptToCatch(Goblinmon g){
@@ -39,12 +42,12 @@ public class CatchSystem : MonoBehaviour
         //Run calculation to see if catch is successful
         //TODO: Replace 16 with ball modifier. Lower number = better ball
         float number = gd.maxHP * gd.catchRate * 4 / (g.currentHP * 10);
-        Debug.Log($"{gd.maxHP * gd.catchRate * 4} / {g.currentHP * 255}");
+        //Debug.Log($"{gd.maxHP * gd.catchRate * 4} / {g.currentHP * 255}");
         float numberToBeat = bs.rnd.Next(0, 255);
-        Debug.Log($"Using {number} to beat {numberToBeat}!");
-        captureScore = number;
+        //Debug.Log($"Using {number} to beat {numberToBeat}!");
+        captureScore = numberToBeat - number;
         //Return true or false
-        if (number > numberToBeat) return true;
+        if (number >= numberToBeat) return true;
 
         return false;
     }
@@ -65,21 +68,41 @@ public class CatchSystem : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         //Add goblinmon to player party
-        if (FindObjectOfType<PartyStorage>().goblinmon.Count + 1 <= 6)
+        if (ps.goblinmon.Count + 1 <= 6)
         {
             Goblinmon g = GoblinToAdd(bs.enemyUnit);
-            FindObjectOfType<PartyStorage>().goblinmon.Add(g);
+            ps.goblinmon.Add(g);
+
+            //End battle
+            bs.state = BattleState.WON;
+            bs.EndBattle();
         }
         else
         {
-            //TODO: Implement
             StartCoroutine(bs.ScrollText("Please select a party member to release!"));
+            FindObjectOfType<SwitchingManager>().FlipUnitButtonFunctionality(); //Pressed button will now release unit, not switch it
+            FindObjectOfType<ButtonManager>().enableSwitchingMenu();
+            //Standby waiting for a press
         }
+    }
+    //Dummy void so we can disable the switching menu during victory
+    public void BeginReleaseUnit(int i)
+    {
+        StartCoroutine(ReleaseUnit(i));
+    }
+    public IEnumerator ReleaseUnit(int i)
+    {
+        Goblinmon g = GoblinToAdd(bs.enemyUnit);
+        StartCoroutine(bs.ScrollText($"Goodbye {ps.goblinmon[i].goblinData.gName}, hello {g.goblinData.gName}!"));
+        Destroy(ps.goblinmon[i]); //Remove Goblinmon before overriding to prevent memory leak
+        ps.goblinmon[i] = g;
+        ps.goblinmonSO[i] = g.goblinData;
+        FindObjectOfType<ButtonManager>().HideSwitchingMenuAfterCapture();
+        yield return new WaitForSeconds(1.5f);
 
         //End battle
         bs.state = BattleState.WON;
         bs.EndBattle();
-
     }
 
     //Clone data from old unit to a new unit
@@ -88,13 +111,15 @@ public class CatchSystem : MonoBehaviour
         Goblinmon toReturn = FindObjectOfType<PartyStorage>().AddComponent<Goblinmon>();
         toReturn.currentHP = g.currentHP;
         toReturn.goblinData = g.goblinData;
+        toReturn.CloneIdFrom(g);
+        tempHoler = toReturn;
         return toReturn;
     }
 
     private IEnumerator FailedCapture()
     {
         //Calculate # of shakes before break
-        int j = CalculateShakes(bs.enemyUnit);
+        int j = CalculateShakes();
         yield return new WaitForSeconds(1);
         for (int i = 0; i < j; i++)
         {
@@ -133,19 +158,12 @@ public class CatchSystem : MonoBehaviour
     }
 
     //Calculate the # of times ball shakes before breaking
-    private int CalculateShakes(Goblinmon g){
-        float shakeValue = g.goblinData.catchRate * 100 / 255;
-        //Debug.Log($"Shake value {shakeValue}");
-        //where the value of Ball is 255 for the Poké Ball, 200 for the Great Ball, or 150 for other balls.
-        if (shakeValue >= 225) return 3;
+    private int CalculateShakes()
+    {
+        if (captureScore < 10) return 3;
+        else if (captureScore < 30) return 2;
+        else if (captureScore < 70) return 1;
 
-        float d = shakeValue * captureScore / 10; //Feel free to tweak 10 to whatever. This is just for testing purposes
-        //Debug.Log($"Using to check {d}");
-
-        if (d < 10) return 0;
-        else if (d < 30) return 1;
-        else if (d < 70) return 2;
-
-        return 3;
+        return 0;
     }
 }

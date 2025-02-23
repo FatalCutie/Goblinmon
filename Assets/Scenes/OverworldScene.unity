@@ -6183,6 +6183,22 @@ PrefabInstance:
       propertyPath: hasGottenGoblinmon
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
+      propertyPath: goblinmonSO.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
+      propertyPath: goblinmonSO.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 319c9205674def14a836c32a2bd143ac, type: 2}
+    - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
+      propertyPath: goblinmonSO.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 319c9205674def14a836c32a2bd143ac, type: 2}
+    - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
+      propertyPath: goblinmonSO.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 319c9205674def14a836c32a2bd143ac, type: 2}
     - target: {fileID: 473450462285857011, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -48,6 +48,7 @@ public class PartyStorage : MonoBehaviour
                         //Destroy(gameObject.GetComponent<Goblinmon>());
                     }
                 }
+                //TODO: Destroy list
             }
             catch (ArgumentOutOfRangeException) { }
 

@@ -69,6 +69,8 @@ public class EnemyAI : MonoBehaviour
 
     //Updates player in calculations to actual player
     //Prevents ai from "predicting" a switch in
+
+    //TODO: This isn't working properly?
     public void UpdateInternalPlayerUnit()
     {
         internalPlayer.goblinData = actualPlayer.goblinData;
@@ -85,22 +87,22 @@ public class EnemyAI : MonoBehaviour
         float healthRangeModifier = rnd.Next(1, 21); //Will switch randomly between 10% health and 30% health
         if (enemyType == EnemyType.TRAINER && self.currentHP <= self.goblinData.maxHP * (.09 + healthRangeModifier * 0.01))
         {
-            Debug.Log("Things look hairy, I'm gonna try and switch");
+            //Debug.Log("Things look hairy, I'm gonna try and switch");
             Goblinmon safeSwitch = FindSafeSwitch(false);
             if (safeSwitch != null)
             {
-                Debug.Log($"{safeSwitch.goblinData.gName} looks like a safe option, I'm gonna switch!");
+                //Debug.Log($"{safeSwitch.goblinData.gName} looks like a safe option, I'm gonna switch!");
                 StartCoroutine(SwitchAction(safeSwitch, false));
                 return;
             }
-            else Debug.Log("Nevermind, I'm not gonna switch");
+            //else Debug.Log("Nevermind, I'm not gonna switch");
         }
 
         //Second see if there is a move that kills player
         SOMove lethalMove = IsEnemyKillable();
         if (lethalMove != null)
         {
-            Debug.Log($"Found a lethal move {lethalMove.moveName}, using it");
+            //Debug.Log($"Found a lethal move {lethalMove.moveName}, using it");
             StartCoroutine(AttackPlayerAction(lethalMove));
             return;
         }
@@ -110,7 +112,7 @@ public class EnemyAI : MonoBehaviour
         if (decider <= 5 || decider > 8) //70% chance to attack
         {
             SOMove bestAttackingMove = FindAttackingMove();
-            Debug.Log($"Using best move {bestAttackingMove.moveName}");
+            //Debug.Log($"Using best move {bestAttackingMove.moveName}");
             StartCoroutine(AttackPlayerAction(bestAttackingMove));
         }
         else //if rnd rolls between a 6 and 8
@@ -149,6 +151,9 @@ public class EnemyAI : MonoBehaviour
 
     //Finds a safe unit (relative to internal player) to switch into
     //TODO; Transition to point based system?
+
+    //THIS DOES NOT RUN ON THE NEW GOBLINMON ID SYSTEM. THIS COULD CAUSE PROBLEMS IN THE FUTURE!!!
+
     public Goblinmon FindSafeSwitch(bool needUnitForSwitch)
     {
         SOType playerType = internalPlayer.goblinData.type;
@@ -284,7 +289,7 @@ public class EnemyAI : MonoBehaviour
     //Checks if there is a move that kills the internal player and returns it
     private SOMove IsEnemyKillable()
     {
-        Debug.Log($"I'm about to look at my internal player's hp, which is {internalPlayer.currentHP}");
+        //Debug.Log($"I'm about to look at my internal player's hp, which is {internalPlayer.currentHP}");
         int playerHP = internalPlayer.currentHP;
         SOType playerType = internalPlayer.goblinData.type;
         foreach (SOMove move in self.goblinData.moveset)

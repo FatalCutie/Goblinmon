@@ -4,58 +4,60 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Populated in Switching Manager
 public class UnitButton : MonoBehaviour
 {
     public Goblinmon unit;
+    public int unitNumber;
     private TextMeshProUGUI text;
     private SwitchingManager sm;
-    [SerializeField] private ColorBlock colorBlock;
+    public Slider hp;
+    public enum ButtonMode { SWITCH, RELEASE }
+    public bool activeUnit = false;
+    public ButtonMode buttonMode = ButtonMode.SWITCH;
 
     void Start()
     {
-        colorBlock = this.GetComponent<Button>().colors;
         sm = FindObjectOfType<SwitchingManager>();
         text = this.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
     }
 
     void FixedUpdate()
     {
         //this is awful, but it's easy and it works
-        if (unit == null && text.text != "")
+        if (unit == null && buttonMode != ButtonMode.RELEASE && text.text != "")
         {
             text.text = "";
+            hp.gameObject.SetActive(false);
         }
 
-        //If attached unit is dead button is red
-        if (unit != null && unit.currentHP <= 0)
-        {
-            //TODO: this isn't changing color 
-            if (this.GetComponent<Button>().colors.normalColor != Color.red)
-            {
-                this.GetComponent<Image>().color = Color.red;
-                colorBlock.normalColor = Color.red;
-                colorBlock.highlightedColor = new Color(125, 0, 0);
-                colorBlock.pressedColor = new Color(75, 0, 0);
-                GetComponent<Button>().colors = colorBlock;
-            }
-        }
+        //This is woefully inefficient
+        //Oh well!
+        if (unit.ID == FindObjectOfType<BattleSystem>().playerUnit.ID
+            && hp.value != FindObjectOfType<BattleSystem>().playerUnit.currentHP)
+            hp.value = FindObjectOfType<BattleSystem>().playerUnit.currentHP;
+
     }
 
     public void SwitchUnitOnPress()
     {
-        Debug.Log("Attempting to Switch!");
-        //Don't switch if no attached unit or attached unit is dead
-        if (unit == null || unit.currentHP <= 0)
+        if (buttonMode == ButtonMode.SWITCH)
         {
-            Debug.Log("Failed to switch!");
-            FindObjectOfType<AudioManager>().Play("damage");
+            //Don't switch if no attached unit or attached unit is dead
+            if (unit == null || unit.currentHP <= 0)
+            {
+                FindObjectOfType<AudioManager>().Play("damage");
+            }
+            else
+            {
+                // Debug.Log($"Switching to {unit.goblinData.gName} which has {unit.currentHP}!");
+                sm.CheckUnitBeforeSwitching(unit);
+            }
         }
-        else
+        else if (buttonMode == ButtonMode.RELEASE)
         {
-            // Debug.Log($"Switching to {unit.goblinData.gName} which has {unit.currentHP}!");
-            sm.CheckUnitBeforeSwitching(unit);
+            FindObjectOfType<CatchSystem>().BeginReleaseUnit(unitNumber);
         }
-
     }
-
 }

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 
-public class Goblinmon : MonoBehaviour
+public class Goblinmon : MonoBehaviourID
 {
     [SerializeField] public SOGoblinmon goblinData;
     public int currentHP;

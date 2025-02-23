@@ -60,6 +60,12 @@ public class ButtonManager : MonoBehaviour
         buttonsBasic.SetActive(true);
     }
 
+    public void HideSwitchingMenuAfterCapture()
+    {
+        FindObjectOfType<AudioManager>().Play("press");
+        switchingMenu.SetActive(false);
+    }
+
     public void Catch()
     {
         FindObjectOfType<AudioManager>().Play("press");

@@ -78,6 +78,7 @@ public class BattleSystem : MonoBehaviour
         playerGO.GetComponent<Goblinmon>().goblinData = ps.goblinmon[j].goblinData;
         playerUnit = playerGO.GetComponent<Goblinmon>();
         playerUnit.currentHP = ps.goblinmon[j].currentHP;
+        playerUnit.CloneIdFrom(ps.goblinmon[j]); //Identity theft is kickass, actually
         //Will have to adjust sprite positions during sprite production
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
         pSpriteR.sprite = playerUnit.goblinData.sprite;
