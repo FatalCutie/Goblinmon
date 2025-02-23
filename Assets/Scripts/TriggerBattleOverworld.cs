@@ -25,7 +25,7 @@ public class TriggerBattleOverworld : MonoBehaviour
         }
     }
 
-     void InitilizeGoblinmonParty(GameObject go)
+    void InitializeGoblinmonParty(GameObject go)
     {
         //Check if list is empty before running
         try
@@ -52,7 +52,7 @@ public class TriggerBattleOverworld : MonoBehaviour
 
         //Instantiate prefab with goblinmon team
         GameObject go = Instantiate(enemyPartyStoragePrefab); //Instantiate Object
-        InitilizeGoblinmonParty(go); //populate Goblinmon
+        InitializeGoblinmonParty(go); //populate Goblinmon
         go.GetComponent<EnemyPartyStorage>().PopulateEnemyParty(enemyTeam); //
 
         //Load Scene

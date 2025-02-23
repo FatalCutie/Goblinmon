@@ -13,7 +13,7 @@ public class Goblinmon : MonoBehaviourID
     void Awake()
     {
         //Set current HP to max HP at start of battle
-        //goblinData.InitilizeGoblinmonHP();
+        //goblinData.InitializeGoblinmonHP();
     }
 
     //Unit takes damage

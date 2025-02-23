@@ -90,7 +90,7 @@ public class BattleSystem : MonoBehaviour
         // new Vector3(enemyBattleStation.transform.position.x, enemyBattleStation.transform.position.y + 50, enemyBattleStation.transform.position.z
         enemyUnit = enemyGO.GetComponent<Goblinmon>();
         eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
-        eAI.InitilizeUnitsForEnemyAI(enemyUnit, playerUnit);
+        eAI.InitializeUnitsForEnemyAI(enemyUnit, playerUnit);
         eSpriteR.sprite = enemyUnit.goblinData.sprite;
 
         //Updates the HUD

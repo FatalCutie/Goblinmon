@@ -35,13 +35,13 @@ public class EnemyAI : MonoBehaviour
 
     }
 
-    //Initilizes EnemyAI, returns Goblinmon for BattleSystem to set hud
-    public Goblinmon InitilizeUnitsForEnemyAI(Goblinmon eu, Goblinmon pr) //this is spelled wrong
+    //Initializes EnemyAI, returns Goblinmon for BattleSystem to set hud
+    public Goblinmon InitializeUnitsForEnemyAI(Goblinmon eu, Goblinmon pr) //this is spelled wrong
     {
-        //Self initilized as first Goblinmon in array
+        //Self initialized as first Goblinmon in array
         internalPlayer = this.AddComponent<Goblinmon>();
         self = eu;
-        self.goblinData = party[0].goblinData;
+        self.goblinData = party[0].goblinData; //Enemy should never have a dead unit so no failsafe needed
         self.currentHP = self.goblinData.maxHP;
 
         //Set up internal and actual player for damage calculations/ai decisionmaking
@@ -54,33 +54,10 @@ public class EnemyAI : MonoBehaviour
         if (party.Count > 1) enemyType = EnemyType.TRAINER;
         else enemyType = EnemyType.WILD;
 
-        //Initilizes a list of Goblinmon for enemy to save their health totals
-        //This code is now redundent as initilization is happened before the battle is started
-        // foreach (SOGoblinmon unit in units)
-        // {
-        //     Goblinmon newUnit = unitHolder.AddComponent<Goblinmon>();
-        //     newUnit.goblinData = unit;
-        //     newUnit.currentHP = unit.maxHP;
-        //     party.Add(newUnit);
-        // }
-
         return self;
     }
 
-    //Updates player in calculations to actual player
-    //Prevents ai from "predicting" a switch in
-
-    //TODO: This isn't working properly?
-    public void UpdateInternalPlayerUnit()
-    {
-        internalPlayer.goblinData = actualPlayer.goblinData;
-        internalPlayer.currentHP = actualPlayer.currentHP;
-        internalPlayer.attackModifier = actualPlayer.attackModifier;
-        internalPlayer.defenseModifier = actualPlayer.attackModifier;
-    }
-
     //Find the best action and take it
-    //TODO: Introduce point system to weigh tactics? (Buff/Debuff if high health? Switch if in bad situation?)
     public void FindOptimalOption()
     {
         //First check if health is low, if so find something to switch to
@@ -122,12 +99,12 @@ public class EnemyAI : MonoBehaviour
                 SOMove chosenBuffingMove = FindBuffingMove();
                 if (chosenBuffingMove.moveAction == SOMove.MoveAction.BUFF)
                 {
-                    Debug.Log("I'm gonna buff myself!");
+                    //Debug.Log("I'm gonna buff myself!");
                     StartCoroutine(BuffEnemyAction(chosenBuffingMove));
                 }
                 else if (chosenBuffingMove.moveAction == SOMove.MoveAction.DEBUFF)
                 {
-                    Debug.Log("I'm gonna debuff the player!");
+                    //Debug.Log("I'm gonna debuff the player!");
                     StartCoroutine(DebuffPlayerAction(chosenBuffingMove));
                 }
                 else
@@ -138,7 +115,7 @@ public class EnemyAI : MonoBehaviour
             else //If no buffing move just attack
             {
                 SOMove bestAttackingMove = FindAttackingMove();
-                Debug.Log($"I don't have any buffing moves so I am going to attack using {bestAttackingMove.moveName} instead!");
+                //Debug.Log($"I don't have any buffing moves so I am going to attack using {bestAttackingMove.moveName} instead!");
                 StartCoroutine(AttackPlayerAction(bestAttackingMove));
             }
         }
@@ -150,10 +127,6 @@ public class EnemyAI : MonoBehaviour
     #region Switching
 
     //Finds a safe unit (relative to internal player) to switch into
-    //TODO; Transition to point based system?
-
-    //THIS DOES NOT RUN ON THE NEW GOBLINMON ID SYSTEM. THIS COULD CAUSE PROBLEMS IN THE FUTURE!!!
-
     public Goblinmon FindSafeSwitch(bool needUnitForSwitch)
     {
         SOType playerType = internalPlayer.goblinData.type;
@@ -161,7 +134,7 @@ public class EnemyAI : MonoBehaviour
         foreach (Goblinmon unit in party)
         {
             SOType selfType = unit.goblinData.type;
-            if (unit.goblinData.gName != self.goblinData.gName
+            if (unit.ID != self.ID
             && unit.currentHP > unit.goblinData.maxHP * 0.4 //only switch in if above 40% health
             && playerType.weakAgainstEnemyType(selfType))
             {
@@ -169,20 +142,20 @@ public class EnemyAI : MonoBehaviour
             }
 
         }
-        Debug.Log("Nothing strong, Looking for neutral");
+        //Debug.Log("Nothing strong, Looking for neutral");
 
         //If nothing then look for something neutral
         foreach (Goblinmon unit in party)
         {
             SOType selfType = unit.goblinData.type;
-            if (unit.goblinData.gName != self.goblinData.gName
+            if (unit.ID != self.ID
             && unit.currentHP > unit.goblinData.maxHP * 0.4
             && !selfType.weakAgainstEnemyType(playerType))
             {
                 return unit;
             }
         }
-        Debug.Log("Nothing neutral, do I need to switch?");
+        //Debug.Log("Nothing neutral, do I need to switch?");
 
         if (needUnitForSwitch) //Look for the highest HP unit and switch to it
         {
@@ -195,15 +168,13 @@ public class EnemyAI : MonoBehaviour
             Goblinmon highestHPUnit = null;
             foreach (Goblinmon unit in availableUnits)
             {
-
                 if (unit.currentHP > highestHP) highestHPUnit = unit;
             }
             return highestHPUnit;
         }
-        Debug.Log("I don't need to switch");
+        //Debug.Log("I don't need to switch");
 
         return null; //If nothing neutral pick another option
-
     }
 
     //Returns true if there are alive units, returns false otherwise
@@ -229,7 +200,7 @@ public class EnemyAI : MonoBehaviour
         int unitID = 0;
         foreach (Goblinmon un in party)
         {
-            if (un.goblinData == unitToSave.goblinData)
+            if (un.ID == unitToSave.ID)
             {
                 break;
             }
@@ -265,6 +236,8 @@ public class EnemyAI : MonoBehaviour
         Goblinmon gob = bs.enemyUnit;
         gob.goblinData = unit.goblinData;
         gob.currentHP = unit.currentHP;
+        gob.CloneIdFrom(unit);
+
         //Clear stat changes
         gob.defenseModifier = 0;
         gob.attackModifier = 0;
@@ -274,13 +247,8 @@ public class EnemyAI : MonoBehaviour
         bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = self.goblinData.sprite;
         yield return new WaitForSeconds(1);
 
-        //End the enemys turn
-        bs.state = BattleState.PLAYERTURN;
-        if (internalPlayer != actualPlayer) UpdateInternalPlayerUnit();
-        bm.enableBasicButtonsOnPress();
-        bs.PlayerTurn();
+        EndTurn();
     }
-
 
     #endregion
 
@@ -418,11 +386,8 @@ public class EnemyAI : MonoBehaviour
             }
         }
         else
-        {   //End enemy's turn
-            bs.state = BattleState.PLAYERTURN;
-            //UpdateInternalPlayerUnit();
-            bm.enableBasicButtonsOnPress();
-            bs.PlayerTurn();
+        {
+            EndTurn();
         }
 
     }
@@ -481,9 +446,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         //End Turn
-        bs.state = BattleState.PLAYERTURN;
-        bm.enableBasicButtonsOnPress();
-        bs.PlayerTurn();
+        EndTurn();
     }
 
     //Debuffs Player
@@ -539,11 +502,30 @@ public class EnemyAI : MonoBehaviour
                 }
         }
 
-        //End Turn
-        bs.state = BattleState.PLAYERTURN;
-        bm.enableBasicButtonsOnPress();
-        bs.PlayerTurn();
+        EndTurn();
     }
     #endregion
 
+    //Updates player in calculations to actual player
+    //Prevents ai from intentionally "predicting" a switch in
+    public void UpdateInternalPlayerUnit()
+    {
+        //Debug.Log("[EnemyAI]: Updating internal Unit");
+        internalPlayer.goblinData = actualPlayer.goblinData;
+        internalPlayer.currentHP = actualPlayer.currentHP;
+        internalPlayer.attackModifier = actualPlayer.attackModifier;
+        internalPlayer.defenseModifier = actualPlayer.attackModifier;
+    }
+
+    //Update internal player then end turn
+    public void EndTurn()
+    {
+        bs.state = BattleState.PLAYERTURN;
+        if (internalPlayer != actualPlayer //Pretty sure this always updates player because of IDs 
+        || internalPlayer.currentHP != actualPlayer.currentHP)
+            UpdateInternalPlayerUnit();
+
+        bm.enableBasicButtonsOnPress();
+        bs.PlayerTurn();
+    }
 }

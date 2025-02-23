@@ -23,11 +23,11 @@ public class PartyStorage : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-        InitilizeGoblinmonParty();
+        InitializeGoblinmonParty();
     }
 
     //If goblinmon list is not populated then populate it with info from goblinmonSO
-    void InitilizeGoblinmonParty()
+    void InitializeGoblinmonParty()
     {
         //Check if list is empty before running
         if (goblinmon.Count == 0 && hasGottenGoblinmon) //Goblinmon
