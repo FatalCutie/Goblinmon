@@ -34,7 +34,7 @@ public class UnitButton : MonoBehaviour
 
         //This is woefully inefficient
         //Oh well!
-        if (unit.ID == FindObjectOfType<BattleSystem>().playerUnit.ID
+        if (unit != null && unit.ID == FindObjectOfType<BattleSystem>().playerUnit.ID
             && hp.value != FindObjectOfType<BattleSystem>().playerUnit.currentHP)
             hp.value = FindObjectOfType<BattleSystem>().playerUnit.currentHP;
 
