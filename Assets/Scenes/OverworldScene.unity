@@ -5573,6 +5573,7 @@ MonoBehaviour:
   movementLocked: 0
   longGrassTilemap: {fileID: 2100270172}
   tilemapDetector: {fileID: 1610750560}
+  r2d: {fileID: 1300853271}
   inGrass: 0
   movementStopperLayer:
     serializedVersion: 2

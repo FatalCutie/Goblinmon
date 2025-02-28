@@ -27,7 +27,6 @@ public class PlayerTileMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Movement
         PlayerMovement();
     }
 
@@ -144,12 +143,13 @@ public class PlayerTileMovement : MonoBehaviour
         }
     }
 
+    //This only seems to trigger half the time but I can't figure out how to make it trigger all the time.
     private void OnTriggerEnter2D(Collider2D other)
     {
         //Flip inGrass bool
         if (other.CompareTag("Tall Grass"))
         {
-            // Debug.Log("Entering tall grass!");
+            Debug.Log("Entering tall grass!");
             // inGrass = true;
             other.GetComponent<TallGrass>().RandomEncounter();
         }
