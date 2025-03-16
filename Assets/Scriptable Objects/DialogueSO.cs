@@ -6,4 +6,5 @@ using UnityEngine;
 public class DialogueSO : ScriptableObject
 {
     public List<string> text;
+    public bool battle = false;
 }

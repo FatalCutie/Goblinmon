@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7d119150f4997c42bbd717171d509c8, type: 3}
-  m_Name: Water
+  m_Script: {fileID: 11500000, guid: 0188a8dcd8e881646856901b1bae9163, type: 3}
+  m_Name: Grass2
   m_EditorClassIdentifier: 
-  weakness:
-  - {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
-  - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
+  gName: Picked Men
+  gLevel: 0
+  sprite: {fileID: 0}
+  maxHP: 0
+  catchRate: 255
+  type: {fileID: 0}
+  moveset: []

@@ -18,9 +18,9 @@ public class DialogueManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.O)) animator.SetBool("Open", true);
         if(Input.GetKeyDown(KeyCode.P)) animator.SetBool("Open", false);
-        if(Input.GetKeyDown(KeyCode.I)) StartCoroutine(ScrollText(so));
+        if (Input.GetKeyDown(KeyCode.I)) StartCoroutine(ScrollText(so, null));
     }
-    public IEnumerator ScrollText(DialogueSO so)
+    public IEnumerator ScrollText(DialogueSO so, NPC toReturn)
     {
         int i = 0;
         dialogueText.text = ""; //Clear previous text/sample text from editor
@@ -59,6 +59,13 @@ public class DialogueManager : MonoBehaviour
         //Close textbox when out of lines
         animator.SetBool("Open", false);
         pTM.movementLocked = false;
+        if(toReturn.triggerBattle){
+            toReturn.gameObject.GetComponent<TriggerBattleOverworld>().TriggerBattleSequence();
+        }
+        if (toReturn)
+        {
+            toReturn.canInteract = true;
+        }
     }
 
 }

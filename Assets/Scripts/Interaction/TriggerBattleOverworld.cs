@@ -48,7 +48,7 @@ public class TriggerBattleOverworld : MonoBehaviour
             catch (ArgumentOutOfRangeException) { }
     }
 
-    void TriggerBattleSequence(){
+    public void TriggerBattleSequence(){
 
         //Instantiate prefab with goblinmon team
         GameObject go = Instantiate(enemyPartyStoragePrefab); //Instantiate Object
