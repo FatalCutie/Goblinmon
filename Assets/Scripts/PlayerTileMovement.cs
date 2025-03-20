@@ -38,7 +38,7 @@ public class PlayerTileMovement : MonoBehaviour
 
     void PlayerMovement()
     {
-        transform.position = Vector3.MoveTowards(transform.position, movepoint.position + new Vector3(0, 0.5f, 0), movespeed * Time.deltaTime);
+        if (!movementLocked) transform.position = Vector3.MoveTowards(transform.position, movepoint.position + new Vector3(0, 0.5f, 0), movespeed * Time.deltaTime);
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 

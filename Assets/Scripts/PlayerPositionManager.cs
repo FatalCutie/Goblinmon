@@ -32,8 +32,8 @@ public class PlayerPositionManager : MonoBehaviour
         PlayerTileMovement player = FindObjectOfType<PlayerTileMovement>();
         //If player position is set and doesen't match with internal position
         if(playerPosition != new Vector3() && player.movepoint.position != playerPosition){
-            player.movepoint.position = playerPosition; //Move movepoint first 
-            player.gameObject.transform.position = playerPosition - new Vector3(0, 0.5f, 0); //Then actual player
+            player.movepoint.position = playerPosition - new Vector3(0f, 0.5f, 0); //Move movepoint first 
+            player.gameObject.transform.position = playerPosition; //Then actual player
 
         } 
     }
