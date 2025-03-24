@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &453070095755991376
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9218807353219217586}
+  - component: {fileID: 1074073000738238177}
+  m_Layer: 0
+  m_Name: FusionCalculator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9218807353219217586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453070095755991376}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1074073000738238177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453070095755991376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5a9fd2c83e3e5f4397d6154d7446aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fire1: {fileID: 11400000, guid: 969f58b3700fbf94391f02cfd94258d8, type: 2}
+  fire2: {fileID: 11400000, guid: b282e4faf598e6b428c625035ad3e6d2, type: 2}
+  grass1: {fileID: 11400000, guid: 2875e90ce313c12489196937969a8242, type: 2}
+  grass2: {fileID: 11400000, guid: f3fac99198f4f1941b5f9b42c9c401c6, type: 2}
+  ice1: {fileID: 11400000, guid: 32ec4f1c2a508db45914b0665066d6c4, type: 2}
+  ice2: {fileID: 11400000, guid: f7eeba8ef790693468126a35db4b159e, type: 2}
+  magic1: {fileID: 11400000, guid: af63e05a06a3e4a458c44d8902558ec4, type: 2}
+  water1: {fileID: 11400000, guid: 319c9205674def14a836c32a2bd143ac, type: 2}
+  water2: {fileID: 11400000, guid: 012bed26323e0db4ba28fb505dbcfc77, type: 2}
+  fire1Fire1: {fileID: 11400000, guid: a0d1ba0eb903e3047b1e3d39fefba7c6, type: 2}
+  fire1Fire2: {fileID: 11400000, guid: 90e0545193f32c246bfa9545780714bd, type: 2}
+  fire1Grass1: {fileID: 11400000, guid: 818daa7fa36b4014bb057717e3fd81de, type: 2}
+  fire1Grass2: {fileID: 11400000, guid: 96a0d0d541ccb454f8f31f03d595a13a, type: 2}
+  fire1Ice1: {fileID: 11400000, guid: b1320543174fd074899458628f274761, type: 2}
+  fire1Ice2: {fileID: 11400000, guid: 142b9a8ee7e8b164ebd8be20edf66fd1, type: 2}
+  fire1Magic1: {fileID: 11400000, guid: db095cab7f12b264c81620f4b6a78d72, type: 2}
+  fire1Water1: {fileID: 11400000, guid: eeea2fedc684afa4ca56f86c036f7c41, type: 2}
+  fire1Water2: {fileID: 11400000, guid: 235527e6057511c43ab94b9762bb7c39, type: 2}
+  fire2Fire2: {fileID: 11400000, guid: 7b5b5e1b62dddb3448b8105bbbee2014, type: 2}
+  fire2Grass1: {fileID: 11400000, guid: a98e6b09805c57645a2d4a6aa193a857, type: 2}
+  fire2Grass2: {fileID: 11400000, guid: 03bcb4bf91eabde479fbaf083aaf6cdd, type: 2}
+  fire2Ice1: {fileID: 11400000, guid: c8a9dc78670c8c04db68052779e99d53, type: 2}
+  fire2Ice2: {fileID: 11400000, guid: 834b18b6b70711d47bea0e24de4a19ac, type: 2}
+  fire2Magic1: {fileID: 11400000, guid: 03658bda4b402d04e9de2f55df383df0, type: 2}
+  fire2Water1: {fileID: 11400000, guid: 31a48113f5a65d845add901ed6f42be9, type: 2}
+  fire2Water2: {fileID: 11400000, guid: 9fbdabb4d7df8bb42bdc4c1f5cde6d55, type: 2}
+  grass1Grass1: {fileID: 11400000, guid: a1b21c5bac6585a40ac4070142ad69e2, type: 2}
+  grass1Grass2: {fileID: 11400000, guid: 0a66f40773e63c64288436d47d56a7f5, type: 2}
+  grass1Ice1: {fileID: 11400000, guid: 8fe0e7c28762feb43aa0cdcfca074bee, type: 2}
+  grass1Ice2: {fileID: 11400000, guid: 49b10bb936f03f8459236ba0319f94c5, type: 2}
+  grass1Magic1: {fileID: 11400000, guid: 085113e94e91a9b4cba92c616c023690, type: 2}
+  grass1Water1: {fileID: 11400000, guid: 236702a992d126d48b0be578dbee322a, type: 2}
+  grass1Water2: {fileID: 11400000, guid: 0e6850282eeb4e94c8446199e6a083a2, type: 2}
+  grass2Grass2: {fileID: 11400000, guid: 252cc3743e4786548a8cc836d54efd94, type: 2}
+  grass2Ice1: {fileID: 11400000, guid: aeb2b8503286bad4288103296a81f13b, type: 2}
+  grass2Ice2: {fileID: 11400000, guid: 86ae837f06dcc0041bfea3f8c7aea086, type: 2}
+  grass2Magic1: {fileID: 11400000, guid: a0fbeb5d60acbc0459656a1f0b9f69d6, type: 2}
+  grass2Water1: {fileID: 11400000, guid: d289afd3d09c31e43aa215fe74c45b66, type: 2}
+  grass2Water2: {fileID: 11400000, guid: dd9a4ec2012069149a61902211e73679, type: 2}
+  ice1Ice1: {fileID: 11400000, guid: b87b6782848c6b44b871e4e551db713b, type: 2}
+  ice1Ice2: {fileID: 11400000, guid: 6fbc8fb6194407d42b01d53f5053e394, type: 2}
+  ice1Magic1: {fileID: 11400000, guid: 676557e96a46c8b42aa8d19533f58cb0, type: 2}
+  ice1Water1: {fileID: 11400000, guid: 095c0a762b94df343b06b0f63ef48984, type: 2}
+  ice1Water2: {fileID: 11400000, guid: 89cd1a32d5b5bdc4cb655609793b4b04, type: 2}
+  ice2Ice2: {fileID: 11400000, guid: 40dcc1a3c3dcbfd418798afb052dad1b, type: 2}
+  ice2Magic1: {fileID: 11400000, guid: b7bdb02d7b8a1e647bb41d7d8bd971f4, type: 2}
+  ice2Water1: {fileID: 11400000, guid: 9d505356141059340bb2a7d4daeb3dd9, type: 2}
+  ice2Water2: {fileID: 11400000, guid: 9312aca434cf97e4e838bfa2f03f1640, type: 2}
+  magic1Magic1: {fileID: 11400000, guid: fa7fcd7eabff76d4ebc3c97fcc5c3992, type: 2}
+  magic1Water1: {fileID: 11400000, guid: c70c2ae8e3c803544b63587877a558cb, type: 2}
+  magic1Water2: {fileID: 11400000, guid: 555a97a410c2a47418765a5ebbaa7a5a, type: 2}
+  water1Water1: {fileID: 11400000, guid: 5c1148681115a5544afa8d9e4f464b8d, type: 2}
+  water1Water2: {fileID: 11400000, guid: 6dff2e51d48274640910360e1a2e6faf, type: 2}
+  water2Water2: {fileID: 11400000, guid: 29925720c62e79a49b806f9ed00086a5, type: 2}
