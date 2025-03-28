@@ -23,7 +23,7 @@ public class PlayerPositionManager : MonoBehaviour
 
     public void SavePlayersPosition(){
         Transform player = FindObjectOfType<PlayerTileMovement>().movepoint;
-        playerPosition = player.position;
+        playerPosition = player.position + new Vector3(0f, 0.5f, 0);
     }
 
     //Places player in previous position
@@ -32,8 +32,10 @@ public class PlayerPositionManager : MonoBehaviour
         PlayerTileMovement player = FindObjectOfType<PlayerTileMovement>();
         //If player position is set and doesen't match with internal position
         if(playerPosition != new Vector3() && player.movepoint.position != playerPosition){
+            player.movementLocked = true;
             player.movepoint.position = playerPosition - new Vector3(0f, 0.5f, 0); //Move movepoint first 
             player.gameObject.transform.position = playerPosition; //Then actual player
+            player.movementLocked = false;
 
         } 
     }

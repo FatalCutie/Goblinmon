@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0188a8dcd8e881646856901b1bae9163, type: 3}
   m_Name: Water2
   m_EditorClassIdentifier: 
-  gName: Soaked Danger
+  gName: Soaked Threat
   gLevel: 0
   sprite: {fileID: 0}
   maxHP: 0

@@ -23,7 +23,10 @@ public class WarpTile : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.collider.CompareTag("Player")){
+        Debug.Log("Colliding!");
+        if (collision.collider.CompareTag("Movepoint"))
+        {
+            Debug.Log("Player!");
             StartCoroutine(WarpToCoords());
         }
     }

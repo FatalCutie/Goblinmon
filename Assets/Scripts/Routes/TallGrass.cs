@@ -28,4 +28,17 @@ public class TallGrass : MonoBehaviour
         encounter.GenerateRandomEncounter();
     }
 
+    //This only seems to trigger half the time but I can't figure out how to make it trigger all the time.
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        //Debug.Log(other.tag);
+        //Flip inGrass bool
+        if (other.CompareTag("Movepoint"))
+        {
+            Debug.Log("Movepoint!");
+            // inGrass = true;
+            RandomEncounter();
+        }
+    }
+
 }
