@@ -48,7 +48,7 @@ public class DialogueManager : MonoBehaviour
             bool waitingForInput = true;
             while (waitingForInput)
             {
-                if (Input.GetKeyDown(KeyCode.Return))
+                if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return))
                 {
                     waitingForInput = false; 
                 }

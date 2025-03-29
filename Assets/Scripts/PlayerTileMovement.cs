@@ -8,32 +8,30 @@ public class PlayerTileMovement : MonoBehaviour
     public float movespeed = 5f;
     public Transform movepoint;
     public Animator animator;
+    public OverworldUI overworldUI;
     public bool movementLocked = true;
     Vector2 movement; //This is sloppy and a bandaid port. Fix this later
     private Vector3 currentTilePosition;
     [SerializeField] private Tilemap longGrassTilemap;
     [SerializeField] private GameObject tilemapDetector;
     public bool inGrass;
+    private Vector2 lastPosition;
+    public float idleTimer = 0f;
+    public float idleThreshold = 3f;
+    public bool playerIsIdle = false;
 
     public LayerMask movementStopperLayer;
 
-    // Start is called before the first frame update
     void Start()
     {
         movepoint.parent = null;
         StartCoroutine(UnlockPlayerMovement()); //Unlock player movement after transition
     }
 
-    // Update is called once per frame
     void Update()
     {
         PlayerMovement();
-    }
-
-    IEnumerator UnlockPlayerMovement()
-    {
-        FindObjectOfType<PlayerPositionManager>().RememberPlayerPosition(); //Sets player position
-        yield return new WaitForSeconds(2); //This is hardcoded. Adjust this with animation speed
+        if (!movementLocked) CheckIfPlayerIsIdle();
     }
 
     void PlayerMovement()
@@ -68,29 +66,45 @@ public class PlayerTileMovement : MonoBehaviour
             }
         }
         //TODO This plays even if player can't move. Figure it out later
-        animator.SetFloat("Speed", movement.sqrMagnitude);
-        //CheckTallGrass();
+        if (!movementLocked) animator.SetFloat("Speed", movement.sqrMagnitude);
     }
 
-    //This code is worthless because I am a stupid idiot who made an
-    //ass out of you AND me
-    void CheckTallGrass()
+    void CheckIfPlayerIsIdle()
     {
-        if (!inGrass) return;
+        if (!playerIsIdle)
+        {
+            // Check for movement in the 2D plane (x and y positions)
+            if (Vector2.Distance(transform.position, lastPosition) > 0.1f)
+            {
+                // Player is moving, reset the idle timer
+                idleTimer = 0f;
+                lastPosition = transform.position;
+            }
+            else
+            {
+                // Player isn't moving, increase idle time
+                idleTimer += Time.deltaTime;
+            }
 
-        Vector3Int cellPosition = longGrassTilemap.WorldToCell(tilemapDetector.transform.position);
-        TileBase tile = longGrassTilemap.GetTile(cellPosition);
-
-        //If on the same tile do not do an encounter check
-        if (tile == null || !tile.name.Equals("Tall Grass") || currentTilePosition == cellPosition)
-            return;
-
-        currentTilePosition = cellPosition;
-
-        Debug.Log("I'm on a new grass tile!");
-        //other.GetComponent<TallGrass>().RandomEncounter();
+            // If idle time exceeds threshold, trigger UI
+            if (idleTimer >= idleThreshold)
+            {
+                overworldUI.OpenItemMenuOnIdle();
+                playerIsIdle = true;
+            }
+        }
+        else
+        {
+            if (Vector2.Distance(transform.position, lastPosition) > 0.1f)
+            {
+                // Player is moving, reset the idle timer
+                idleTimer = 0f;
+                lastPosition = transform.position;
+                overworldUI.CloseItemMenuOnIdle();
+                playerIsIdle = false;
+            }
+        }
     }
-
     //Makes sure player can move to object
     //NOTE: It's way more optimal to check Used By Composite in Tilemap Collider 2D but then the collision checking doesn't work
     //I don't know if this will be relevant to performance problems later but I'm leaving the note here just in case
@@ -103,6 +117,7 @@ public class PlayerTileMovement : MonoBehaviour
             else
             {
                 FindObjectOfType<AudioManager>().Play("damage");
+                idleTimer = 0f;
                 return true;
             }
         }
@@ -113,6 +128,7 @@ public class PlayerTileMovement : MonoBehaviour
             else
             {
                 FindObjectOfType<AudioManager>().Play("damage");
+                idleTimer = 0f;
                 return true;
             }
         }
@@ -144,7 +160,13 @@ public class PlayerTileMovement : MonoBehaviour
         }
     }
 
+    IEnumerator UnlockPlayerMovement()
+    {
+        FindObjectOfType<PlayerPositionManager>().RememberPlayerPosition(); //Sets player position
+        yield return new WaitForSeconds(2); //This is hardcoded. Adjust this with animation speed
+    }
     //This only seems to trigger half the time but I can't figure out how to make it trigger all the time.
+    //I wanted to move this to TallGrass but it only works on the player. Oh Well!
     private void OnTriggerEnter2D(Collider2D other)
     {
         //Flip inGrass bool
@@ -155,15 +177,5 @@ public class PlayerTileMovement : MonoBehaviour
             other.GetComponent<TallGrass>().RandomEncounter();
         }
     }
-
-    // private void OnTriggerExit2D(Collider2D other)
-    // {
-    //     if (other.CompareTag("Tall Grass"))
-    //     {
-    //         // Debug.Log("Exiting tall grass!");
-    //         // inGrass = false;
-    //         // currentTilePosition = new Vector3(-100, -100, -100); //reset currentTilePosition
-    //     }
-    // }
 
 }
