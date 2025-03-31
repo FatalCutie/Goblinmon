@@ -10,10 +10,13 @@ public class UnitButton : MonoBehaviour
     public Goblinmon unit;
     public int unitNumber;
     private TextMeshProUGUI text;
+    public TextMeshProUGUI level;
     private SwitchingManager sm;
     public Slider hp;
-    public enum ButtonMode { SWITCH, RELEASE }
+    public enum ButtonMode { SWITCH, RELEASE, OVERWORLD }
+
     public bool activeUnit = false;
+    public Image fusionIcon;
     public ButtonMode buttonMode = ButtonMode.SWITCH;
 
     void Start()
@@ -26,7 +29,7 @@ public class UnitButton : MonoBehaviour
     void FixedUpdate()
     {
         //this is awful, but it's easy and it works
-        if (unit == null && buttonMode != ButtonMode.RELEASE && text.text != "")
+        if (unit == null && buttonMode == ButtonMode.SWITCH && text.text != "")
         {
             text.text = "";
             hp.gameObject.SetActive(false);
@@ -34,9 +37,13 @@ public class UnitButton : MonoBehaviour
 
         //This is woefully inefficient
         //Oh well!
-        if (unit != null && unit.ID == FindObjectOfType<BattleSystem>().playerUnit.ID
-            && hp.value != FindObjectOfType<BattleSystem>().playerUnit.currentHP)
-            hp.value = FindObjectOfType<BattleSystem>().playerUnit.currentHP;
+        if (buttonMode != ButtonMode.OVERWORLD)
+        {
+            if (unit != null && unit.ID == FindObjectOfType<BattleSystem>().playerUnit.ID
+                && hp.value != FindObjectOfType<BattleSystem>().playerUnit.currentHP)
+                hp.value = FindObjectOfType<BattleSystem>().playerUnit.currentHP;
+        }
+
 
     }
 

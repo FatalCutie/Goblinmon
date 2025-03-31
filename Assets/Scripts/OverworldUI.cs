@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System;
 
 public class OverworldUI : MonoBehaviour
 {
@@ -12,40 +14,91 @@ public class OverworldUI : MonoBehaviour
     public GameObject fusionItemUI;
     public GameObject catchingItemUI;
     public PlayerTileMovement player;
-
-    public void fucker(){
-        UnitMenuAnimator.SetBool("PanelOpen", true);
-
-    }
-
+    public PartyStorage partyStorage;
+    private bool dataPopulated = false;
     void Update()
     {
         //Open and close unit menu panel
         if(Input.GetKeyDown(KeyCode.Tab)){
             switch(UnitMenuOpen){
                 case false:
-                    UnitMenuAnimator.SetBool("PanelOpen", true);
-                    if(!ItemUIOpen) ItemUIAnimator.SetBool("ItemsOpen", true);
-                    player.movementLocked = true;
-                    UnitMenuOpen = true;
+                    OpenPanel();
                     return;
                 case true:
-                    UnitMenuAnimator.SetBool("PanelOpen", false);
-                    ItemUIAnimator.SetBool("ItemsOpen", false);
-                    player.idleTimer = 0f;
-                    player.playerIsIdle = false;
-                    player.movementLocked = false;
-                    UnitMenuOpen = false;
+                    ClosePanel();
                     return;
             }
         }
     }
 
+    //Opens the unit and item panel
+    public void OpenPanel()
+    {
+        if (!dataPopulated) UpdateUnitInformation(); //Populate buttons with party
+        UnitMenuAnimator.SetBool("PanelOpen", true);
+        if (!ItemUIOpen) ItemUIAnimator.SetBool("ItemsOpen", true); //Open items if not already open from AFK
+        //Lock player
+        player.movementLocked = true;
+        UnitMenuOpen = true;
+    }
+
+    //Closes the unit and item panel
+    public void ClosePanel()
+    {
+        UnitMenuAnimator.SetBool("PanelOpen", false);
+        ItemUIAnimator.SetBool("ItemsOpen", false);
+        player.idleTimer = 0f; //Reset idle so item's dont open immediately after closing menu
+        player.playerIsIdle = false;
+        //Unlock Player
+        player.movementLocked = false;
+        UnitMenuOpen = false;
+    }
+
+    //Populate overworld unit buttons with data
+    public void UpdateUnitInformation()
+    {
+        int i = 0;
+        foreach (Transform go in unitMenu.transform)
+        {
+            TextMeshProUGUI unitNameText = go.GetChild(0).GetComponent<TextMeshProUGUI>();
+            UnitButton ub = go.GetComponent<UnitButton>();
+
+            //Initialize switching buttons and units tied to them
+            try
+            {
+                if (partyStorage.goblinmon[i] != null)
+                {
+                    //Create a Goblinmon script on the Unit Button to hold data
+                    ub.unit = partyStorage.goblinmon[i];
+                    unitNameText.text = ub.unit.goblinData.gName;
+                    if (!ub.unit.isFusion) ub.fusionIcon.enabled = false;
+                    else ub.fusionIcon.enabled = true;
+                    ub.level.text = $"Lv. {ub.unit.goblinData.gLevel}";
+                    ub.unitNumber = i;
+
+                    //Sets HP bar values
+                    ub.hp.maxValue = ub.unit.goblinData.maxHP;
+                    ub.hp.value = ub.unit.currentHP;
+                    i++;
+                }
+            }
+            catch (ArgumentOutOfRangeException) { go.gameObject.SetActive(false); } //Disable excess buttons
+        }
+        dataPopulated = true; //Only populate once, no reason to run more than once ingame
+    }
+
     public void OpenItemMenuOnIdle(){
+        UpdateItemUI();
         ItemUIAnimator.SetBool("ItemsOpen", true);
     }
 
     public void CloseItemMenuOnIdle(){
+        UpdateItemUI();
         ItemUIAnimator.SetBool("ItemsOpen", false);
+    }
+
+    public void UpdateItemUI()
+    {
+        //TODO: Implement Items
     }
 }
