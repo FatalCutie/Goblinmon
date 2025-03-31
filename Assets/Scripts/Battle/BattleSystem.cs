@@ -77,21 +77,17 @@ public class BattleSystem : MonoBehaviour
         //Instantiate battle based on above unit
         playerGO.GetComponent<Goblinmon>().goblinData = ps.goblinmon[j].goblinData;
         playerUnit = playerGO.GetComponent<Goblinmon>();
+        playerUnit.gameObject.transform.position += new UnityEngine.Vector3(0, .5f, 0);
         playerUnit.currentHP = ps.goblinmon[j].currentHP;
         playerUnit.CloneIdFrom(ps.goblinmon[j]); //Identity theft is kickass, actually
-        //Will have to adjust sprite positions during sprite production
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
         pSpriteR.sprite = playerUnit.goblinData.sprite;
 
-        //Instantiate enemy
-        // GameObject enemyGO = Instantiate(enemyPrefab, new UnityEngine.Vector3(
-        // enemyBattleStation.transform.position.x, enemyBattleStation.transform.position.y + 1f,
-        // enemyBattleStation.transform.position.z), UnityEngine.Quaternion.identity, enemyBattleStation);
-        // new Vector3(enemyBattleStation.transform.position.x, enemyBattleStation.transform.position.y + 50, enemyBattleStation.transform.position.z
         enemyUnit = enemyGO.GetComponent<Goblinmon>();
         eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
         eAI.InitializeUnitsForEnemyAI(enemyUnit, playerUnit);
         eSpriteR.sprite = enemyUnit.goblinData.sprite;
+        enemyGO.transform.position += new UnityEngine.Vector3(0, .5f, 0);
 
         //Updates the HUD
         playerHUD.SetHUD(playerUnit);

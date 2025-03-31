@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Shell Crisp
   gLevel: 10
-  sprite: {fileID: 21300000, guid: d41ca7b099e3e394a828ca93da038730, type: 3}
+  sprite: {fileID: 21300000, guid: 94a9b82dcc396ae4892efaf11df039b0, type: 3}
   maxHP: 60
   catchRate: 120
   type: {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}

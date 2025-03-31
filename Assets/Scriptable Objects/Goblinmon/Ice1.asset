@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Cool Dude
   gLevel: 0
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: c0f6ff776b6635d4cbf19db0f0e442d7, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  type: {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
   moveset: []

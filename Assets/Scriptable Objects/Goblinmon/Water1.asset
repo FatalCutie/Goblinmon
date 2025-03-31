@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Aqua Jet
   gLevel: 8
-  sprite: {fileID: 21300000, guid: 0ecc6e6b3b747e7469ce6673ca34f752, type: 3}
+  sprite: {fileID: 21300000, guid: c348669d936f1f749ac333bf393345c9, type: 3}
   maxHP: 65
   catchRate: 120
   type: {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
