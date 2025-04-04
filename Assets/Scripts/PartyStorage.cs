@@ -44,7 +44,8 @@ public class PartyStorage : MonoBehaviour
                         goblinmon.Add(gob);
                         gob.goblinData = goblinmonSO[i];
                         gob.currentHP = goblinmonSO[i].maxHP; //set Goblinmon to max health at init. I don't think this will cause problems later down the line :clueless:
-                        goblinmon[i] = gob;
+                        gob.friendOrFoe = Goblinmon.FriendOrFoe.FRIEND; //So unit faces the correct direction in battle
+                        //goblinmon[i] = gob; //is this redundant?
                         //Destroy(gameObject.GetComponent<Goblinmon>());
                     }
                 }

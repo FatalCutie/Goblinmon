@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class FusionCalculator : MonoBehaviour
 {
+    #region Units
     #region Declare SO's
     [Header("Base Units")]
     public SOGoblinmon fire1;
@@ -94,7 +95,10 @@ public class FusionCalculator : MonoBehaviour
     public SOGoblinmon water1Water2;
     public SOGoblinmon water2Water2;
     #endregion
+    #endregion
+    
 
+    
     //Apparently you can't write this with switch statements so
     //prepare to read some downright CRIMINAL code
     public SOGoblinmon CalculateFusionUnit(SOGoblinmon unitOne, SOGoblinmon unitTwo){
@@ -328,6 +332,10 @@ public class FusionCalculator : MonoBehaviour
             return null;
         }
         Debug.LogWarning("Something in FusionCalculator has gone horribly wrong.");
+        return null;
+    }
+
+    public Goblinmon ReturnFusionUnit(Goblinmon the){
         return null;
     }
 }

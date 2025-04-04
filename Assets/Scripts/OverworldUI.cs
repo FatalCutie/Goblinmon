@@ -60,6 +60,8 @@ public class OverworldUI : MonoBehaviour
         int i = 0;
         foreach (Transform go in unitMenu.transform)
         {
+            if(!go.gameObject.GetComponent<UnitButton>()) return; //return if button is not a unit button
+
             TextMeshProUGUI unitNameText = go.GetChild(0).GetComponent<TextMeshProUGUI>();
             UnitButton ub = go.GetComponent<UnitButton>();
 

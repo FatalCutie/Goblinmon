@@ -13,7 +13,7 @@ public class UnitButton : MonoBehaviour
     public TextMeshProUGUI level;
     private SwitchingManager sm;
     public Slider hp;
-    public enum ButtonMode { SWITCH, RELEASE, OVERWORLD }
+    public enum ButtonMode { SWITCH, RELEASE, OVERWORLD, FUSION }
 
     public bool activeUnit = false;
     public Image fusionIcon;
@@ -37,13 +37,12 @@ public class UnitButton : MonoBehaviour
 
         //This is woefully inefficient
         //Oh well!
-        if (buttonMode != ButtonMode.OVERWORLD)
+        if (buttonMode != ButtonMode.OVERWORLD && buttonMode != ButtonMode.FUSION) //If we're in a battle
         {
             if (unit != null && unit.ID == FindObjectOfType<BattleSystem>().playerUnit.ID
                 && hp.value != FindObjectOfType<BattleSystem>().playerUnit.currentHP)
                 hp.value = FindObjectOfType<BattleSystem>().playerUnit.currentHP;
         }
-
 
     }
 
@@ -65,6 +64,10 @@ public class UnitButton : MonoBehaviour
         else if (buttonMode == ButtonMode.RELEASE)
         {
             FindObjectOfType<CatchSystem>().BeginReleaseUnit(unitNumber);
-        }
+        } else if (buttonMode == ButtonMode.FUSION) AddUnitToFusionButton();
+    }
+
+    public void AddUnitToFusionButton(){
+        FindObjectOfType<FusionButton>().SelectUnitForFusion(unit);
     }
 }

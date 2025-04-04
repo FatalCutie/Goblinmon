@@ -165,6 +165,7 @@ public class PlayerTileMovement : MonoBehaviour
         FindObjectOfType<PlayerPositionManager>().RememberPlayerPosition(); //Sets player position
         yield return new WaitForSeconds(2); //This is hardcoded. Adjust this with animation speed
     }
+    
     //This only seems to trigger half the time but I can't figure out how to make it trigger all the time.
     //I wanted to move this to TallGrass but it only works on the player. Oh Well!
     private void OnTriggerEnter2D(Collider2D other)
