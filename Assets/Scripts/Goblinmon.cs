@@ -54,13 +54,14 @@ public class Goblinmon : MonoBehaviourID
         if (attacker.attackModifier > defenseModifier)
         {
             int atkModTemp = attacker.attackModifier - defenseModifier;
-            returnDamage = (int)(returnDamage * (1 + .5 * atkModTemp)); //Each attack point = roughly 50% more damage
+            returnDamage = (int)(returnDamage * ((2+atkModTemp)/2)); //Each attack point = roughly 50% more damage
             returnDamage = (int)(returnDamage * randomDamageModifier);
         }
         else if (defenseModifier > attacker.attackModifier)
         {
             int defModTemp = defenseModifier - attacker.attackModifier;
-            returnDamage = (int)(returnDamage * Math.Pow(.5, defModTemp)); //each defense point = roughly 50% less damage
+            //3+def/3
+            returnDamage = (int)(returnDamage * ((3+defModTemp)/3)); //each defense point = roughly 33% less damage
             returnDamage = (int)(returnDamage * randomDamageModifier);
         }
         else return (int)(returnDamage * randomDamageModifier);

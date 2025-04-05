@@ -100,12 +100,12 @@ public class FusionButton : MonoBehaviour
             if(g.ID == fusion1.ID || g.ID == fusion2.ID){
                 Destroy(g);
                 if(j < i) i = j;
-                Debug.Log($"Removed the fused unit {g.goblinData.gName}");
+                //Debug.Log($"Removed the fused unit {g.goblinData.gName}");
             }
             j++;
         }
         partyManager.goblinmon[i] = fused; //Add fusion to party
-        Debug.Log("Clearing list!");
+        //Debug.Log("Clearing list!");
     }
 
     private void ButtonCheck(){
