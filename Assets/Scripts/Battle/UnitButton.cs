@@ -13,7 +13,8 @@ public class UnitButton : MonoBehaviour
     public TextMeshProUGUI level;
     private SwitchingManager sm;
     public Slider hp;
-    public enum ButtonMode { SWITCH, RELEASE, OVERWORLD, FUSION }
+    public enum ButtonMode { SWITCH, RELEASE, OVERWORLD, FUSION, MOVE }
+    public Image unitImage;
 
     public bool activeUnit = false;
     public Image fusionIcon;
@@ -37,7 +38,8 @@ public class UnitButton : MonoBehaviour
 
         //This is woefully inefficient
         //Oh well!
-        if (buttonMode != ButtonMode.OVERWORLD && buttonMode != ButtonMode.FUSION) //If we're in a battle
+        //I CHANGED THIS. IF BUTTONS ACTING WEIRD IN BATTLE LOOK AT THIS
+        if (buttonMode == ButtonMode.SWITCH && buttonMode == ButtonMode.RELEASE) //If we're in a battle
         {
             if (unit != null && unit.ID == FindObjectOfType<BattleSystem>().playerUnit.ID
                 && hp.value != FindObjectOfType<BattleSystem>().playerUnit.currentHP)
@@ -46,28 +48,38 @@ public class UnitButton : MonoBehaviour
 
     }
 
-    public void SwitchUnitOnPress()
+    public void UnitButtonAction()
     {
-        if (buttonMode == ButtonMode.SWITCH)
-        {
-            //Don't switch if no attached unit or attached unit is dead
-            if (unit == null || unit.currentHP <= 0)
-            {
-                FindObjectOfType<AudioManager>().Play("damage");
-            }
-            else
-            {
-                // Debug.Log($"Switching to {unit.goblinData.gName} which has {unit.currentHP}!");
-                sm.CheckUnitBeforeSwitching(unit);
-            }
+        switch(buttonMode){
+            case ButtonMode.SWITCH:
+                //Don't switch if no attached unit or attached unit is dead
+                if (unit == null || unit.currentHP <= 0)
+                {
+                    FindObjectOfType<AudioManager>().Play("damage");
+                }
+                else
+                {
+                    // Debug.Log($"Switching to {unit.goblinData.gName} which has {unit.currentHP}!");
+                    sm.CheckUnitBeforeSwitching(unit);
+                }
+            break;
+            case ButtonMode.RELEASE:
+                FindObjectOfType<CatchSystem>().BeginReleaseUnit(unitNumber);
+            break;
+            case ButtonMode.FUSION:
+                AddUnitToFusionButton();
+            break;
+            case ButtonMode.MOVE:
+                AddUnitToMovingButton();
+                break;
         }
-        else if (buttonMode == ButtonMode.RELEASE)
-        {
-            FindObjectOfType<CatchSystem>().BeginReleaseUnit(unitNumber);
-        } else if (buttonMode == ButtonMode.FUSION) AddUnitToFusionButton();
     }
 
     public void AddUnitToFusionButton(){
         FindObjectOfType<FusionButton>().SelectUnitForFusion(unit);
+    }
+
+    public void AddUnitToMovingButton(){
+        FindObjectOfType<SwitchingButton>().PickPartyMembersToSwitch(unit);
     }
 }

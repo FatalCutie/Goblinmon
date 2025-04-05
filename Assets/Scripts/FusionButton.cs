@@ -3,38 +3,45 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FusionButton : MonoBehaviour
 {
     public enum ButtonMode {OVERWORLD, FUSION}
     public ButtonMode buttonMode = ButtonMode.OVERWORLD; //Default to overworld
-    public GameObject UnitButtonHolder;
-    [SerializeField] private Goblinmon selectedUnit1;
-    [SerializeField] private Goblinmon selectedUnit2;
+    public GameObject unitButtonHolder;
+    private Goblinmon selectedUnit1;
+    private Goblinmon selectedUnit2;
     [SerializeField] private FusionCalculator fusionCalculator;
     [SerializeField] private PartyStorage partyManager;
+    [SerializeField] private SwitchingButton sb;
 
     void Start()
     {
         gameObject.SetActive(true);
+        partyManager = FindObjectOfType<PartyStorage>();
     }
 
+    //Switches unit buttons and fusion buttons between Overworld and Fusion mode
     public void SwitchButtonMode(){
         switch(buttonMode){
             case ButtonMode.OVERWORLD:
                 //Switch unit buttons to fusion mode
-                foreach(Transform t in UnitButtonHolder.transform){
+                ButtonCheck(); //Check to see if in switching mode
+                foreach(Transform t in unitButtonHolder.transform){
                     if(t.GetComponent<UnitButton>()){
                         UnitButton ub = t.GetComponent<UnitButton>();
                         ub.buttonMode = UnitButton.ButtonMode.FUSION;
                         //TODO: Change button color tint
                     }
                 }
+                //Switch button color
+                Image b = gameObject.GetComponent<Button>().GetComponent<Image>();
+                b.color = Color.yellow;
                 buttonMode = ButtonMode.FUSION; //Switch self to match unit buttons
-                Debug.Log("Switched to Fusion Mode!");
                 return;
             case ButtonMode.FUSION:
-                foreach(Transform t in UnitButtonHolder.transform){
+                foreach(Transform t in unitButtonHolder.transform){
                     if(t.GetComponent<UnitButton>()){
                         UnitButton ub = t.GetComponent<UnitButton>();
                         ub.buttonMode = UnitButton.ButtonMode.OVERWORLD;
@@ -42,14 +49,17 @@ public class FusionButton : MonoBehaviour
                     }
                 }
                 buttonMode = ButtonMode.OVERWORLD; //Switch self to match unit buttons
+                //Switch button color
+                Image c = gameObject.GetComponent<Button>().GetComponent<Image>();
+                c.color = Color.white;
                 //Clear selected units
                 selectedUnit1 = null;
                 selectedUnit2 = null;
-                Debug.Log("Switched out of Fusion Mode!");
                 return;
         }
     }
 
+    //Add a unit to be fused. When there are two begin fusion process
     public void SelectUnitForFusion(Goblinmon g){
         if (selectedUnit1 == null)
         {
@@ -61,26 +71,46 @@ public class FusionButton : MonoBehaviour
             SOGoblinmon fusion = fusionCalculator.CalculateFusionUnit(selectedUnit1.goblinData, selectedUnit2.goblinData); //get fusion
             if(!fusion){
                 Debug.LogWarning("Fusion calculator returned null. Please check if selected units are valid!");
+                SwitchButtonMode(); //Exit fusion mode
                 return; //I don't think this return does anything but I like how it looks
             } 
             Goblinmon unit = InitializeFusedGoblinmon(fusion); //initialize fusion
-            RemoveFusedUnits(selectedUnit1, selectedUnit2); 
+            FuseUnits(selectedUnit1, selectedUnit2, unit); 
+            SwitchButtonMode(); //Exit fusion mode after fusion
         }
     }
 
-    //Initializes fused goblinmon on PartyManager
+    //Initializes fused goblinmon on PartyManager GO
     public Goblinmon InitializeFusedGoblinmon(SOGoblinmon g){
         Goblinmon gob = partyManager.gameObject.AddComponent<Goblinmon>();
-        partyManager.goblinmon.Add(gob);
+        //partyManager.goblinmon.Add(gob);
         gob.goblinData = g;
         gob.currentHP = g.maxHP;
+        if(g.maxHP <= 0) Debug.LogWarning($"{g.gName}'s HP is 0, please check the ScriptableObject!");
         gob.friendOrFoe = Goblinmon.FriendOrFoe.FRIEND; 
         return gob;
     }
 
-    //Clears fused units from goblinmon, adds new unit
-    public void RemoveFusedUnits(Goblinmon u1, Goblinmon u2){
+    //Clears fused units from goblinmon list, adds new unit to party
+    public void FuseUnits(Goblinmon fusion1, Goblinmon fusion2, Goblinmon fused){
+        int i = 7;
+        int j = 0; //Tracks where to insert new unit
         //Search for goblinmon ID's in list and trim them
-        partyManager.goblinmon.RemoveAll(item => item == null || item.Equals(null));; //Remove new empty units from list
+        foreach(Goblinmon g in partyManager.goblinmon){
+            if(g.ID == fusion1.ID || g.ID == fusion2.ID){
+                Destroy(g);
+                if(j < i) i = j;
+                Debug.Log($"Removed the fused unit {g.goblinData.gName}");
+            }
+            j++;
+        }
+        partyManager.goblinmon[i] = fused; //Add fusion to party
+        Debug.Log("Clearing list!");
+    }
+
+    private void ButtonCheck(){
+        if(sb.buttonMode == SwitchingButton.ButtonMode.SWITCH){
+            sb.SwitchButtonMode();
+        }
     }
 }

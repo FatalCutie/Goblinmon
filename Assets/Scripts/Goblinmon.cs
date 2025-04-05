@@ -10,7 +10,6 @@ public class Goblinmon : MonoBehaviourID
     public int defenseModifier;
     public enum FriendOrFoe { FRIEND, FOE }; //Affects which direction the sprite faces
     public FriendOrFoe friendOrFoe = FriendOrFoe.FOE; //Defaults to Foe, flipped on capture
-    public bool isFusion = false; //Determines if fusion icon should be displayed
 
     //This is really inefficient LOL!
 

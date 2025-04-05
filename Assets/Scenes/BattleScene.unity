@@ -1008,8 +1008,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   unitNumber: 0
+  level: {fileID: 0}
   hp: {fileID: 1441735518}
+  unitImage: {fileID: 0}
   activeUnit: 0
+  fusionIcon: {fileID: 0}
   buttonMode: 0
 --- !u!114 &309059270
 MonoBehaviour:
@@ -1057,7 +1060,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 309059269}
         m_TargetAssemblyTypeName: UnitButton, Assembly-CSharp
-        m_MethodName: SwitchUnitOnPress
+        m_MethodName: UnitButtonAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1596,8 +1599,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   unitNumber: 0
+  level: {fileID: 0}
   hp: {fileID: 1252426757}
+  unitImage: {fileID: 0}
   activeUnit: 0
+  fusionIcon: {fileID: 0}
   buttonMode: 0
 --- !u!114 &426759070
 MonoBehaviour:
@@ -1645,7 +1651,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 426759069}
         m_TargetAssemblyTypeName: UnitButton, Assembly-CSharp
-        m_MethodName: SwitchUnitOnPress
+        m_MethodName: UnitButtonAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2841,8 +2847,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   unitNumber: 0
+  level: {fileID: 0}
   hp: {fileID: 1887547157}
+  unitImage: {fileID: 0}
   activeUnit: 0
+  fusionIcon: {fileID: 0}
   buttonMode: 0
 --- !u!114 &878150585
 MonoBehaviour:
@@ -2890,7 +2899,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 878150584}
         m_TargetAssemblyTypeName: UnitButton, Assembly-CSharp
-        m_MethodName: SwitchUnitOnPress
+        m_MethodName: UnitButtonAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3809,8 +3818,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   unitNumber: 0
+  level: {fileID: 0}
   hp: {fileID: 1868545087}
+  unitImage: {fileID: 0}
   activeUnit: 0
+  fusionIcon: {fileID: 0}
   buttonMode: 0
 --- !u!114 &1020260542
 MonoBehaviour:
@@ -3858,7 +3870,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1020260541}
         m_TargetAssemblyTypeName: UnitButton, Assembly-CSharp
-        m_MethodName: SwitchUnitOnPress
+        m_MethodName: UnitButtonAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7422,6 +7434,7 @@ MonoBehaviour:
   currentHP: 15
   attackModifier: 0
   defenseModifier: 0
+  friendOrFoe: 1
 --- !u!4 &1767015853 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8422864821499535354, guid: c041c2dfafb1605438ee1985f5fb340c, type: 3}
@@ -7557,8 +7570,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   unitNumber: 0
+  level: {fileID: 0}
   hp: {fileID: 994749920}
+  unitImage: {fileID: 0}
   activeUnit: 0
+  fusionIcon: {fileID: 0}
   buttonMode: 0
 --- !u!114 &1773286166
 MonoBehaviour:
@@ -7606,7 +7622,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1773286165}
         m_TargetAssemblyTypeName: UnitButton, Assembly-CSharp
-        m_MethodName: SwitchUnitOnPress
+        m_MethodName: UnitButtonAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8314,8 +8330,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   unitNumber: 0
+  level: {fileID: 0}
   hp: {fileID: 1722194713}
+  unitImage: {fileID: 0}
   activeUnit: 0
+  fusionIcon: {fileID: 0}
   buttonMode: 0
 --- !u!114 &1927766054
 MonoBehaviour:
@@ -8363,7 +8382,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1927766053}
         m_TargetAssemblyTypeName: UnitButton, Assembly-CSharp
-        m_MethodName: SwitchUnitOnPress
+        m_MethodName: UnitButtonAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

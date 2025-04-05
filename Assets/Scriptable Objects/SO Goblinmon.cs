@@ -14,6 +14,7 @@ public class SOGoblinmon : ScriptableObject
     public int catchRate = 255;
     public SOType type;
     public List<SOMove> moveset;
+    public bool isFusion = true; //Determines if fusion icon should be displayed
 
     //Reset current unit HP to max health, called during initilization in SwitchingManager
     // public void InitilizeGoblinmonHP()

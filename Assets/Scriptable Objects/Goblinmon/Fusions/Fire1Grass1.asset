@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0188a8dcd8e881646856901b1bae9163, type: 3}
   m_Name: Fire1Grass1
   m_EditorClassIdentifier: 
-  gName: 
-  gLevel: 0
+  gName: Shellble
+  gLevel: 3
   sprite: {fileID: 0}
-  maxHP: 0
+  maxHP: 50
   catchRate: 255
   type: {fileID: 0}
   moveset: []
+  isFusion: 1

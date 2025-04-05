@@ -102,13 +102,19 @@ public class FusionCalculator : MonoBehaviour
     //Apparently you can't write this with switch statements so
     //prepare to read some downright CRIMINAL code
     public SOGoblinmon CalculateFusionUnit(SOGoblinmon unitOne, SOGoblinmon unitTwo){
+        if(unitOne.isFusion || unitTwo.isFusion){
+            //Temp buffer
+            Debug.LogWarning("You cannot fuse a fusion! Terminating!");
+            return null;
+        } 
+        //Debug.Log($"Trying to find: {unitTwo.gName}, or {unitTwo.name}");
         if(unitOne == fire1){
-            if(unitOne == fire1){
+            if(unitTwo == fire1){
 
             } else if(unitTwo == fire2){
 
             } else if(unitTwo == grass1){
-
+                return fire1Grass1;
             } else if(unitTwo == grass2){
 
             } else if(unitTwo == ice1){
@@ -127,7 +133,7 @@ public class FusionCalculator : MonoBehaviour
                 return null;
             }
         } else if(unitOne == fire2){
-            if(unitOne == fire1){
+            if(unitTwo == fire1){
 
             } else if(unitTwo == fire2){
 
@@ -152,7 +158,7 @@ public class FusionCalculator : MonoBehaviour
             }
 
         } else if(unitOne == grass1){
-            if(unitOne == fire1){
+            if(unitTwo == fire1){
 
             } else if(unitTwo == fire2){
 
@@ -177,7 +183,7 @@ public class FusionCalculator : MonoBehaviour
             }
 
         } else if(unitOne == grass2){
-            if(unitOne == fire1){
+            if(unitTwo == fire1){
 
             } else if(unitTwo == fire2){
 
@@ -202,7 +208,7 @@ public class FusionCalculator : MonoBehaviour
             }
 
         } else if(unitOne == ice1){
-            if(unitOne == fire1){
+            if(unitTwo == fire1){
 
             } else if(unitTwo == fire2){
 
@@ -227,7 +233,7 @@ public class FusionCalculator : MonoBehaviour
             }
 
         } else if(unitOne == ice2){
-            if(unitOne == fire1){
+            if(unitTwo == fire1){
 
             } else if(unitTwo == fire2){
 
@@ -252,7 +258,7 @@ public class FusionCalculator : MonoBehaviour
             }
 
         } else if(unitOne == magic1){
-            if(unitOne == fire1){
+            if(unitTwo == fire1){
 
             } else if(unitTwo == fire2){
 
@@ -277,7 +283,7 @@ public class FusionCalculator : MonoBehaviour
             }
 
         } else if(unitOne == water1){
-            if(unitOne == fire1){
+            if(unitTwo == fire1){
 
             } else if(unitTwo == fire2){
 
@@ -302,7 +308,7 @@ public class FusionCalculator : MonoBehaviour
             }
 
         } else if(unitOne == water2){
-            if(unitOne == fire1){
+            if(unitTwo == fire1){
 
             } else if(unitTwo == fire2){
 
@@ -332,10 +338,9 @@ public class FusionCalculator : MonoBehaviour
             return null;
         }
         Debug.LogWarning("Something in FusionCalculator has gone horribly wrong.");
+        Debug.LogWarning($"Failed to fuse these units: {unitOne.gName}, {unitTwo.gName}");
         return null;
     }
 
-    public Goblinmon ReturnFusionUnit(Goblinmon the){
-        return null;
-    }
+    
 }

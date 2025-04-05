@@ -19,3 +19,4 @@ MonoBehaviour:
   catchRate: 255
   type: {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
   moveset: []
+  isFusion: 0

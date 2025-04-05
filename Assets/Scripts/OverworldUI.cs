@@ -15,7 +15,11 @@ public class OverworldUI : MonoBehaviour
     public GameObject catchingItemUI;
     public PlayerTileMovement player;
     public PartyStorage partyStorage;
-    private bool dataPopulated = false;
+
+    void Start()
+    {
+        partyStorage = FindObjectOfType<PartyStorage>();
+    }
     void Update()
     {
         //Open and close unit menu panel
@@ -34,7 +38,8 @@ public class OverworldUI : MonoBehaviour
     //Opens the unit and item panel
     public void OpenPanel()
     {
-        if (!dataPopulated) UpdateUnitInformation(); //Populate buttons with party
+        //if (!dataPopulated) UpdateUnitInformation(); //Populate buttons with party
+        partyStorage.menuOpen = true;
         UnitMenuAnimator.SetBool("PanelOpen", true);
         if (!ItemUIOpen) ItemUIAnimator.SetBool("ItemsOpen", true); //Open items if not already open from AFK
         //Lock player
@@ -45,6 +50,7 @@ public class OverworldUI : MonoBehaviour
     //Closes the unit and item panel
     public void ClosePanel()
     {
+        partyStorage.menuOpen = false;
         UnitMenuAnimator.SetBool("PanelOpen", false);
         ItemUIAnimator.SetBool("ItemsOpen", false);
         player.idleTimer = 0f; //Reset idle so item's dont open immediately after closing menu
@@ -73,7 +79,8 @@ public class OverworldUI : MonoBehaviour
                     //Create a Goblinmon script on the Unit Button to hold data
                     ub.unit = partyStorage.goblinmon[i];
                     unitNameText.text = ub.unit.goblinData.gName;
-                    if (!ub.unit.isFusion) ub.fusionIcon.enabled = false;
+                    ub.unitImage.sprite = ub.unit.goblinData.sprite; //update preview sprite
+                    if (!ub.unit.goblinData.isFusion) ub.fusionIcon.enabled = false;
                     else ub.fusionIcon.enabled = true;
                     ub.level.text = $"Lv. {ub.unit.goblinData.gLevel}";
                     ub.unitNumber = i;
@@ -86,7 +93,6 @@ public class OverworldUI : MonoBehaviour
             }
             catch (ArgumentOutOfRangeException) { go.gameObject.SetActive(false); } //Disable excess buttons
         }
-        dataPopulated = true; //Only populate once, no reason to run more than once ingame
     }
 
     public void OpenItemMenuOnIdle(){
@@ -103,4 +109,6 @@ public class OverworldUI : MonoBehaviour
     {
         //TODO: Implement Items
     }
+
+
 }

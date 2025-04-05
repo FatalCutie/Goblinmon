@@ -9,6 +9,8 @@ public class PartyStorage : MonoBehaviour
     [SerializeField] public List<SOGoblinmon> goblinmonSO;
     public List<Goblinmon> goblinmon;
     [SerializeField] private bool hasGottenGoblinmon = true;
+    [SerializeField] OverworldUI owUI;
+    public bool menuOpen = false;
     void Awake()
     {
         if (instance == null)
@@ -24,6 +26,21 @@ public class PartyStorage : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
         InitializeGoblinmonParty();
+    }
+    void Start()
+    {
+        owUI = FindObjectOfType<OverworldUI>();
+    }
+
+    void FixedUpdate()
+    {
+        //wrapped in a bool to it's not AS terrible
+        if(menuOpen){
+            goblinmon.RemoveAll(item => item == null || item.Equals(null));; //Remove new empty units from list
+            if(!owUI) owUI = FindObjectOfType<OverworldUI>();
+            owUI.UpdateUnitInformation(); //This is awful and hopefully temporary
+        }
+
     }
 
     //If goblinmon list is not populated then populate it with info from goblinmonSO
@@ -55,13 +72,6 @@ public class PartyStorage : MonoBehaviour
 
 
         }
-
-    }
-
-    //Update goblinmon party after a battle
-    void UpdateGoblinmonParty()
-    {
-        //TODO: Take Goblinmon from switching menu and override them in goblinmon
 
     }
 }
