@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0188a8dcd8e881646856901b1bae9163, type: 3}
+  m_Name: Fire1Grass2
+  m_EditorClassIdentifier: 
+  gName: Crispy Men
+  gLevel: 0
+  sprite: {fileID: 21300000, guid: 021c46e7d8dbdae41b610c7bd9f2bfbf, type: 3}
+  maxHP: 0
+  catchRate: 255
+  type: {fileID: 0}
+  moveset: []
+  isFusion: 1

@@ -110,23 +110,23 @@ public class FusionCalculator : MonoBehaviour
         //Debug.Log($"Trying to find: {unitTwo.gName}, or {unitTwo.name}");
         if(unitOne == fire1){
             if(unitTwo == fire1){
-
+                return fire1Fire1;
             } else if(unitTwo == fire2){
-
+                return fire1Fire2;
             } else if(unitTwo == grass1){
                 return fire1Grass1;
             } else if(unitTwo == grass2){
-
+                return fire1Grass2;
             } else if(unitTwo == ice1){
-
+                return fire1Ice1;
             } else if(unitTwo == ice2){
-
+                return fire1Ice2;
             } else if(unitTwo == magic1){
-
+                return fire1Magic1;
             } else if(unitTwo == water1){
-
+                return fire1Water1;
             } else if(unitTwo == water2){
-
+                return fire1Water2;
             }
             else{
                 Debug.LogWarning("Could not find Unit2 in FusionCalculator. Did you declare it properly?");
@@ -134,23 +134,23 @@ public class FusionCalculator : MonoBehaviour
             }
         } else if(unitOne == fire2){
             if(unitTwo == fire1){
-
+                return fire1Fire2;
             } else if(unitTwo == fire2){
-
+                return fire2Fire2;
             } else if(unitTwo == grass1){
-
+                return fire2Grass1;
             } else if(unitTwo == grass2){
-                
+                return fire2Grass2;
             } else if(unitTwo == ice1){
-
+                return fire2Ice1;
             } else if(unitTwo == ice2){
-
+                return fire2Ice2;
             } else if(unitTwo == magic1){
-
+                return fire2Magic1;
             } else if(unitTwo == water1){
-
+                return fire2Water1;
             } else if(unitTwo == water2){
-
+                return fire2Water2;
             }
             else{
                 Debug.LogWarning("Could not find Unit2 in FusionCalculator. Did you declare it properly?");
@@ -159,23 +159,23 @@ public class FusionCalculator : MonoBehaviour
 
         } else if(unitOne == grass1){
             if(unitTwo == fire1){
-
+                return fire1Grass1;
             } else if(unitTwo == fire2){
-
+                return fire1Fire2;
             } else if(unitTwo == grass1){
-
+                return grass1Grass1;
             } else if(unitTwo == grass2){
-                
+                return grass1Grass2;
             } else if(unitTwo == ice1){
-
+                return grass1Ice1;
             } else if(unitTwo == ice2){
-
+                return grass1Ice2;
             } else if(unitTwo == magic1){
-
+                return grass1Magic1;
             } else if(unitTwo == water1){
-
+                return grass1Water1;
             } else if(unitTwo == water2){
-
+                return grass1Water2;
             }
             else{
                 Debug.LogWarning("Could not find Unit2 in FusionCalculator. Did you declare it properly?");
@@ -184,23 +184,23 @@ public class FusionCalculator : MonoBehaviour
 
         } else if(unitOne == grass2){
             if(unitTwo == fire1){
-
+                return fire1Grass2;
             } else if(unitTwo == fire2){
-
+                return fire2Grass2;
             } else if(unitTwo == grass1){
-
+                return grass1Grass1;
             } else if(unitTwo == grass2){
-                
+                return grass1Grass2;
             } else if(unitTwo == ice1){
-
+                return grass1Ice1;
             } else if(unitTwo == ice2){
-
+                return grass1Ice2;
             } else if(unitTwo == magic1){
-
+                return grass1Magic1;
             } else if(unitTwo == water1){
-
+                return grass1Water1;
             } else if(unitTwo == water2){
-
+                return grass1Water2;
             }
             else{
                 Debug.LogWarning("Could not find Unit2 in FusionCalculator. Did you declare it properly?");
@@ -209,23 +209,23 @@ public class FusionCalculator : MonoBehaviour
 
         } else if(unitOne == ice1){
             if(unitTwo == fire1){
-
+                return fire1Ice1;
             } else if(unitTwo == fire2){
-
+                return fire2Ice1;
             } else if(unitTwo == grass1){
-
+                return grass1Ice1;
             } else if(unitTwo == grass2){
-                
+                return grass2Ice1;
             } else if(unitTwo == ice1){
-
+                return ice1Ice1;
             } else if(unitTwo == ice2){
-
+                return ice1Ice2;
             } else if(unitTwo == magic1){
-
+                return ice1Magic1;
             } else if(unitTwo == water1){
-
+                return ice1Water1;
             } else if(unitTwo == water2){
-
+                return ice1Water2;
             }
             else{
                 Debug.LogWarning("Could not find Unit2 in FusionCalculator. Did you declare it properly?");
@@ -234,23 +234,23 @@ public class FusionCalculator : MonoBehaviour
 
         } else if(unitOne == ice2){
             if(unitTwo == fire1){
-
+                return fire1Ice2;
             } else if(unitTwo == fire2){
-
+                return fire2Ice2;
             } else if(unitTwo == grass1){
-
+                return grass1Ice2;
             } else if(unitTwo == grass2){
-                
+                return grass2Ice2;
             } else if(unitTwo == ice1){
-
+                return ice1Ice2;
             } else if(unitTwo == ice2){
-
+                return ice2Ice2;
             } else if(unitTwo == magic1){
-
+                return ice2Magic1;
             } else if(unitTwo == water1){
-
+                return ice2Water1;
             } else if(unitTwo == water2){
-
+                return ice2Water2;
             }
             else{
                 Debug.LogWarning("Could not find Unit2 in FusionCalculator. Did you declare it properly?");
@@ -259,23 +259,23 @@ public class FusionCalculator : MonoBehaviour
 
         } else if(unitOne == magic1){
             if(unitTwo == fire1){
-
+                return fire1Magic1;
             } else if(unitTwo == fire2){
-
+                return fire2Magic1;
             } else if(unitTwo == grass1){
-
+                return grass1Magic1;
             } else if(unitTwo == grass2){
-                
+                return grass2Magic1;
             } else if(unitTwo == ice1){
-
+                return ice1Magic1;
             } else if(unitTwo == ice2){
-
+                return ice2Magic1;
             } else if(unitTwo == magic1){
-
+                return magic1Magic1;
             } else if(unitTwo == water1){
-
+                return magic1Water1;
             } else if(unitTwo == water2){
-
+                return magic1Water2;
             }
             else{
                 Debug.LogWarning("Could not find Unit2 in FusionCalculator. Did you declare it properly?");
@@ -284,23 +284,23 @@ public class FusionCalculator : MonoBehaviour
 
         } else if(unitOne == water1){
             if(unitTwo == fire1){
-
+                return fire1Water1;
             } else if(unitTwo == fire2){
-
+                return fire2Water1;
             } else if(unitTwo == grass1){
-
+                return grass1Water1;
             } else if(unitTwo == grass2){
-                
+                return grass2Water1;
             } else if(unitTwo == ice1){
-
+                return ice1Water1;
             } else if(unitTwo == ice2){
-
+                return ice2Water1;
             } else if(unitTwo == magic1){
-
+                return magic1Water1;
             } else if(unitTwo == water1){
-
+                return water1Water1;
             } else if(unitTwo == water2){
-
+                return water1Water2;
             }
             else{
                 Debug.LogWarning("Could not find Unit2 in FusionCalculator. Did you declare it properly?");
@@ -309,23 +309,23 @@ public class FusionCalculator : MonoBehaviour
 
         } else if(unitOne == water2){
             if(unitTwo == fire1){
-
+                return fire1Water2;
             } else if(unitTwo == fire2){
-
+                return fire2Water2;
             } else if(unitTwo == grass1){
-
+                return grass1Water2;
             } else if(unitTwo == grass2){
-                
+                return grass2Water2;
             } else if(unitTwo == ice1){
-
+                return ice1Water2;
             } else if(unitTwo == ice2){
-
+                return ice2Water2;
             } else if(unitTwo == magic1){
-
+                return magic1Water2;
             } else if(unitTwo == water1){
-
+                return water1Water2;
             } else if(unitTwo == water2){
-
+                return water2Water2;
             }
             else{
                 Debug.LogWarning("Could not find Unit2 in FusionCalculator. Did you declare it properly?");
