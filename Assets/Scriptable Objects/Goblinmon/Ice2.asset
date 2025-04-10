@@ -18,5 +18,7 @@ MonoBehaviour:
   maxHP: 5
   catchRate: 255
   type: {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
-  moveset: []
+  moveset:
+  - {fileID: 11400000, guid: b1c8bfe80ba669946b81b7f0bf727827, type: 2}
+  - {fileID: 11400000, guid: 94913ede91d48b94888112e87229d4e6, type: 2}
   isFusion: 0

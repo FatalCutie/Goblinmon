@@ -19,6 +19,6 @@ MonoBehaviour:
   catchRate: 120
   type: {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
   moveset:
-  - {fileID: 11400000, guid: b1a04a2c067a2704c8c7e4c7375791ce, type: 2}
-  - {fileID: 11400000, guid: 97f83fad2ef056f4da4dba19f3b7ee0f, type: 2}
+  - {fileID: 11400000, guid: 039eecb9dc998ea4dae04971b9fc2889, type: 2}
+  - {fileID: 11400000, guid: a2776a5a7eb2dad4f89ee6f963e5bc87, type: 2}
   isFusion: 0

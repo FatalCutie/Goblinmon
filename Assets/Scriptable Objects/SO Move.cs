@@ -11,9 +11,14 @@ public class SOMove : ScriptableObject
     public int damage;
 
     //Buff a stat, or debuff an enemys stat
-    [System.Serializable] public enum MoveAction { ATTACK, BUFF, DEBUFF }
+    [System.Serializable] public enum MoveAction { ATTACK, BUFF, DEBUFF, HEAL, RAMP };
     public MoveAction moveAction; //Should this be private?
-    [System.Serializable] public enum StatModified { NONE, ATTACK, DEFENSE }
-    public StatModified statModified = StatModified.NONE; //Defaulting to none
+    [System.Serializable]
+    public enum MoveModifier
+    {
+        NONE, ATTACK, DEFENSE, ATTACK_DEFENSE,
+        MULTI_HIT, TWO_TURN, RANDOM_TYPE, DEFENSE_SCALE, RECOIL
+    };
+    public MoveModifier moveModifier = MoveModifier.NONE; //Defaulting to none
     public int statModifier; //How many points it buffs stat
 }

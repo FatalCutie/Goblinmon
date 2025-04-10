@@ -398,10 +398,10 @@ public class EnemyAI : MonoBehaviour
         StartCoroutine(bs.ScrollText($"{self.goblinData.gName} used {move.moveName}!"));
         yield return new WaitForSeconds(2f);
 
-        //Buff Player
-        switch (move.statModified)
+        //Buff Self
+        switch (move.moveModifier)
         {
-            case SOMove.StatModified.ATTACK:
+            case SOMove.MoveModifier.ATTACK:
                 {
                     self.attackModifier += move.statModifier;
                     if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
@@ -420,7 +420,7 @@ public class EnemyAI : MonoBehaviour
                     break;
                 }
 
-            case SOMove.StatModified.DEFENSE:
+            case SOMove.MoveModifier.DEFENSE:
                 {
                     self.defenseModifier += move.statModifier;
                     if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
@@ -438,7 +438,7 @@ public class EnemyAI : MonoBehaviour
                     }
                     break;
                 }
-            case SOMove.StatModified.NONE:
+            case SOMove.MoveModifier.NONE:
                 {
                     Debug.LogWarning("WARNING:" + move.moveName + " does not have an assigned stat to modify. Check SO!");
                     break;
@@ -456,9 +456,9 @@ public class EnemyAI : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         //Debuff Enemy
-        switch (move.statModified)
+        switch (move.moveModifier)
         {
-            case SOMove.StatModified.ATTACK:
+            case SOMove.MoveModifier.ATTACK:
                 {
                     actualPlayer.attackModifier -= move.statModifier;
                     if (move.statModifier <= 0) Debug.LogWarning($"WARNING: {move.moveName}s stat modifier is 0. Is this intentional?");
@@ -477,7 +477,7 @@ public class EnemyAI : MonoBehaviour
                     break;
                 }
 
-            case SOMove.StatModified.DEFENSE:
+            case SOMove.MoveModifier.DEFENSE:
                 {
                     bs.enemyUnit.defenseModifier -= move.statModifier;
                     if (move.statModifier <= 0) Debug.LogWarning($"WARNING: {move.moveName}s stat modifier is 0. Is this intentional?");
@@ -495,7 +495,7 @@ public class EnemyAI : MonoBehaviour
                     break;
                 }
 
-            case SOMove.StatModified.NONE:
+            case SOMove.MoveModifier.NONE:
                 {
                     Debug.LogWarning($"WARNING: {move.moveName} does not have an assigned stat to modify. Check SO!");
                     break;

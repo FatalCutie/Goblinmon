@@ -181,9 +181,9 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         //Buff Player
-        switch (move.statModified)
+        switch (move.moveModifier)
         {
-            case SOMove.StatModified.ATTACK:
+            case SOMove.MoveModifier.ATTACK:
                 {
                     playerUnit.attackModifier += move.statModifier;
                     if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
@@ -202,7 +202,7 @@ public class BattleSystem : MonoBehaviour
                     break;
                 }
 
-            case SOMove.StatModified.DEFENSE:
+            case SOMove.MoveModifier.DEFENSE:
                 {
                     playerUnit.defenseModifier += move.statModifier;
                     if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
@@ -221,7 +221,7 @@ public class BattleSystem : MonoBehaviour
                     break;
                 }
 
-            case SOMove.StatModified.NONE:
+            case SOMove.MoveModifier.NONE:
                 {
                     Debug.LogWarning("WARNING:" + move.moveName + " does not have an assigned stat to modify. Check SO!");
                     break;
@@ -239,9 +239,9 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         //Debuff Enemy
-        switch (move.statModified)
+        switch (move.moveModifier)
         {
-            case SOMove.StatModified.ATTACK:
+            case SOMove.MoveModifier.ATTACK:
                 {
                     enemyUnit.attackModifier -= move.statModifier;
                     if (move.statModifier <= 0) Debug.LogWarning($"WARNING: {move.moveName}s stat modifier is 0. Is this intentional?");
@@ -260,7 +260,7 @@ public class BattleSystem : MonoBehaviour
                     break;
                 }
 
-            case SOMove.StatModified.DEFENSE:
+            case SOMove.MoveModifier.DEFENSE:
                 {
                     enemyUnit.defenseModifier -= move.statModifier;
                     if (move.statModifier <= 0) Debug.LogWarning($"WARNING: {move.moveName}s stat modifier is 0. Is this intentional?");
@@ -278,7 +278,7 @@ public class BattleSystem : MonoBehaviour
                     break;
                 }
 
-            case SOMove.StatModified.NONE:
+            case SOMove.MoveModifier.NONE:
                 {
                     Debug.LogWarning($"WARNING: {move.moveName} does not have an assigned stat to modify. Check SO!");
                     break;
