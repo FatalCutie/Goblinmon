@@ -7,6 +7,8 @@ public class PlayerPositionManager : MonoBehaviour
 {
     [SerializeField] private Vector3 playerPosition = new Vector3();
     private PlayerPositionManager instance;
+    public int fusionItems;
+    public int captureItems;
 
     void Awake()
     {

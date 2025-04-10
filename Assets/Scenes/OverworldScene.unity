@@ -795,6 +795,7 @@ GameObject:
   m_Component:
   - component: {fileID: 152712522}
   - component: {fileID: 152712523}
+  - component: {fileID: 152712524}
   m_Layer: 0
   m_Name: Items
   m_TagString: Untagged
@@ -840,6 +841,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &152712524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152712521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41985456dd3a84e49be95f76c98e60ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fusionItems: {fileID: 337335160}
+  captureItems: {fileID: 1849755724}
+  ppm: {fileID: 0}
 --- !u!1 &166123691
 GameObject:
   m_ObjectHideFlags: 0
@@ -6931,7 +6947,7 @@ GameObject:
   - component: {fileID: 1090604603}
   - component: {fileID: 1090604604}
   m_Layer: 0
-  m_Name: PlayerMovementManager
+  m_Name: PlayerDataManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6965,6 +6981,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPosition: {x: 0, y: 0, z: 0}
+  fusionItems: 3
+  captureItems: 3
 --- !u!1 &1115935928
 GameObject:
   m_ObjectHideFlags: 0

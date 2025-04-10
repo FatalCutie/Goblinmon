@@ -51,6 +51,7 @@ public class SwitchingButton : MonoBehaviour
                 //Clear selected units
                 selectedUnit1 = null;
                 selectedUnit2 = null;
+                FlipButtonColor();
                 return;
         }
     }
@@ -60,6 +61,12 @@ public class SwitchingButton : MonoBehaviour
         {
             //Debug.Log("First unit picked!");
             selectedUnit1 = g;
+            FlipButtonColor();
+        }
+        else if (g == selectedUnit1)
+        {
+            selectedUnit1 = null; //deselect unit
+            FlipButtonColor();
         }
         else if (selectedUnit2 == null && g != selectedUnit1)
         {
@@ -85,12 +92,39 @@ public class SwitchingButton : MonoBehaviour
         //Switch Units
         partyStorage.goblinmon[i] = selectedUnit2;
         partyStorage.goblinmon[j] = selectedUnit1;
-        SwitchButtonMode(); //reset buttons
+        //Clear selected units, remain in switching mode
+        selectedUnit1 = null;
+        selectedUnit2 = null;
+        FlipButtonColor();
+
+        //SwitchButtonMode(); //reset buttons
     }
 
     private void ButtonCheck(){
         if(fb.buttonMode == FusionButton.ButtonMode.FUSION){
             fb.SwitchButtonMode();
+        }
+    }
+
+    private void FlipButtonColor()
+    {
+        foreach (Transform t in unitButtonHolder.transform)
+        {
+            //Structured for readability not optimization
+            if (t.GetComponent<UnitButton>())
+            {
+                Image b = t.GetComponent<Button>().GetComponent<Image>();
+                if (b.color != Color.white)
+                {
+                    b.color = Color.white;
+                    return;
+                }
+                else if (selectedUnit1 && t.GetComponent<UnitButton>().unit.ID == selectedUnit1.ID)
+                {
+                    if (b.color != Color.yellow) b.color = Color.yellow;
+                }
+
+            }
         }
     }
 }

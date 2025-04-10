@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -32,7 +33,6 @@ public class FusionButton : MonoBehaviour
                     if(t.GetComponent<UnitButton>()){
                         UnitButton ub = t.GetComponent<UnitButton>();
                         ub.buttonMode = UnitButton.ButtonMode.FUSION;
-                        //TODO: Change button color tint
                     }
                 }
                 //Switch button color
@@ -45,7 +45,6 @@ public class FusionButton : MonoBehaviour
                     if(t.GetComponent<UnitButton>()){
                         UnitButton ub = t.GetComponent<UnitButton>();
                         ub.buttonMode = UnitButton.ButtonMode.OVERWORLD;
-                        //TODO: Change button color tint
                     }
                 }
                 buttonMode = ButtonMode.OVERWORLD; //Switch self to match unit buttons
@@ -55,6 +54,7 @@ public class FusionButton : MonoBehaviour
                 //Clear selected units
                 selectedUnit1 = null;
                 selectedUnit2 = null;
+                FlipButtonColor();
                 return;
         }
     }
@@ -64,10 +64,17 @@ public class FusionButton : MonoBehaviour
         if (selectedUnit1 == null)
         {
             selectedUnit1 = g;
+            FlipButtonColor();
+        }
+        else if (g == selectedUnit1)
+        {
+            selectedUnit1 = null; //deselect unit
+            FlipButtonColor();
         }
         else if (selectedUnit2 == null && g != selectedUnit1)
         {
             selectedUnit2 = g;
+            FlipButtonColor();
             SOGoblinmon fusion = fusionCalculator.CalculateFusionUnit(selectedUnit1.goblinData, selectedUnit2.goblinData); //get fusion
             if(!fusion){
                 Debug.LogWarning("Fusion calculator returned null. Please check if selected units are valid!");
@@ -111,6 +118,28 @@ public class FusionButton : MonoBehaviour
     private void ButtonCheck(){
         if(sb.buttonMode == SwitchingButton.ButtonMode.SWITCH){
             sb.SwitchButtonMode();
+        }
+    }
+
+    private void FlipButtonColor()
+    {
+        foreach (Transform t in unitButtonHolder.transform)
+        {
+            //Structured for readability not optimization
+            if (t.GetComponent<UnitButton>())
+            {
+                Image b = t.GetComponent<Button>().GetComponent<Image>();
+                if (b.color != Color.white)
+                {
+                    b.color = Color.white;
+                    return;
+                }
+                else if (selectedUnit1 && t.GetComponent<UnitButton>().unit.ID == selectedUnit1.ID)
+                {
+                    if (b.color != Color.yellow) b.color = Color.yellow;
+                }
+
+            }
         }
     }
 }
