@@ -15,7 +15,7 @@ MonoBehaviour:
   gName: Crisp Kid
   gLevel: 0
   sprite: {fileID: 21300000, guid: 9a16c0878582c9e4d847ee5b1d9c1f21, type: 3}
-  maxHP: 0
+  maxHP: 5
   catchRate: 255
   type: {fileID: 0}
   moveset: []

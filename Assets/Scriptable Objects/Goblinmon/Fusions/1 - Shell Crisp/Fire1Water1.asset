@@ -15,7 +15,7 @@ MonoBehaviour:
   gName: Aqua Crisp
   gLevel: 0
   sprite: {fileID: 21300000, guid: 8a825b21157e60446956c9ee0f3c7c9c, type: 3}
-  maxHP: 0
+  maxHP: 5
   catchRate: 255
   type: {fileID: 0}
   moveset: []

@@ -15,7 +15,7 @@ MonoBehaviour:
   gName: Ice Head
   gLevel: 0
   sprite: {fileID: 21300000, guid: f88c0d8e46908604fade9c448cd50be4, type: 3}
-  maxHP: 0
+  maxHP: 5
   catchRate: 255
   type: {fileID: 0}
   moveset: []

@@ -15,7 +15,7 @@ MonoBehaviour:
   gName: Crispy Men
   gLevel: 0
   sprite: {fileID: 21300000, guid: 021c46e7d8dbdae41b610c7bd9f2bfbf, type: 3}
-  maxHP: 0
+  maxHP: 5
   catchRate: 255
   type: {fileID: 0}
   moveset: []

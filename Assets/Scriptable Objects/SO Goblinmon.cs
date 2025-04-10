@@ -6,10 +6,10 @@ using UnityEngine;
 public class SOGoblinmon : ScriptableObject
 {
     public string gName;
-    public int gLevel;
+    public int gLevel = 69; //Aren't I mature
 
     public Sprite sprite;
-    public int maxHP;
+    public int maxHP = 1; //Filler Value
     // public int currentHP;
     public int catchRate = 255;
     public SOType type;

@@ -15,7 +15,7 @@ MonoBehaviour:
   gName: Crab Head
   gLevel: 0
   sprite: {fileID: 21300000, guid: 84db1d2611399e34d9ab821ba7c48c69, type: 3}
-  maxHP: 0
+  maxHP: 5
   catchRate: 255
   type: {fileID: 0}
   moveset: []
