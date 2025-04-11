@@ -39,10 +39,6 @@ public class PlayerPositionManager : MonoBehaviour
             player.gameObject.transform.position = playerPosition; //Then actual player
             player.movementLocked = false;
 
-        } 
-    }
-
-    private Vector3 RoundPlayerCoordinates(){
-        return new Vector3();
+        }
     }
 }

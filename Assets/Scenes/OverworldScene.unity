@@ -11264,6 +11264,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
+      propertyPath: goblinmonSO.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: f3fac99198f4f1941b5f9b42c9c401c6, type: 2}
+    - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: af63e05a06a3e4a458c44d8902558ec4, type: 2}

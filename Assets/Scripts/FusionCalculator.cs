@@ -96,9 +96,8 @@ public class FusionCalculator : MonoBehaviour
     public SOGoblinmon water2Water2;
     #endregion
     #endregion
-    
 
-    
+
     //Apparently you can't write this with switch statements so
     //prepare to read some downright CRIMINAL code
     public SOGoblinmon CalculateFusionUnit(SOGoblinmon unitOne, SOGoblinmon unitTwo){
@@ -192,15 +191,15 @@ public class FusionCalculator : MonoBehaviour
             } else if(unitTwo == grass2){
                 return grass1Grass2;
             } else if(unitTwo == ice1){
-                return grass1Ice1;
+                return grass2Ice1;
             } else if(unitTwo == ice2){
-                return grass1Ice2;
+                return grass2Ice2;
             } else if(unitTwo == magic1){
-                return grass1Magic1;
+                return grass2Magic1;
             } else if(unitTwo == water1){
-                return grass1Water1;
+                return grass2Water1;
             } else if(unitTwo == water2){
-                return grass1Water2;
+                return grass2Water2;
             }
             else{
                 Debug.LogWarning("Could not find Unit2 in FusionCalculator. Did you declare it properly?");
