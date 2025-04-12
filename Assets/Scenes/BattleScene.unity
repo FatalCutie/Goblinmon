@@ -2516,7 +2516,7 @@ Transform:
   m_GameObject: {fileID: 714104571}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.88, y: 1, z: 0}
+  m_LocalPosition: {x: -12.01, y: -0.25, z: 0}
   m_LocalScale: {x: 0.045215238, y: 0.045215238, z: 0.045215238}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8632,6 +8632,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2049001894}
   - component: {fileID: 2049001895}
+  - component: {fileID: 2049001896}
   m_Layer: 0
   m_Name: PlayerBattleStation
   m_TagString: Untagged
@@ -8707,6 +8708,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &2049001896
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049001893}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e7013165642f1564088db33eac5a3956, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2049049714
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9071,6 +9093,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
   - {fileID: 11400000, guid: 95adcac05f621d7458c3941039edbe1a, type: 2}
   twoTurnMove: {fileID: 0}
+  playerAnimator: {fileID: 2049001896}
+  battleAnimator: {fileID: 2087887654}
 --- !u!114 &2087887650
 MonoBehaviour:
   m_ObjectHideFlags: 0

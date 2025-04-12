@@ -17,8 +17,8 @@ public class CatchSystem : MonoBehaviour
         bs = FindObjectOfType<BattleSystem>();
     }
     public IEnumerator AttemptToCatch(Goblinmon g){
-        
-        StartCoroutine(bs.ScrollText("Player threw a box!"));
+
+        StartCoroutine(bs.ScrollText("Player threw a ball!"));
         yield return new WaitForSeconds(1);
         battleAnimator.SetBool("BallThrown", true); //Throw ball animation
         yield return new WaitForSeconds(0.7f);

@@ -17,7 +17,7 @@ public class ButtonManager : MonoBehaviour
     void Start()
     {
         if (buttonsAttack.activeSelf) buttonsAttack.SetActive(false);
-        if (!buttonsBasic.activeSelf) buttonsBasic.SetActive(true);
+        if (buttonsBasic.activeSelf) buttonsBasic.SetActive(false);
         switchingMenu.SetActive(false);
     }
 

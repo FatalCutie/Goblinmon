@@ -45,6 +45,9 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private List<SOType> types; //For random type move
     public SOMove twoTurnMove; //Stores move if it's a two turner
 
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private Animator battleAnimator;
+
     #endregion
     void Start()
     {
@@ -101,7 +104,6 @@ public class BattleSystem : MonoBehaviour
         playerHUD.SetHUD(playerUnit);
         bm.SetPlayerMoves(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
-
         yield return new WaitForSeconds(.5f); //to account for transition
         StartCoroutine(ScrollText($"A wild {enemyUnit.goblinData.gName} approches!"));
 
@@ -480,6 +482,8 @@ public class BattleSystem : MonoBehaviour
         //Prevents text overlap
         if (firstScroll)
         {
+            //Throw out unit
+            StartCoroutine(ThrowOutUnit());
             firstScroll = !firstScroll;
         }
         else StartCoroutine(ScrollText("Choose an action:"));
@@ -584,4 +588,17 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    private IEnumerator ThrowOutUnit()
+    {
+        StartCoroutine(ScrollText($"Go, {playerUnit.goblinData.gName}!"));
+        yield return new WaitForSeconds(1);
+        battleAnimator.SetTrigger("ThrowOutPlayer");
+        yield return new WaitForSeconds(.84f); //hard coded for animation
+        //Debug.Log("I'm Done!");
+        //TODO: Play Sound Effect
+        playerAnimator.SetBool("Player Out", true);
+        yield return new WaitForSeconds(1.4f);
+        StartCoroutine(ScrollText("Choose an action:"));
+        bm.enableBasicButtonsOnPress();
+    }
 }
