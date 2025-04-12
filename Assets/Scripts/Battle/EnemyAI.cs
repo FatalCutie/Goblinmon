@@ -19,6 +19,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private List<Goblinmon> party;
     [SerializeField] private Goblinmon actualPlayer;
     System.Random rnd = new System.Random();
+    public float standardWaitTime = 1; //Standard Wait Time
 
     #endregion
 
@@ -194,13 +195,14 @@ public class EnemyAI : MonoBehaviour
     }
 
     //Finds active units place in party and saves their current HP
+    //This is currently throwing an error
     public void SaveUnitData()
     {
         Goblinmon unitToSave = self;
         int unitID = 0;
         foreach (Goblinmon un in party)
         {
-            if (un.ID == unitToSave.ID)
+            if (un.ID == unitToSave.ID) //Does ID get changed somewhere?
             {
                 break;
             }
@@ -216,16 +218,16 @@ public class EnemyAI : MonoBehaviour
         if (justDied)
         {
             StartCoroutine(bs.ScrollText($"Go, {unit.goblinData.gName}!"));
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(standardWaitTime);
         }
         else
         {
             StartCoroutine(bs.ScrollText($"Come back {bs.enemyUnit.goblinData.gName}!"));
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(standardWaitTime / 2);
             bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(standardWaitTime);
             StartCoroutine(bs.ScrollText($"Go, {unit.goblinData.gName}!"));
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(standardWaitTime / 2);
         }
 
 
@@ -245,7 +247,7 @@ public class EnemyAI : MonoBehaviour
         //Update HUD
         bs.enemyHUD.SetHUD(gob);
         bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = self.goblinData.sprite;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(standardWaitTime * .75f);
 
         EndTurn();
     }
@@ -265,15 +267,21 @@ public class EnemyAI : MonoBehaviour
             //If attack super effective & kills return move
             if (playerType.weakAgainstEnemyType(move.moveType) && move.moveAction == SOMove.MoveAction.ATTACK)
             {
+                int moveDamage;
                 //Factor in damage modifiers with calculation
-                int moveDamage = self.ApplyDamageModifiers(move.damage * 2, self);
+                if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
+                    moveDamage = self.ApplyDamageModifiers(move.damage * 2, self, true);
+                else moveDamage = self.ApplyDamageModifiers(move.damage * 2, self, false);
                 if (moveDamage > playerHP) return move;
             }
             else if (move.moveAction == SOMove.MoveAction.ATTACK)
             //If move kills return move
             {
+                int moveDamage;
                 //Factor in damage modifiers with calculation
-                int moveDamage = self.ApplyDamageModifiers(move.damage, self);
+                if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
+                    moveDamage = self.ApplyDamageModifiers(move.damage, self, true);
+                else moveDamage = self.ApplyDamageModifiers(move.damage, self, false);
                 if (moveDamage > playerHP) return move;
             }
         }
@@ -294,13 +302,19 @@ public class EnemyAI : MonoBehaviour
             if (playerType.weakAgainstEnemyType(move.moveType) && move.moveAction == SOMove.MoveAction.ATTACK)
             {
                 //Factor in damage modifiers with calculation
-                int moveDamage = self.ApplyDamageModifiers(move.damage * 2, self);
+                int moveDamage;
+                if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
+                    moveDamage = self.ApplyDamageModifiers(move.damage * 2, self, true);
+                else moveDamage = self.ApplyDamageModifiers(move.damage * 2, self, false);
                 if (moveDamage * 2 > returnMove.damage) returnMove = move;
             }
             else
             {
                 //Factor in damage modifiers with calculation
-                int moveDamage = self.ApplyDamageModifiers(move.damage, self);
+                int moveDamage;
+                if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
+                    moveDamage = self.ApplyDamageModifiers(move.damage, self, true);
+                else moveDamage = self.ApplyDamageModifiers(move.damage, self, false);
                 if (moveDamage > returnMove.damage) returnMove = move;
             }
         }
@@ -345,48 +359,56 @@ public class EnemyAI : MonoBehaviour
         bool strongAttack = actualPlayer.goblinData.type.weakAgainstEnemyType(move.moveType); ;
 
         StartCoroutine(bs.ScrollText($"{self.goblinData.gName} used {move.name}!"));
-        yield return new WaitForSeconds(2);
-
-        //Different text/sounds based on attack effectiveness
-        if (strongAttack)
-        {
-            StartCoroutine(bs.ScrollText("It was super effective!"));
-            yield return new WaitForSeconds(1f);
-
-            FindObjectOfType<AudioManager>().Play("superEffective");
-        }
-        else
-        {
-            StartCoroutine(bs.ScrollText("The attack was successful!"));
-            yield return new WaitForSeconds(1f);
-
-            FindObjectOfType<AudioManager>().Play("damage");
-        }
-
+        yield return new WaitForSeconds(standardWaitTime);
         //Attack player
-        bool isDead = actualPlayer.TakeDamage(move.damage, strongAttack, self);
-        bs.playerHUD.setHP(actualPlayer.currentHP, actualPlayer);
-        yield return new WaitForSeconds(2f);
-
-        if (isDead)
-        {   //Check if player has available units
-            bs.playerUnit.GetComponent<SpriteRenderer>().sprite = null;
-            StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName} Fainted!"));
-            yield return new WaitForSeconds(2f);
-            sm.SavePlayerData();
-            if (sm.DoesPlayerHaveUnits())
+        if (!bs.twoTurnMove)
+        {
+            bool isDead;
+            if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
+                isDead = actualPlayer.TakeDamage(move.damage, strongAttack, self, true);
+            else isDead = actualPlayer.TakeDamage(move.damage, strongAttack, self, false);
+            bs.playerHUD.setHP(actualPlayer.currentHP, actualPlayer);
+            //Different text/sounds based on attack effectiveness
+            if (strongAttack)
             {
-                sm.GetNewPlayerUnit();
-                //Continue Battle
+                FindObjectOfType<AudioManager>().Play("superEffective");
+                yield return new WaitForSeconds(standardWaitTime / 2);
+                StartCoroutine(bs.ScrollText("It was super effective!"));
             }
             else
             {
-                bs.state = BattleState.LOST;
-                bs.EndBattle();
+                FindObjectOfType<AudioManager>().Play("damage");
+                yield return new WaitForSeconds(standardWaitTime / 2);
+                StartCoroutine(bs.ScrollText("The attack was successful!"));
+            }
+            yield return new WaitForSeconds(standardWaitTime);
+
+            if (isDead)
+            {   //Check if player has available units
+                bs.playerUnit.GetComponent<SpriteRenderer>().sprite = null;
+                StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName} Fainted!"));
+                yield return new WaitForSeconds(standardWaitTime);
+                sm.SavePlayerData();
+                if (sm.DoesPlayerHaveUnits())
+                {
+                    sm.GetNewPlayerUnit();
+                    //Continue Battle
+                }
+                else
+                {
+                    bs.state = BattleState.LOST;
+                    bs.EndBattle();
+                }
+            }
+            else
+            {
+                EndTurn();
             }
         }
         else
         {
+            StartCoroutine(bs.ScrollText("The attack missed!"));
+            yield return new WaitForSeconds(standardWaitTime);
             EndTurn();
         }
 
@@ -396,7 +418,7 @@ public class EnemyAI : MonoBehaviour
     public IEnumerator BuffEnemyAction(SOMove move)
     {
         StartCoroutine(bs.ScrollText($"{self.goblinData.gName} used {move.moveName}!"));
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(standardWaitTime);
 
         //Buff Self
         switch (move.moveModifier)
@@ -410,12 +432,12 @@ public class EnemyAI : MonoBehaviour
                         //clamp buff at 6
                         self.attackModifier = 6;
                         StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack can't go any higher!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     else
                     {
                         StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack was increased!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     break;
                 }
@@ -429,12 +451,12 @@ public class EnemyAI : MonoBehaviour
                         //clamp buff at 6
                         self.defenseModifier = 6;
                         StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s defense can't go any higher!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     else
                     {
                         StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s defense was increased!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     break;
                 }
@@ -453,7 +475,7 @@ public class EnemyAI : MonoBehaviour
     public IEnumerator DebuffPlayerAction(SOMove move)
     {
         StartCoroutine(bs.ScrollText($"{self.goblinData.gName} used {move.moveName}!"));
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(standardWaitTime);
 
         //Debuff Enemy
         switch (move.moveModifier)
@@ -467,12 +489,12 @@ public class EnemyAI : MonoBehaviour
                         //clamp debuff at 6
                         actualPlayer.attackModifier = -6;
                         StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName}'s attack can't go any lower!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     else
                     {
                         StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName}'s attack was lowered!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     break;
                 }
@@ -485,12 +507,12 @@ public class EnemyAI : MonoBehaviour
                     {
                         actualPlayer.defenseModifier = -6; //clamp
                         StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName}'s defense can't go any lower!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     else
                     {
                         StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName}'s defense was lowered!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     break;
                 }
@@ -525,7 +547,7 @@ public class EnemyAI : MonoBehaviour
         || internalPlayer.currentHP != actualPlayer.currentHP)
             UpdateInternalPlayerUnit();
 
-        bm.enableBasicButtonsOnPress();
+        if (!bs.twoTurnMove) bm.enableBasicButtonsOnPress();
         bs.PlayerTurn();
     }
 }

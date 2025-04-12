@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Water2
   m_EditorClassIdentifier: 
   gName: Soaked Threat
-  gLevel: 0
+  gLevel: 5
   sprite: {fileID: 21300000, guid: af16c86791725a84b88374ba6f055634, type: 3}
-  maxHP: 5
+  maxHP: 60
   catchRate: 255
   type: {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
   moveset:

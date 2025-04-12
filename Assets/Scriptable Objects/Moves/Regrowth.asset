@@ -15,7 +15,7 @@ MonoBehaviour:
   moveName: Regrowth
   moveDescription: Root yourself in the ground, restoring health.
   moveType: {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
-  damage: 0
+  damage: 35
   moveAction: 3
   moveModifier: 0
-  statModifier: 50
+  statModifier: 0

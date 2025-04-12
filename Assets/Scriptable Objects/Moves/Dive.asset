@@ -16,7 +16,7 @@ MonoBehaviour:
   moveDescription: Hide under water for one turn, then unleash a strong attack the
     next.
   moveType: {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
-  damage: 35
+  damage: 5
   moveAction: 0
-  moveModifier: 5
+  moveModifier: 6
   statModifier: 0

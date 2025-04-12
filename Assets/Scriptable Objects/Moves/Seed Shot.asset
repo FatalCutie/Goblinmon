@@ -18,5 +18,5 @@ MonoBehaviour:
   moveType: {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
   damage: 15
   moveAction: 0
-  moveModifier: 4
+  moveModifier: 5
   statModifier: 0

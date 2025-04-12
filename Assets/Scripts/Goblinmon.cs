@@ -20,19 +20,19 @@ public class Goblinmon : MonoBehaviourID
     }
 
     //Unit takes damage
-    public bool TakeDamage(int dmg, bool weakness, Goblinmon attacker)
+    public bool TakeDamage(int dmg, bool weakness, Goblinmon attacker, bool defScale)
     {
         int damageToDeal = dmg;
         if (weakness)
         {
-            damageToDeal = ApplyDamageModifiers(damageToDeal, attacker);
+            damageToDeal = ApplyDamageModifiers(damageToDeal, attacker, defScale);
             damageToDeal *= 2;
             currentHP -= damageToDeal;
             if (currentHP < 0) currentHP = 0; //clamp damage min
         }
         else
         {
-            dmg = ApplyDamageModifiers(dmg, attacker);
+            dmg = ApplyDamageModifiers(dmg, attacker, defScale);
             currentHP -= dmg;
             if (currentHP < 0) currentHP = 0; //clamp damage min
         }
@@ -42,13 +42,20 @@ public class Goblinmon : MonoBehaviourID
     }
 
     //Applies stat changes to damage value
-    public int ApplyDamageModifiers(int dmg, Goblinmon attacker)
+    public int ApplyDamageModifiers(int dmg, Goblinmon attacker, bool defScale)
     {
         //Creates random modifier to multiply damage with
         float decider = FindObjectOfType<BattleSystem>().rnd.Next(1, 16);
         float randomDamageModifier = 0.84f + decider * 0.01f; //Creates damage range of .85 and 1
 
+        //TODO: Finish This
         int returnDamage = dmg;
+        int tempModifierHolder;
+        if (defScale)
+        {
+            tempModifierHolder = attackModifier;
+            attackModifier = defenseModifier;
+        }
 
         //Compare modifiers to see if they cancel out (+1 attack swinging into +1 defense is neutral damage)
         if (attacker.attackModifier > defenseModifier)

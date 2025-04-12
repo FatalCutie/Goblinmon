@@ -5932,16 +5932,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.size
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 7589598587805ce4c8d755f64f2c68f1, type: 2}
+      objectReference: {fileID: 11400000, guid: 2875e90ce313c12489196937969a8242, type: 2}
+    - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
+      propertyPath: goblinmonSO.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: f3fac99198f4f1941b5f9b42c9c401c6, type: 2}
+    - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
+      propertyPath: goblinmonSO.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 319c9205674def14a836c32a2bd143ac, type: 2}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[3]
       value: 
-      objectReference: {fileID: 11400000, guid: 969f58b3700fbf94391f02cfd94258d8, type: 2}
+      objectReference: {fileID: 11400000, guid: af63e05a06a3e4a458c44d8902558ec4, type: 2}
+    - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
+      propertyPath: goblinmonSO.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: b282e4faf598e6b428c625035ad3e6d2, type: 2}
+    - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
+      propertyPath: goblinmonSO.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7589598587805ce4c8d755f64f2c68f1, type: 2}
     - target: {fileID: 473450462285857011, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -580.8306
@@ -7349,12 +7365,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1185157204632998565, guid: c041c2dfafb1605438ee1985f5fb340c, type: 3}
       propertyPath: goblinmon.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1185157204632998565, guid: c041c2dfafb1605438ee1985f5fb340c, type: 3}
       propertyPath: goblinmon.Array.data[0]
       value: 
       objectReference: {fileID: 1767015851}
+    - target: {fileID: 1185157204632998565, guid: c041c2dfafb1605438ee1985f5fb340c, type: 3}
+      propertyPath: goblinmon.Array.data[1]
+      value: 
+      objectReference: {fileID: 1767015855}
     - target: {fileID: 4300079924289081473, guid: c041c2dfafb1605438ee1985f5fb340c, type: 3}
       propertyPath: m_Name
       value: DELETEME EnemyPartyStorage
@@ -7410,6 +7430,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4300079924289081473, guid: c041c2dfafb1605438ee1985f5fb340c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1767015851}
+    - targetCorrespondingSourceObject: {fileID: 4300079924289081473, guid: c041c2dfafb1605438ee1985f5fb340c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1767015855}
   m_SourcePrefab: {fileID: 100100000, guid: c041c2dfafb1605438ee1985f5fb340c, type: 3}
 --- !u!1 &1767015850 stripped
 GameObject:
@@ -7440,6 +7463,25 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8422864821499535354, guid: c041c2dfafb1605438ee1985f5fb340c, type: 3}
   m_PrefabInstance: {fileID: 1767015849}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1767015855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767015850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0e74ac394a9dc74da3e0acadcb75f3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id:
+    Value: 4f4977cb-4f56-4759-a8be-4691f7d071a6
+  goblinData: {fileID: 11400000, guid: b282e4faf598e6b428c625035ad3e6d2, type: 2}
+  currentHP: 15
+  attackModifier: 0
+  defenseModifier: 0
+  friendOrFoe: 1
 --- !u!1 &1767350189
 GameObject:
   m_ObjectHideFlags: 0
@@ -8182,7 +8224,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1902698335
 Transform:
   m_ObjectHideFlags: 0
@@ -9021,6 +9063,14 @@ MonoBehaviour:
   playerHUD: {fileID: 1550094410}
   enemyHUD: {fileID: 2049049720}
   state: 0
+  standardWaitTime: 1.7
+  types:
+  - {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
+  - {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
+  - {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
+  - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
+  - {fileID: 11400000, guid: 95adcac05f621d7458c3941039edbe1a, type: 2}
+  twoTurnMove: {fileID: 0}
 --- !u!114 &2087887650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9078,6 +9128,7 @@ MonoBehaviour:
   unitHolder: {fileID: 322218802}
   party: []
   actualPlayer: {fileID: 0}
+  standardWaitTime: 2
 --- !u!212 &2087887653
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -17,6 +17,6 @@ MonoBehaviour:
     turn.
   moveType: {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
   damage: 0
-  moveAction: 3
-  moveModifier: 0
-  statModifier: 2
+  moveAction: 1
+  moveModifier: 4
+  statModifier: 3

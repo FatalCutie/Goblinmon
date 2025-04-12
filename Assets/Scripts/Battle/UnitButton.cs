@@ -39,11 +39,15 @@ public class UnitButton : MonoBehaviour
         //This is woefully inefficient
         //Oh well!
         //I CHANGED THIS. IF BUTTONS ACTING WEIRD IN BATTLE LOOK AT THIS
-        if (buttonMode == ButtonMode.SWITCH && buttonMode == ButtonMode.RELEASE) //If we're in a battle
+        if (buttonMode == ButtonMode.SWITCH || buttonMode == ButtonMode.RELEASE) //If we're in a battle
         {
             if (unit != null && unit.ID == FindObjectOfType<BattleSystem>().playerUnit.ID
                 && hp.value != FindObjectOfType<BattleSystem>().playerUnit.currentHP)
+            {
+                Debug.Log("HP does not line up with internal! Fixing!");
                 hp.value = FindObjectOfType<BattleSystem>().playerUnit.currentHP;
+            }
+
         }
 
     }

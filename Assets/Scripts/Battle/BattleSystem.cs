@@ -1,9 +1,12 @@
 
 using System.Collections;
+using System.Collections.Generic;
 using System.Numerics;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleSystem : MonoBehaviour
@@ -36,6 +39,11 @@ public class BattleSystem : MonoBehaviour
     public BattleState state;
 
     public System.Random rnd = new System.Random();
+    private bool firstScroll = true;
+    public float standardWaitTime = 1;
+    private int playerRamping; //Turns left in debuffing player if ramped
+    [SerializeField] private List<SOType> types; //For random type move
+    public SOMove twoTurnMove; //Stores move if it's a two turner
 
     #endregion
     void Start()
@@ -105,20 +113,23 @@ public class BattleSystem : MonoBehaviour
 
     #region Player Attacks
 
-    //Runs correct Coroutine based on move action
+    //Runs correct Coroutine based on move action enum
     public void StartPlayerAttack(SOMove move)
     {
         bm.disableButtonsDuringAttack();
         switch (move.moveAction)
         {
             case SOMove.MoveAction.ATTACK:
-                StartCoroutine(PlayerAttack(move));
+                StartCoroutine(PlayerAttack(move)); //Move modifiers handled in IEnumerator
                 break;
             case SOMove.MoveAction.BUFF:
                 StartCoroutine(BuffPlayer(move));
                 break;
             case SOMove.MoveAction.DEBUFF:
                 StartCoroutine(DebuffEnemy(move));
+                break;
+            case SOMove.MoveAction.HEAL:
+                StartCoroutine(PlayerHeal(move));
                 break;
         }
     }
@@ -127,58 +138,120 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator PlayerAttack(SOMove move)
     {
         StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} used {move.name}!"));
-        yield return new WaitForSeconds(1.5f);
-        bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
-        if (strongAttack) //If super effective 
+        yield return new WaitForSeconds(standardWaitTime);
+        //Multi Hit Move attack
+        if (move.moveModifier == SOMove.MoveModifier.MULTI_HIT)
         {
-            StartCoroutine(ScrollText("The attack is super effective!"));
-            yield return new WaitForSeconds(1f);
-            FindObjectOfType<AudioManager>().Play("superEffective");
+            StartCoroutine(MultiHitAttack(move));
         }
-        else
+        else if (move.moveModifier == SOMove.MoveModifier.TWO_TURN)
         {
-            StartCoroutine(ScrollText("The attack is successful!"));
-            yield return new WaitForSeconds(1f);
-            FindObjectOfType<AudioManager>().Play("damage");
-        }
+            //Hide unit
+            playerUnit.GetComponent<SpriteRenderer>().sprite = null;
+            StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} dove under water!"));
+            yield return new WaitForSeconds(standardWaitTime);
 
-        bool isDead = enemyUnit.TakeDamage(move.damage, strongAttack, playerUnit);
-        enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
-        yield return new WaitForSeconds(2f);
-
-        if (isDead)
-        {
-            //Unit dies
-            enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
-            StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName} fainted!"));
-            yield return new WaitForSeconds(2f);
-
-            //Check for more units
-            eAI.SaveUnitData();
-            if (eAI.CheckForMoreUnits())
-            {
-                Goblinmon switchIn = eAI.FindSafeSwitch(true);
-                StartCoroutine(eAI.SwitchAction(switchIn, true));
-            }
-            else
-            {
-                state = BattleState.WON;
-                EndBattle();
-            }
-
-        }
-        else
-        {
+            //End turn, move will land in PlayerTurn() on the next turn
+            twoTurnMove = move; //stash move for PlayerTurn()
             state = BattleState.ENEMYTURN;
             eAI.FindOptimalOption();
         }
-
+        else
+        {
+            bool strongAttack = false;
+            if (move.moveModifier == SOMove.MoveModifier.RANDOM_TYPE)
+            {
+                int i = rnd.Next(0, types.Capacity);
+                SOType temp = types[i];
+                strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(temp);
+                StartCoroutine(ScrollText($"The move switches type to {temp.name}!"));
+                yield return new WaitForSeconds(standardWaitTime);
+            }
+            else strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
+            bool isDead;
+            if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
+                isDead = enemyUnit.TakeDamage(move.damage, strongAttack, playerUnit, true);
+            else isDead = enemyUnit.TakeDamage(move.damage, strongAttack, playerUnit, false);
+            enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
+            if (strongAttack) //If super effective 
+            {
+                FindObjectOfType<AudioManager>().Play("superEffective");
+                yield return new WaitForSeconds(standardWaitTime / 2);
+                StartCoroutine(ScrollText("The attack is super effective!"));
+            }
+            else
+            {
+                FindObjectOfType<AudioManager>().Play("damage");
+                yield return new WaitForSeconds(standardWaitTime / 2);
+                StartCoroutine(ScrollText("The attack is successful!"));
+            }
+            if (move.moveModifier == SOMove.MoveModifier.RECOIL)
+            {
+                yield return new WaitForSeconds(standardWaitTime);
+                StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} took recoil!"));
+                playerUnit.currentHP -= move.statModifier; //Switch to % of damage later?
+                playerHUD.setHP(playerUnit.currentHP, playerUnit);
+                //TODO: Kill if dead
+            }
+            yield return new WaitForSeconds(standardWaitTime);
+            if (isDead)
+            {
+                StartCoroutine(KillEnemyUnit());
+            }
+            else
+            {
+                state = BattleState.ENEMYTURN;
+                eAI.FindOptimalOption();
+            }
+        }
     }
 
+    public IEnumerator MultiHitAttack(SOMove move)
+    {
+        bool dead = false;
+        int hits = rnd.Next(2, 5);
+        bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
+        for (int i = 0; i < hits; i++)
+        {
+            if (!enemyUnit.TakeDamage(move.damage, strongAttack, playerUnit, false))
+            {
+                //Deal damage
+                enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
+                if (strongAttack) FindObjectOfType<AudioManager>().Play("superEffective");
+                else FindObjectOfType<AudioManager>().Play("damage");
+                yield return new WaitForSeconds(standardWaitTime / 2);
+            }
+            else //Unit dies
+            {
+                //Deal last hit
+                enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
+                if (strongAttack) FindObjectOfType<AudioManager>().Play("superEffective");
+                else FindObjectOfType<AudioManager>().Play("damage");
+                yield return new WaitForSeconds(standardWaitTime / 2);
+                //Kill enemy
+                if (strongAttack) StartCoroutine(ScrollText("The attack is super effective!"));
+                else StartCoroutine(ScrollText("The attack is successful!"));
+                yield return new WaitForSeconds(standardWaitTime);
+                StartCoroutine(KillEnemyUnit());
+                dead = true;
+                break;
+            }
+        }
+        //Enemy survives
+        if (!dead)
+        {
+            if (strongAttack) StartCoroutine(ScrollText("The attack is super effective!"));
+            else StartCoroutine(ScrollText("The attack is successful!"));
+            yield return new WaitForSeconds(standardWaitTime);
+            state = BattleState.ENEMYTURN;
+            eAI.FindOptimalOption();
+        }
+    }
+    //This can be cleaned up
     public IEnumerator BuffPlayer(SOMove move)
     {
         StartCoroutine(ScrollText("Player used " + move.moveName + "!"));
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(standardWaitTime);
 
         //Buff Player
         switch (move.moveModifier)
@@ -192,12 +265,12 @@ public class BattleSystem : MonoBehaviour
                         //clamp buff at 6
                         playerUnit.attackModifier = 6;
                         StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack can't go any higher!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     else
                     {
-                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack was increased!"));
-                        yield return new WaitForSeconds(2f);
+                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack was increased by {move.statModifier}!"));
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     break;
                 }
@@ -211,13 +284,57 @@ public class BattleSystem : MonoBehaviour
                         //clamp buff at 6
                         playerUnit.defenseModifier = 6;
                         StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s defense can't go any higher!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     else
                     {
-                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s defense was increased!"));
-                        yield return new WaitForSeconds(2f);
+                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s defense was increased by {move.statModifier}!"));
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
+                    break;
+                }
+            case SOMove.MoveModifier.RAMP:
+                {
+
+                    playerUnit.attackModifier += move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
+                    if (playerUnit.attackModifier > 6)
+                    {
+                        //clamp buff at 6
+                        playerUnit.attackModifier = 6;
+                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack can't go any higher!"));
+                        playerRamping = 3; //Attack decreased for 3 turns
+                        yield return new WaitForSeconds(standardWaitTime);
+                    }
+                    else
+                    {
+                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack was increased by {move.statModifier}!"));
+                        playerRamping = 3; //Attack decreased for 3 turns
+                        yield return new WaitForSeconds(standardWaitTime);
+                    }
+                    break;
+                }
+            case SOMove.MoveModifier.ATTACK_DEFENSE:
+                {
+                    playerUnit.defenseModifier += move.statModifier;
+                    playerUnit.attackModifier += move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
+                    if (playerUnit.defenseModifier > 6)
+                    {
+                        //clamp buff at 6
+                        playerUnit.defenseModifier = 6;
+                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s defense can't go any higher!"));
+                        yield return new WaitForSeconds(standardWaitTime);
+                    }
+                    if (playerUnit.attackModifier > 6)
+                    {
+                        //clamp buff at 6
+                        playerUnit.attackModifier = 6;
+                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack can't go any higher!"));
+                        yield return new WaitForSeconds(standardWaitTime);
+                    }
+                    StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack and defense was increased by {move.statModifier}!"));
+                    yield return new WaitForSeconds(standardWaitTime);
                     break;
                 }
 
@@ -232,11 +349,11 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.ENEMYTURN;
         eAI.FindOptimalOption();
     }
-
+    //This can be cleaned up
     public IEnumerator DebuffEnemy(SOMove move)
     {
         StartCoroutine(ScrollText($"Player used {move.moveName}!"));
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(standardWaitTime);
 
         //Debuff Enemy
         switch (move.moveModifier)
@@ -250,12 +367,12 @@ public class BattleSystem : MonoBehaviour
                         //clamp debuff at 6
                         enemyUnit.attackModifier = -6;
                         StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName}'s attack can't go any lower!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     else
                     {
                         StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName}'s attack was lowered!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     break;
                 }
@@ -268,12 +385,12 @@ public class BattleSystem : MonoBehaviour
                     {
                         enemyUnit.defenseModifier = -6; //clamp
                         StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName}'s defense can't go any lower!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     else
                     {
                         StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName}'s defense was lowered!"));
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(standardWaitTime);
                     }
                     break;
                 }
@@ -290,6 +407,22 @@ public class BattleSystem : MonoBehaviour
         eAI.FindOptimalOption();
     }
 
+    public IEnumerator PlayerHeal(SOMove move)
+    {
+        StartCoroutine(ScrollText("Player used " + move.moveName + "!"));
+        yield return new WaitForSeconds(standardWaitTime);
+
+        //Heal Player
+        playerUnit.currentHP += move.damage; //heal
+        if (playerUnit.currentHP > playerUnit.goblinData.maxHP) playerUnit.currentHP = playerUnit.goblinData.maxHP; //So player doesn't heal over max
+        playerHUD.setHP(playerUnit.currentHP, playerUnit);
+        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} restored their health!"));
+        yield return new WaitForSeconds(standardWaitTime);
+
+        //End Turn
+        state = BattleState.ENEMYTURN;
+        eAI.FindOptimalOption();
+    }
     #endregion
 
     public void EndBattle()
@@ -330,14 +463,32 @@ public class BattleSystem : MonoBehaviour
 
     public void PlayerTurn()
     {
-        StartCoroutine(ScrollText("Choose an action:"));
+        if (playerRamping > 0)
+        {
+            playerRamping--;
+            playerUnit.attackModifier--;
+            StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack fell by 1!"));
+            if (!twoTurnMove) return; //skip choose action text
+
+        }
+        if (twoTurnMove)
+        {
+            //Finish two turn move
+            StartCoroutine(CompleteTwoTurnMove());
+            return;
+        }
+        //Prevents text overlap
+        if (firstScroll)
+        {
+            firstScroll = !firstScroll;
+        }
+        else StartCoroutine(ScrollText("Choose an action:"));
     }
 
     //Makes text scroll across dialogue box
     public IEnumerator ScrollText(string sentence)
     {
         dialogueText.text = "";
-        //TODO: This isn't properly clearing. Fix it 
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
@@ -349,7 +500,7 @@ public class BattleSystem : MonoBehaviour
             // else if (Char.ToString(letter) == ",") yield return new WaitForSeconds(.1f);
             //else
 
-            yield return new WaitForSeconds(.01f); //wait a bit to continue (number subject to change)
+            yield return new WaitForSeconds(standardWaitTime * .01f); //wait a bit to continue (number subject to change)
         }
     }
 
@@ -375,6 +526,61 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.PLAYERTURN;
             bm.enableBasicButtonsOnPress();
             PlayerTurn();
+        }
+    }
+
+    private IEnumerator KillEnemyUnit()
+    {
+        //Unit dies
+        enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
+        StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName} fainted!"));
+        yield return new WaitForSeconds(standardWaitTime);
+
+        //Check for more units
+        eAI.SaveUnitData();
+        if (eAI.CheckForMoreUnits())
+        {
+            Goblinmon switchIn = eAI.FindSafeSwitch(true);
+            StartCoroutine(eAI.SwitchAction(switchIn, true));
+        }
+        else
+        {
+            state = BattleState.WON;
+            EndBattle();
+        }
+    }
+
+    private IEnumerator CompleteTwoTurnMove()
+    {
+        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} lunges from the water!"));
+        yield return new WaitForSeconds(standardWaitTime);
+        playerUnit.GetComponent<SpriteRenderer>().sprite = playerUnit.goblinData.sprite;
+        bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(twoTurnMove.moveType);
+        bool isDead = enemyUnit.TakeDamage(twoTurnMove.damage, strongAttack, playerUnit, false);
+        enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
+        if (strongAttack) //If super effective 
+        {
+            FindObjectOfType<AudioManager>().Play("superEffective");
+            yield return new WaitForSeconds(standardWaitTime / 2);
+            StartCoroutine(ScrollText("The attack is super effective!"));
+        }
+        else
+        {
+            FindObjectOfType<AudioManager>().Play("damage");
+            yield return new WaitForSeconds(standardWaitTime / 2);
+            StartCoroutine(ScrollText("The attack is successful!"));
+        }
+        yield return new WaitForSeconds(standardWaitTime);
+        if (isDead)
+        {
+            twoTurnMove = null;
+            StartCoroutine(KillEnemyUnit());
+        }
+        else
+        {
+            twoTurnMove = null;
+            state = BattleState.ENEMYTURN;
+            eAI.FindOptimalOption();
         }
     }
 
