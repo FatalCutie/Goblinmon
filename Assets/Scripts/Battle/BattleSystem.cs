@@ -218,10 +218,17 @@ public class BattleSystem : MonoBehaviour
                 if (move.moveModifier == SOMove.MoveModifier.RECOIL)
                 {
                     yield return new WaitForSeconds(standardWaitTime);
-                    StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} took recoil!"));
-                    playerUnit.currentHP -= move.statModifier; //Switch to % of damage later?
+                    int recoilDamage;
+                    if (strongAttack) Mathf.RoundToInt(recoilDamage = move.damage * 2 * move.statModifier);
+                    else recoilDamage = Mathf.RoundToInt(move.damage * move.statModifier);
+                    StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} was hurt by recoil!"));
+                    playerUnit.currentHP -= recoilDamage;
+                    if (playerUnit.currentHP < 0) playerUnit.currentHP = 0;
                     playerHUD.setHP(playerUnit.currentHP, playerUnit);
-                    //TODO: Kill if dead
+                    if (playerUnit.currentHP == 0)
+                    {
+                        StartCoroutine(RetrieveDeadUnit());
+                    }
                 }
                 yield return new WaitForSeconds(standardWaitTime);
                 if (isDead)
@@ -494,7 +501,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator ReturnToOverworld()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(standardWaitTime * 3);
         FindObjectOfType<SceneController>().TransitionScene("OverworldScene");
         yield return new WaitForSeconds(2f); //Hardcoded with transition time
         FindObjectOfType<AudioManager>().Stop("win");
@@ -570,7 +577,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    private IEnumerator KillEnemyUnit()
+    public IEnumerator KillEnemyUnit()
     {
         //Unit dies
         enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
@@ -640,7 +647,7 @@ public class BattleSystem : MonoBehaviour
         bm.enableBasicButtonsOnPress();
     }
 
-    public IEnumerator RetireveDeadUnit()
+    public IEnumerator RetrieveDeadUnit()
     {
         StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} Fainted!"));
         yield return new WaitForSeconds(1);

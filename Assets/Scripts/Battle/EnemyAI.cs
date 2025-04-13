@@ -423,16 +423,25 @@ public class EnemyAI : MonoBehaviour
                 if (move.moveModifier == SOMove.MoveModifier.RECOIL)
                 {
                     yield return new WaitForSeconds(standardWaitTime);
-                    StartCoroutine(bs.ScrollText($"{bs.enemyUnit.goblinData.gName} took recoil!"));
-                    bs.enemyUnit.currentHP -= move.statModifier; //Switch to % of damage later?
+                    int recoilDamage;
+                    if (strongAttack) Mathf.RoundToInt(recoilDamage = move.damage * 2 * move.statModifier);
+                    else recoilDamage = Mathf.RoundToInt(move.damage * move.statModifier);
+                    StartCoroutine(bs.ScrollText($"{bs.enemyUnit.goblinData.gName} was hurt by recoil!"));
+                    bs.enemyUnit.currentHP -= recoilDamage;
+                    if (bs.enemyUnit.currentHP < 0) bs.enemyUnit.currentHP = 0;
                     bs.enemyHUD.setHP(bs.enemyUnit.currentHP, bs.enemyUnit);
+                    if (bs.enemyUnit.currentHP == 0)
+                    {
+                        StartCoroutine(bs.KillEnemyUnit());
+                        yield return new WaitForSeconds(standardWaitTime * 4.5f); //Wait for enemy to faint and pick new unit
+                    }
                     //TODO: Kill if dead
                 }
                 yield return new WaitForSeconds(standardWaitTime);
 
                 if (isDead)
                 {
-                    StartCoroutine(bs.RetireveDeadUnit());
+                    StartCoroutine(bs.RetrieveDeadUnit());
                 }
                 else
                 {
@@ -476,7 +485,7 @@ public class EnemyAI : MonoBehaviour
                 if (strongAttack) StartCoroutine(bs.ScrollText("The attack is super effective!"));
                 else StartCoroutine(bs.ScrollText("The attack is successful!"));
                 yield return new WaitForSeconds(standardWaitTime);
-                StartCoroutine(bs.RetireveDeadUnit());
+                StartCoroutine(bs.RetrieveDeadUnit());
                 dead = true;
                 break;
             }
@@ -515,7 +524,7 @@ public class EnemyAI : MonoBehaviour
         if (isDead)
         {
             twoTurnMove = null;
-            StartCoroutine(bs.RetireveDeadUnit());
+            StartCoroutine(bs.RetrieveDeadUnit());
         }
         else
         {
