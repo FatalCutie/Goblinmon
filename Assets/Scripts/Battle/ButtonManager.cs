@@ -101,7 +101,7 @@ public class ButtonManager : MonoBehaviour
                 TextMeshProUGUI moveNameText = go.GetChild(0).GetComponent<TextMeshProUGUI>();
                 AttackButton ab = go.GetComponent<AttackButton>();
                 ab.move = unit.goblinData.moveset[i];
-                moveNameText.text = ab.move.name;
+                moveNameText.text = ab.move.moveName;
                 ab.gameObject.SetActive(true);
                 i++;
             }

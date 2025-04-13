@@ -3141,7 +3141,7 @@ PrefabInstance:
     - target: {fileID: 1429744762996290612, guid: a45828d168bd73c46b3fc53d66c2d049, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 0567a32ccb240e148aeff93393c56147, type: 3}
+      objectReference: {fileID: 21300000, guid: c0f6ff776b6635d4cbf19db0f0e442d7, type: 3}
     - target: {fileID: 1429744762996290612, guid: a45828d168bd73c46b3fc53d66c2d049, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -5937,27 +5937,27 @@ PrefabInstance:
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 2875e90ce313c12489196937969a8242, type: 2}
+      objectReference: {fileID: 11400000, guid: 7589598587805ce4c8d755f64f2c68f1, type: 2}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: f3fac99198f4f1941b5f9b42c9c401c6, type: 2}
+      objectReference: {fileID: 11400000, guid: 83c547bcfd76d6242bc521c02f6e2a33, type: 2}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 319c9205674def14a836c32a2bd143ac, type: 2}
+      objectReference: {fileID: 11400000, guid: 2875e90ce313c12489196937969a8242, type: 2}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[3]
       value: 
-      objectReference: {fileID: 11400000, guid: af63e05a06a3e4a458c44d8902558ec4, type: 2}
+      objectReference: {fileID: 11400000, guid: f3fac99198f4f1941b5f9b42c9c401c6, type: 2}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[4]
       value: 
-      objectReference: {fileID: 11400000, guid: b282e4faf598e6b428c625035ad3e6d2, type: 2}
+      objectReference: {fileID: 11400000, guid: 319c9205674def14a836c32a2bd143ac, type: 2}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[5]
       value: 
-      objectReference: {fileID: 11400000, guid: 7589598587805ce4c8d755f64f2c68f1, type: 2}
+      objectReference: {fileID: 11400000, guid: af63e05a06a3e4a458c44d8902558ec4, type: 2}
     - target: {fileID: 473450462285857011, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -580.8306
@@ -7477,7 +7477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id:
     Value: 388f81bd-6707-4813-a9a3-74f73f8d3bb0
-  goblinData: {fileID: 11400000, guid: 969f58b3700fbf94391f02cfd94258d8, type: 2}
+  goblinData: {fileID: 11400000, guid: 319c9205674def14a836c32a2bd143ac, type: 2}
   currentHP: 15
   attackModifier: 0
   defenseModifier: 0
@@ -9205,6 +9205,7 @@ MonoBehaviour:
   party: []
   actualPlayer: {fileID: 0}
   standardWaitTime: 2
+  twoTurnMove: {fileID: 0}
 --- !u!212 &2087887653
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0188a8dcd8e881646856901b1bae9163, type: 3}
-  m_Name: '!TEST'
+  m_Name: Big Chungus
   m_EditorClassIdentifier: 
-  gName: TESTING UNIT
-  gLevel: 999
+  gName: Big Chungus
+  gLevel: 69
   sprite: {fileID: 21300000, guid: 1b08c392d0f182841a298822b4a11423, type: 3}
-  maxHP: 999
-  catchRate: 255
+  maxHP: 200
+  catchRate: 60
   type: {fileID: 11400000, guid: ac95565f8b427be4091427a3f5da2bbf, type: 2}
   moveset:
-  - {fileID: 11400000, guid: 85409e24d45404b4491ff95a5726809b, type: 2}
-  - {fileID: 11400000, guid: 97f83fad2ef056f4da4dba19f3b7ee0f, type: 2}
-  - {fileID: 11400000, guid: b1a04a2c067a2704c8c7e4c7375791ce, type: 2}
-  - {fileID: 11400000, guid: 20f3e8ccfd1846f4595ddb10ae5b0d1c, type: 2}
+  - {fileID: 11400000, guid: a9909c0a13abc564693ca91fb6647772, type: 2}
+  - {fileID: 11400000, guid: 93c24ebaedc09894caa79ab408ae741a, type: 2}
+  - {fileID: 11400000, guid: 4316a193d3779df40929d4047635aa9a, type: 2}
+  - {fileID: 11400000, guid: ec222377cdec369459d47eb543663660, type: 2}
   isFusion: 1
