@@ -45,8 +45,11 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private List<SOType> types; //For random type move
     public SOMove twoTurnMove; //Stores move if it's a two turner
 
-    [SerializeField] private Animator playerAnimator;
-    [SerializeField] private Animator battleAnimator;
+    [SerializeField] public Animator playerAnimator;
+    [SerializeField] public Animator battleAnimator;
+    [SerializeField] public Animator enemyAnimator;
+    public Animator enemyUIAnimator;
+    public Animator playerUIAnimator;
 
     #endregion
     void Start()
@@ -88,7 +91,7 @@ public class BattleSystem : MonoBehaviour
         //Instantiate battle based on above unit
         playerGO.GetComponent<Goblinmon>().goblinData = ps.goblinmon[j].goblinData;
         playerUnit = playerGO.GetComponent<Goblinmon>();
-        playerUnit.gameObject.transform.position += new UnityEngine.Vector3(0, .5f, 0);
+        playerUnit.gameObject.transform.position += new UnityEngine.Vector3(0, 1, 0);
         playerUnit.currentHP = ps.goblinmon[j].currentHP;
         playerUnit.CloneIdFrom(ps.goblinmon[j]); //Identity theft is kickass, actually
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
@@ -98,14 +101,33 @@ public class BattleSystem : MonoBehaviour
         eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
         eAI.InitializeUnitsForEnemyAI(enemyUnit, playerUnit);
         eSpriteR.sprite = enemyUnit.goblinData.sprite;
-        enemyGO.transform.position += new UnityEngine.Vector3(0, .5f, 0);
+        enemyGO.transform.position += new UnityEngine.Vector3(0, 1, 0);
 
         //Updates the HUD
         playerHUD.SetHUD(playerUnit);
         bm.SetPlayerMoves(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
         yield return new WaitForSeconds(.5f); //to account for transition
-        StartCoroutine(ScrollText($"A wild {enemyUnit.goblinData.gName} approches!"));
+        if (eAI.enemyType == EnemyAI.EnemyType.WILD)
+        {
+            StartCoroutine(ScrollText($"A wild {enemyUnit.goblinData.gName} approches!"));
+            enemyAnimator.SetBool("EnemyBeingCaught", false);
+            enemyUIAnimator.SetBool("PanelOpen", true);
+            yield return new WaitForSeconds(1);
+        }
+        else
+        {
+            StartCoroutine(ScrollText($"A trainer approaches!"));
+            yield return new WaitForSeconds(2);
+            StartCoroutine(ScrollText($"They send out {enemyUnit.goblinData.gName}!"));
+            yield return new WaitForSeconds(standardWaitTime);
+            battleAnimator.SetTrigger("ThrowOutEnemy");
+            yield return new WaitForSeconds(0.67f);
+            enemyAnimator.SetBool("EnemyBeingCaught", false);
+            enemyUIAnimator.SetBool("PanelOpen", true);
+        }
+
+        //TODO: Enemy entry animation
 
         yield return new WaitForSeconds(2f);
 
@@ -135,7 +157,6 @@ public class BattleSystem : MonoBehaviour
                 break;
         }
     }
-
 
     public IEnumerator PlayerAttack(SOMove move)
     {
@@ -335,7 +356,7 @@ public class BattleSystem : MonoBehaviour
                         StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack can't go any higher!"));
                         yield return new WaitForSeconds(standardWaitTime);
                     }
-                    StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack and defense was increased by {move.statModifier}!"));
+                    StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack and defense were increased by {move.statModifier}!"));
                     yield return new WaitForSeconds(standardWaitTime);
                     break;
                 }
@@ -597,8 +618,32 @@ public class BattleSystem : MonoBehaviour
         //Debug.Log("I'm Done!");
         //TODO: Play Sound Effect
         playerAnimator.SetBool("Player Out", true);
+        playerUIAnimator.SetBool("PanelOpen", true);
         yield return new WaitForSeconds(1.4f);
         StartCoroutine(ScrollText("Choose an action:"));
         bm.enableBasicButtonsOnPress();
+    }
+
+    public IEnumerator RetireveDeadUnit()
+    {
+        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} Fainted!"));
+        yield return new WaitForSeconds(1);
+        playerAnimator.SetBool("Player Out", false);
+        yield return new WaitForSeconds(.4f);
+        battleAnimator.SetTrigger("RetrievePlayer");
+        playerUIAnimator.SetBool("PanelOpen", false);
+        yield return new WaitForSeconds(.5f);
+        sm.SavePlayerData();
+        yield return new WaitForSeconds(.5f);
+        if (sm.DoesPlayerHaveUnits())
+        {
+            sm.GetNewPlayerUnit();
+            //Continue Battle
+        }
+        else
+        {
+            state = BattleState.LOST;
+            EndBattle();
+        }
     }
 }

@@ -11,8 +11,8 @@ public class EnemyAI : MonoBehaviour
     private SwitchingManager sm;
     [SerializeField] private Goblinmon self;
     [SerializeField] private Goblinmon internalPlayer; //Player used in calculations, updates at end of enemy turn
-    private enum EnemyType { TRAINER, WILD }
-    private EnemyType enemyType;
+    public enum EnemyType { TRAINER, WILD }
+    public EnemyType enemyType;
     [SerializeField] SOMove emptyMove;
     //[SerializeField] private List<SOGoblinmon> units;
     [SerializeField] private GameObject unitHolder; //This is so fucking awful
@@ -384,21 +384,8 @@ public class EnemyAI : MonoBehaviour
             yield return new WaitForSeconds(standardWaitTime);
 
             if (isDead)
-            {   //Check if player has available units
-                bs.playerUnit.GetComponent<SpriteRenderer>().sprite = null;
-                StartCoroutine(bs.ScrollText($"{actualPlayer.goblinData.gName} Fainted!"));
-                yield return new WaitForSeconds(standardWaitTime);
-                sm.SavePlayerData();
-                if (sm.DoesPlayerHaveUnits())
-                {
-                    sm.GetNewPlayerUnit();
-                    //Continue Battle
-                }
-                else
-                {
-                    bs.state = BattleState.LOST;
-                    bs.EndBattle();
-                }
+            {
+                StartCoroutine(bs.RetireveDeadUnit());
             }
             else
             {

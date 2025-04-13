@@ -120,10 +120,11 @@ public class SwitchingManager : MonoBehaviour
         //Makes switching look smooth for player
         StartCoroutine(bs.ScrollText("Come back " + bs.playerUnit.goblinData.gName + "!"));
         yield return new WaitForSeconds(1);
-        bs.playerUnit.GetComponent<SpriteRenderer>().sprite = null;
-        yield return new WaitForSeconds(2);
-        StartCoroutine(bs.ScrollText("Go, " + unit.goblinData.gName + "!"));
-        yield return new WaitForSeconds(1);
+        bs.playerAnimator.SetBool("Player Out", false);
+        yield return new WaitForSeconds(.4f);
+        bs.battleAnimator.SetTrigger("RetrievePlayer");
+        bs.playerUIAnimator.SetBool("PanelOpen", false);
+        yield return new WaitForSeconds(.5f);
 
         //Save health data of Unit being swapped
         SavePlayerData();
@@ -131,7 +132,12 @@ public class SwitchingManager : MonoBehaviour
         //Switches the active unit
         UpdatePlayerInformation(unit);
         FindObjectOfType<BattleHUD>().SetHUD(unit);
-        bs.playerUnit.GetComponent<SpriteRenderer>().sprite = unit.goblinData.sprite;
+        StartCoroutine(bs.ScrollText("Go, " + unit.goblinData.gName + "!"));
+        yield return new WaitForSeconds(1);
+        bs.battleAnimator.SetTrigger("ThrowOutPlayer");
+        yield return new WaitForSeconds(.84f);
+        bs.playerAnimator.SetBool("Player Out", true);
+        bs.playerUIAnimator.SetBool("PanelOpen", true);
         yield return new WaitForSeconds(1);
 
         //End the players turn unless just switched from KO
@@ -187,6 +193,7 @@ public class SwitchingManager : MonoBehaviour
         playerGob.CloneIdFrom(newData);
 
         playerGob.currentHP = newData.currentHP;
+        playerGob.GetComponent<SpriteRenderer>().sprite = newData.goblinData.sprite;
 
         //Reset stat changes
         playerGob.attackModifier = 0;
