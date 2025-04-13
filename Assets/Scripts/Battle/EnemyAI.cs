@@ -139,14 +139,13 @@ public class EnemyAI : MonoBehaviour
     //Finds a safe unit (relative to internal player) to switch into
     public Goblinmon FindSafeSwitch(bool needUnitForSwitch)
     {
-        SOType playerType = internalPlayer.goblinData.type;
+        // List<SOType> playerTypes = internalPlayer.goblinData.types;
         //Find something strong against the enemy type
         foreach (Goblinmon unit in party)
         {
-            SOType selfType = unit.goblinData.type;
             if (unit.ID != self.ID
             && unit.currentHP > unit.goblinData.maxHP * 0.4 //only switch in if above 40% health
-            && playerType.weakAgainstEnemyType(selfType))
+            ) //TODO: Switch to advantageous type
             {
                 return unit;
             }
@@ -157,10 +156,10 @@ public class EnemyAI : MonoBehaviour
         //If nothing then look for something neutral
         foreach (Goblinmon unit in party)
         {
-            SOType selfType = unit.goblinData.type;
+            // SOType selfType = unit.goblinData.type;
             if (unit.ID != self.ID
             && unit.currentHP > unit.goblinData.maxHP * 0.4
-            && !selfType.weakAgainstEnemyType(playerType))
+            ) //TODO: Switch to neutral type
             {
                 return unit;
             }
@@ -270,28 +269,12 @@ public class EnemyAI : MonoBehaviour
     {
         //Debug.Log($"I'm about to look at my internal player's hp, which is {internalPlayer.currentHP}");
         int playerHP = internalPlayer.currentHP;
-        SOType playerType = internalPlayer.goblinData.type;
         foreach (SOMove move in self.goblinData.moveset)
         {
-            //If attack super effective & kills return move
-            if (playerType.weakAgainstEnemyType(move.moveType) && move.moveAction == SOMove.MoveAction.ATTACK)
-            {
-                int moveDamage;
-                //Factor in damage modifiers with calculation
-                if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
-                    moveDamage = self.ApplyDamageModifiers(move.damage * 2, self, true);
-                else moveDamage = self.ApplyDamageModifiers(move.damage * 2, self, false);
-                if (move.moveModifier == SOMove.MoveModifier.MULTI_HIT) moveDamage *= rnd.Next(2, 5); //Account for multi hit moves
-                if (moveDamage >= playerHP) return move;
-            }
-            else if (move.moveAction == SOMove.MoveAction.ATTACK)
+            if (move.moveAction == SOMove.MoveAction.ATTACK)
             //If move kills return move
             {
-                int moveDamage;
-                //Factor in damage modifiers with calculation
-                if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
-                    moveDamage = self.ApplyDamageModifiers(move.damage, self, true);
-                else moveDamage = self.ApplyDamageModifiers(move.damage, self, false);
+                int moveDamage = self.ApplyDamageModifiers(move, self);
                 if (move.moveModifier == SOMove.MoveModifier.MULTI_HIT) moveDamage *= rnd.Next(2, 5); //Account for multi hit moves
                 if (moveDamage > playerHP) return move;
             }
@@ -303,33 +286,15 @@ public class EnemyAI : MonoBehaviour
     //TODO: Add randomized damage modifier range (.85 - 1) for more random choices
     private SOMove FindAttackingMove()
     {
-        SOType playerType = internalPlayer.goblinData.type;
         SOMove returnMove = emptyMove;
 
         //Loop through all attacks to find highest damage
         foreach (SOMove move in self.goblinData.moveset)
         {
-            //If attack super effective & kills return move
-            if (playerType.weakAgainstEnemyType(move.moveType) && move.moveAction == SOMove.MoveAction.ATTACK)
-            {
-                //Factor in damage modifiers with calculation
-                int moveDamage;
-                if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
-                    moveDamage = self.ApplyDamageModifiers(move.damage * 2, self, true);
-                else moveDamage = self.ApplyDamageModifiers(move.damage * 2, self, false);
-                if (move.moveModifier == SOMove.MoveModifier.MULTI_HIT) moveDamage *= rnd.Next(2, 5); //Account for multi hit moves
-                if (moveDamage * 2 > returnMove.damage) returnMove = move;
-            }
-            else
-            {
-                //Factor in damage modifiers with calculation
-                int moveDamage;
-                if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
-                    moveDamage = self.ApplyDamageModifiers(move.damage, self, true);
-                else moveDamage = self.ApplyDamageModifiers(move.damage, self, false);
-                if (move.moveModifier == SOMove.MoveModifier.MULTI_HIT) moveDamage *= rnd.Next(2, 5); //Account for multi hit moves
-                if (moveDamage > returnMove.damage) returnMove = move;
-            }
+            //Factor in damage modifiers with calculation
+            int moveDamage = self.ApplyDamageModifiers(move, self);
+            if (move.moveModifier == SOMove.MoveModifier.MULTI_HIT) moveDamage *= rnd.Next(2, 5); //Account for multi hit moves
+            if (moveDamage > returnMove.damage) returnMove = move;
         }
         return returnMove;
     }
@@ -392,20 +357,15 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
-                bool strongAttack;
+                bool strongAttack = bs.playerUnit.GetWeaknessMultiplier(move) > 1;
                 if (move.moveModifier == SOMove.MoveModifier.RANDOM_TYPE)
                 {
                     int i = rnd.Next(0, bs.types.Capacity);
                     SOType temp = bs.types[i];
-                    strongAttack = actualPlayer.goblinData.type.weakAgainstEnemyType(temp);
                     StartCoroutine(bs.ScrollText($"The move switches type to {temp.name}!"));
                     yield return new WaitForSeconds(standardWaitTime);
                 }
-                else strongAttack = actualPlayer.goblinData.type.weakAgainstEnemyType(move.moveType);
-                bool isDead;
-                if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
-                    isDead = actualPlayer.TakeDamage(move.damage, strongAttack, self, true);
-                else isDead = actualPlayer.TakeDamage(move.damage, strongAttack, self, false);
+                bool isDead = actualPlayer.TakeDamage(move, self);
                 bs.playerHUD.setHP(actualPlayer.currentHP, actualPlayer);
                 //Different text/sounds based on attack effectiveness
                 if (strongAttack)
@@ -423,9 +383,7 @@ public class EnemyAI : MonoBehaviour
                 if (move.moveModifier == SOMove.MoveModifier.RECOIL)
                 {
                     yield return new WaitForSeconds(standardWaitTime);
-                    int recoilDamage;
-                    if (strongAttack) Mathf.RoundToInt(recoilDamage = move.damage * 2 * move.statModifier);
-                    else recoilDamage = Mathf.RoundToInt(move.damage * move.statModifier);
+                    int recoilDamage = Mathf.RoundToInt(move.damage * bs.playerUnit.GetWeaknessMultiplier(move) * (move.statModifier * 0.01f));
                     StartCoroutine(bs.ScrollText($"{bs.enemyUnit.goblinData.gName} was hurt by recoil!"));
                     bs.enemyUnit.currentHP -= recoilDamage;
                     if (bs.enemyUnit.currentHP < 0) bs.enemyUnit.currentHP = 0;
@@ -435,7 +393,6 @@ public class EnemyAI : MonoBehaviour
                         StartCoroutine(bs.KillEnemyUnit());
                         yield return new WaitForSeconds(standardWaitTime * 4.5f); //Wait for enemy to faint and pick new unit
                     }
-                    //TODO: Kill if dead
                 }
                 yield return new WaitForSeconds(standardWaitTime);
 
@@ -463,10 +420,10 @@ public class EnemyAI : MonoBehaviour
     {
         bool dead = false;
         int hits = rnd.Next(2, 5);
-        bool strongAttack = actualPlayer.goblinData.type.weakAgainstEnemyType(move.moveType);
+        bool strongAttack = bs.playerUnit.GetWeaknessMultiplier(move) > 1;
         for (int i = 0; i < hits; i++)
         {
-            if (!bs.playerUnit.TakeDamage(move.damage, strongAttack, actualPlayer, false))
+            if (!bs.playerUnit.TakeDamage(move, actualPlayer))
             {
                 //Deal damage
                 bs.playerHUD.setHP(actualPlayer.currentHP, actualPlayer);
@@ -505,8 +462,8 @@ public class EnemyAI : MonoBehaviour
         StartCoroutine(bs.ScrollText($"{bs.enemyUnit.goblinData.gName} lunges from the water!")); //this can be adjusted if another two turner is added later
         yield return new WaitForSeconds(standardWaitTime);
         bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = bs.enemyUnit.goblinData.sprite;
-        bool strongAttack = actualPlayer.goblinData.type.weakAgainstEnemyType(twoTurnMove.moveType);
-        bool isDead = actualPlayer.TakeDamage(twoTurnMove.damage, strongAttack, bs.enemyUnit, false);
+        bool strongAttack = bs.playerUnit.GetWeaknessMultiplier(twoTurnMove) > 1;
+        bool isDead = actualPlayer.TakeDamage(twoTurnMove, bs.enemyUnit);
         bs.playerHUD.setHP(bs.playerUnit.currentHP, bs.playerUnit);
         if (strongAttack) //If super effective 
         {

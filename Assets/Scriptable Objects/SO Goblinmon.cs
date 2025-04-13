@@ -12,7 +12,7 @@ public class SOGoblinmon : ScriptableObject
     public int maxHP = 1; //Filler Value
     // public int currentHP;
     public int catchRate = 255;
-    public SOType type;
+    public List<SOType> types;
     public List<SOMove> moveset;
     public bool isFusion = true; //Determines if fusion icon should be displayed
 
@@ -21,5 +21,6 @@ public class SOGoblinmon : ScriptableObject
     // {
     //     currentHP = maxHP;
     // }
-
 }
+
+

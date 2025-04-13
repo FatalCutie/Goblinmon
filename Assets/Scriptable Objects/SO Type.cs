@@ -11,13 +11,6 @@ public class SOType : ScriptableObject
 
     public List<SOType> weakness; //Take more damage from
 
-    //Checks if the type given is strong against this type
-    public bool weakAgainstEnemyType(SOType other)
-    {
-        if (weakness.Contains(other))
-        {
-            return true;
-        }
-        return false;
-    }
+    //Returns the damage multiplier for weakness
+
 }

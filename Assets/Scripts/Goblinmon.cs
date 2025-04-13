@@ -20,60 +20,45 @@ public class Goblinmon : MonoBehaviourID
     }
 
     //Unit takes damage
-    public bool TakeDamage(int dmg, bool weakness, Goblinmon attacker, bool defScale)
+    public bool TakeDamage(SOMove move, Goblinmon attacker)
     {
-        int damageToDeal = dmg;
-        if (weakness)
-        {
-            damageToDeal = ApplyDamageModifiers(damageToDeal, attacker, defScale);
-            damageToDeal *= 2;
-            currentHP -= damageToDeal;
-            if (currentHP < 0) currentHP = 0; //clamp damage min
-        }
-        else
-        {
-            dmg = ApplyDamageModifiers(dmg, attacker, defScale);
-            currentHP -= dmg;
-            if (currentHP < 0) currentHP = 0; //clamp damage min
-        }
+        int damageToDeal;
 
+        damageToDeal = ApplyDamageModifiers(move, attacker);
+        currentHP -= damageToDeal;
+
+        if (currentHP < 0) currentHP = 0; //clamp damage min
         if (currentHP <= 0) return true;
         else return false;
     }
 
     //Applies stat changes to damage value
-    public int ApplyDamageModifiers(int dmg, Goblinmon attacker, bool defScale)
+    public int ApplyDamageModifiers(SOMove move, Goblinmon attacker)
     {
         //Creates random modifier to multiply damage with
         float decider = FindObjectOfType<BattleSystem>().rnd.Next(1, 16);
         float randomDamageModifier = 0.84f + decider * 0.01f; //Creates damage range of .85 and 1
 
-        //TODO: Finish This
-        int returnDamage = dmg;
-        int tempModifierHolder;
-        if (defScale)
-        {
-            tempModifierHolder = attackModifier;
-            attackModifier = defenseModifier;
-        }
+        int returnDamage = move.damage;
 
-        //Compare modifiers to see if they cancel out (+1 attack swinging into +1 defense is neutral damage)
-        if (attacker.attackModifier > defenseModifier)
-        {
-            int atkModTemp = attacker.attackModifier - defenseModifier;
-            returnDamage = (int)(returnDamage * ((2+atkModTemp)/2)); //Each attack point = roughly 50% more damage
-            returnDamage = (int)(returnDamage * randomDamageModifier);
-        }
-        else if (defenseModifier > attacker.attackModifier)
-        {
-            int defModTemp = defenseModifier - attacker.attackModifier;
-            //3+def/3
-            returnDamage = (int)(returnDamage * ((3+defModTemp)/3)); //each defense point = roughly 33% less damage
-            returnDamage = (int)(returnDamage * randomDamageModifier);
-        }
-        else return (int)(returnDamage * randomDamageModifier);
-
-        return returnDamage;
+        //Each attack point = roughly 50% more damage, defense roughly 33% reduction
+        if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
+            returnDamage = returnDamage * ((2 + attacker.defenseModifier) / 2) * ((3 + defenseModifier) / 3);
+        else returnDamage = returnDamage * ((2 + attacker.attackModifier) / 2) * ((3 + defenseModifier) / 3);
+        returnDamage = (int)(returnDamage * randomDamageModifier);
+        return returnDamage * GetWeaknessMultiplier(move);
     }
 
+    public int GetWeaknessMultiplier(SOMove move)
+    {
+        int toReturn = 0;
+        foreach (SOType type in goblinData.types)
+        {
+            if (type.weakness.Contains(move.moveType)) toReturn += 2;
+
+        }
+        if (toReturn < 1) toReturn = 1; //if no weaknesses return 1
+
+        return toReturn;
+    }
 }

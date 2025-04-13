@@ -188,22 +188,18 @@ public class BattleSystem : MonoBehaviour
             }
             else
             {
-                bool strongAttack;
                 if (move.moveModifier == SOMove.MoveModifier.RANDOM_TYPE)
                 {
                     int i = rnd.Next(0, types.Capacity);
                     SOType temp = types[i];
-                    strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(temp);
                     StartCoroutine(ScrollText($"The move switches type to {temp.name}!"));
                     yield return new WaitForSeconds(standardWaitTime);
                 }
-                else strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
-                bool isDead;
-                if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
-                    isDead = enemyUnit.TakeDamage(move.damage, strongAttack, playerUnit, true);
-                else isDead = enemyUnit.TakeDamage(move.damage, strongAttack, playerUnit, false);
+
+                bool isDead = enemyUnit.TakeDamage(move, playerUnit);
+
                 enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
-                if (strongAttack) //If super effective 
+                if (enemyUnit.GetWeaknessMultiplier(move) > 1) //If super effective 
                 {
                     FindObjectOfType<AudioManager>().Play("superEffective");
                     yield return new WaitForSeconds(standardWaitTime / 2);
@@ -219,8 +215,7 @@ public class BattleSystem : MonoBehaviour
                 {
                     yield return new WaitForSeconds(standardWaitTime);
                     int recoilDamage;
-                    if (strongAttack) Mathf.RoundToInt(recoilDamage = move.damage * 2 * move.statModifier);
-                    else recoilDamage = Mathf.RoundToInt(move.damage * move.statModifier);
+                    recoilDamage = Mathf.RoundToInt(move.damage * enemyUnit.GetWeaknessMultiplier(move) * (move.statModifier * 0.01f));
                     StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} was hurt by recoil!"));
                     playerUnit.currentHP -= recoilDamage;
                     if (playerUnit.currentHP < 0) playerUnit.currentHP = 0;
@@ -256,10 +251,10 @@ public class BattleSystem : MonoBehaviour
     {
         bool dead = false;
         int hits = rnd.Next(2, 5);
-        bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(move.moveType);
+        bool strongAttack = enemyUnit.GetWeaknessMultiplier(move) > 1;
         for (int i = 0; i < hits; i++)
         {
-            if (!enemyUnit.TakeDamage(move.damage, strongAttack, playerUnit, false))
+            if (!enemyUnit.TakeDamage(move, playerUnit))
             {
                 //Deal damage
                 enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
@@ -603,8 +598,8 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} lunges from the water!")); //this can be adjusted if another two turner is added later
         yield return new WaitForSeconds(standardWaitTime);
         playerUnit.GetComponent<SpriteRenderer>().sprite = playerUnit.goblinData.sprite;
-        bool strongAttack = enemyUnit.goblinData.type.weakAgainstEnemyType(twoTurnMove.moveType);
-        bool isDead = enemyUnit.TakeDamage(twoTurnMove.damage, strongAttack, playerUnit, false);
+        bool strongAttack = enemyUnit.GetWeaknessMultiplier(twoTurnMove) > 1;
+        bool isDead = enemyUnit.TakeDamage(twoTurnMove, playerUnit);
         enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
         if (strongAttack) //If super effective 
         {
