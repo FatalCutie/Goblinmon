@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0188a8dcd8e881646856901b1bae9163, type: 3}
   m_Name: Water1Water1
   m_EditorClassIdentifier: 
-  gName: Super Jet
+  gName: Eternal Jet
   gLevel: 0
-  sprite: {fileID: 21300000, guid: 1b5255dc61dc5db43a40720493787e3d, type: 3}
+  sprite: {fileID: 21300000, guid: 656769e96033eb24dab21a2e8aacde1f, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

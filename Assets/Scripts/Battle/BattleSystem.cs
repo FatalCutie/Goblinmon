@@ -50,6 +50,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] public Animator enemyAnimator;
     public Animator enemyUIAnimator;
     public Animator playerUIAnimator;
+    public bool SkipOpeningAnimations = false;
 
     #endregion
     void Start()
@@ -107,22 +108,22 @@ public class BattleSystem : MonoBehaviour
         playerHUD.SetHUD(playerUnit);
         bm.SetPlayerMoves(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
-        yield return new WaitForSeconds(.5f); //to account for transition
+        if (!SkipOpeningAnimations) yield return new WaitForSeconds(.5f); //to account for transition
         if (eAI.enemyType == EnemyAI.EnemyType.WILD)
         {
             StartCoroutine(ScrollText($"A wild {enemyUnit.goblinData.gName} approches!"));
             enemyAnimator.SetBool("EnemyBeingCaught", false);
             enemyUIAnimator.SetBool("PanelOpen", true);
-            yield return new WaitForSeconds(1);
+            if (!SkipOpeningAnimations) yield return new WaitForSeconds(1);
         }
         else
         {
             StartCoroutine(ScrollText($"A trainer approaches!"));
-            yield return new WaitForSeconds(2);
+            if (!SkipOpeningAnimations) yield return new WaitForSeconds(2);
             StartCoroutine(ScrollText($"They send out {enemyUnit.goblinData.gName}!"));
             yield return new WaitForSeconds(standardWaitTime);
             battleAnimator.SetTrigger("ThrowOutEnemy");
-            yield return new WaitForSeconds(0.67f);
+            if (!SkipOpeningAnimations) yield return new WaitForSeconds(0.67f);
             enemyAnimator.SetBool("EnemyBeingCaught", false);
             enemyUIAnimator.SetBool("PanelOpen", true);
         }
@@ -630,14 +631,14 @@ public class BattleSystem : MonoBehaviour
     private IEnumerator ThrowOutUnit()
     {
         StartCoroutine(ScrollText($"Go, {playerUnit.goblinData.gName}!"));
-        yield return new WaitForSeconds(1);
+        if (!SkipOpeningAnimations) yield return new WaitForSeconds(1);
         battleAnimator.SetTrigger("ThrowOutPlayer");
         yield return new WaitForSeconds(.84f); //hard coded for animation
         //Debug.Log("I'm Done!");
         //TODO: Play Sound Effect
         playerAnimator.SetBool("Player Out", true);
         playerUIAnimator.SetBool("PanelOpen", true);
-        yield return new WaitForSeconds(1.4f);
+        if (!SkipOpeningAnimations) yield return new WaitForSeconds(1.4f);
         StartCoroutine(ScrollText("Choose an action:"));
         bm.enableBasicButtonsOnPress();
     }

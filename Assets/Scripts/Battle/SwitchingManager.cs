@@ -48,6 +48,10 @@ public class SwitchingManager : MonoBehaviour
                     //Create a Goblinmon script on the Unit Button to hold data
                     ub.unit = ps.goblinmon[i];
                     unitNameText.text = ub.unit.goblinData.gName;
+                    ub.unitImage.sprite = ub.unit.goblinData.sprite;
+                    if (!ub.unit.goblinData.isFusion) ub.fusionIcon.enabled = false;
+                    else ub.fusionIcon.enabled = true;
+                    ub.level.text = $"Lv. {ub.unit.goblinData.gLevel}";
                     ub.unitNumber = i;
 
                     //Sets HP bar values
@@ -150,14 +154,6 @@ public class SwitchingManager : MonoBehaviour
         {
             bs.state = BattleState.ENEMYTURN;
             eAI.FindOptimalOption();
-        }
-    }
-
-    void CleanseActiveUnits()
-    {
-        foreach (Transform t in unitButtonHolder.transform)
-        {
-            t.gameObject.GetComponent<UnitButton>().activeUnit = false;
         }
     }
 

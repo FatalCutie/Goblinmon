@@ -44,7 +44,7 @@ public class UnitButton : MonoBehaviour
             if (unit != null && unit.ID == FindObjectOfType<BattleSystem>().playerUnit.ID
                 && hp.value != FindObjectOfType<BattleSystem>().playerUnit.currentHP)
             {
-                Debug.Log("HP does not line up with internal! Fixing!");
+                //Debug.Log("HP does not line up with internal! Fixing!");
                 hp.value = FindObjectOfType<BattleSystem>().playerUnit.currentHP;
             }
 

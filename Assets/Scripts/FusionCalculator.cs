@@ -336,9 +336,6 @@ public class FusionCalculator : MonoBehaviour
             Debug.LogWarning("Could not find Unit1 in FusionCalculator. Did you declare it properly?");
             return null;
         }
-        Debug.LogWarning("Something in FusionCalculator has gone horribly wrong.");
-        Debug.LogWarning($"Failed to fuse these units: {unitOne.gName}, {unitTwo.gName}");
-        return null;
     }
 
     

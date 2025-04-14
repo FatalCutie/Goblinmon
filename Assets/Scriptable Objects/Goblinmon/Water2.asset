@@ -17,7 +17,8 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: af16c86791725a84b88374ba6f055634, type: 3}
   maxHP: 60
   catchRate: 255
-  type: {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
+  types:
+  - {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
   moveset:
   - {fileID: 11400000, guid: 1fee6524187d02d4cbc7cac98283781b, type: 2}
   - {fileID: 11400000, guid: 6e6b55a8a8a789c479f3b9ea00d3efb1, type: 2}
