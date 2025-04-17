@@ -37,13 +37,14 @@ public class PlayerTileMovement : MonoBehaviour
     void PlayerMovement()
     {
         //if (!movementLocked) 
-        transform.position = Vector3.MoveTowards(transform.position, movepoint.position + new Vector3(0, 0.5f, 0), movespeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, movepoint.position, movespeed * Time.deltaTime); // + new Vector3(0, 0.5f, 0)
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        if (Vector3.Distance(transform.position, movepoint.position + new Vector3(0, 0.5f, 0)) <= 0.05f
+        if (Vector3.Distance(transform.position, movepoint.position) <= 0.05f //+ new Vector3(0, 0.5f, 0)
         && !movementLocked)
         {
+            //This only moves the player when a button is getting pressed down.
             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
             {
                 UpdateAnimator('x');
@@ -65,7 +66,6 @@ public class PlayerTileMovement : MonoBehaviour
                 }
             }
         }
-        //TODO This plays even if player can't move. Figure it out later
         if (!movementLocked) animator.SetFloat("Speed", movement.sqrMagnitude);
     }
 

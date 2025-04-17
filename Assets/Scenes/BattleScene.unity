@@ -9071,7 +9071,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1902698335
 Transform:
   m_ObjectHideFlags: 0
@@ -10010,7 +10010,7 @@ MonoBehaviour:
   enemyAnimator: {fileID: 1220717680}
   enemyUIAnimator: {fileID: 2049049726}
   playerUIAnimator: {fileID: 1550094415}
-  SkipOpeningAnimations: 1
+  SkipOpeningAnimations: 0
 --- !u!114 &2087887650
 MonoBehaviour:
   m_ObjectHideFlags: 0
