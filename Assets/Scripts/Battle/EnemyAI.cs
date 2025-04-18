@@ -95,34 +95,34 @@ public class EnemyAI : MonoBehaviour
                 SOMove bestAttackingMove = FindAttackingMove();
                 //Debug.Log($"Using best move {bestAttackingMove.moveName}");
                 StartCoroutine(AttackPlayerAction(bestAttackingMove));
-        }
-        else //if rnd rolls between a 6 and 8
-        {
-            if (DoesUnitHaveBuffingMove())
+            }
+            else //if rnd rolls between a 6 and 8
             {
-                SOMove chosenBuffingMove = FindBuffingMove();
-                if (chosenBuffingMove.moveAction == SOMove.MoveAction.BUFF)
+                if (DoesUnitHaveBuffingMove())
                 {
-                    //Debug.Log("I'm gonna buff myself!");
-                    StartCoroutine(BuffEnemyAction(chosenBuffingMove));
+                    SOMove chosenBuffingMove = FindBuffingMove();
+                    if (chosenBuffingMove.moveAction == SOMove.MoveAction.BUFF)
+                    {
+                        //Debug.Log("I'm gonna buff myself!");
+                        StartCoroutine(BuffEnemyAction(chosenBuffingMove));
+                    }
+                    else if (chosenBuffingMove.moveAction == SOMove.MoveAction.DEBUFF)
+                    {
+                        //Debug.Log("I'm gonna debuff the player!");
+                        StartCoroutine(DebuffPlayerAction(chosenBuffingMove));
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{chosenBuffingMove.moveName} does not have a proper move action... How did this even happen?");
+                    }
                 }
-                else if (chosenBuffingMove.moveAction == SOMove.MoveAction.DEBUFF)
+                else //If no buffing move just attack
                 {
-                    //Debug.Log("I'm gonna debuff the player!");
-                    StartCoroutine(DebuffPlayerAction(chosenBuffingMove));
-                }
-                else
-                {
-                    Debug.LogWarning($"{chosenBuffingMove.moveName} does not have a proper move action... How did this even happen?");
+                    SOMove bestAttackingMove = FindAttackingMove();
+                    //Debug.Log($"I don't have any buffing moves so I am going to attack using {bestAttackingMove.moveName} instead!");
+                    StartCoroutine(AttackPlayerAction(bestAttackingMove));
                 }
             }
-            else //If no buffing move just attack
-            {
-                SOMove bestAttackingMove = FindAttackingMove();
-                //Debug.Log($"I don't have any buffing moves so I am going to attack using {bestAttackingMove.moveName} instead!");
-                StartCoroutine(AttackPlayerAction(bestAttackingMove));
-            }
-        }
             //TODO: Decide between using an attacking or status move then attacking
             //TODO: Add chance to use random move instead of best move if attacking (80/20), scales with health?
 
@@ -208,13 +208,16 @@ public class EnemyAI : MonoBehaviour
     {
         Goblinmon unitToSave = self;
         int unitID = 0;
-        foreach (Goblinmon un in party)
+        if (enemyType == EnemyType.TRAINER)
         {
-            if (un.ID == unitToSave.ID) //Does ID get changed somewhere?
+            foreach (Goblinmon un in party)
             {
-                break;
+                if (un.ID == unitToSave.ID) //Does ID get changed somewhere?
+                {
+                    break;
+                }
+                unitID++;
             }
-            unitID++;
         }
         party[unitID].currentHP = unitToSave.currentHP;
     }

@@ -19,12 +19,15 @@ public class PlayerTileMovement : MonoBehaviour
     public float idleTimer = 0f;
     public float idleThreshold = 3f;
     public bool playerIsIdle = false;
+    [SerializeField] private Vector3 direction;
+    [SerializeField] private Vector3 currentPosition;
 
     public LayerMask movementStopperLayer;
 
     void Start()
     {
         movepoint.parent = null;
+        currentPosition = transform.position;
         StartCoroutine(UnlockPlayerMovement()); //Unlock player movement after transition
     }
 
@@ -32,25 +35,28 @@ public class PlayerTileMovement : MonoBehaviour
     {
         PlayerMovement();
         if (!movementLocked) CheckIfPlayerIsIdle();
+        currentPosition = transform.position; //this sucks
+        direction = currentPosition - (movepoint.position + new Vector3(0, 0.25f, 0));
+        UpdateAnimator(direction);
     }
 
     void PlayerMovement()
     {
         //if (!movementLocked) 
-        transform.position = Vector3.MoveTowards(transform.position, movepoint.position, movespeed * Time.deltaTime); // + new Vector3(0, 0.5f, 0)
+        transform.position = Vector3.MoveTowards(transform.position, movepoint.position + new Vector3(0, 0.25f, 0), movespeed * Time.deltaTime); // + new Vector3(0, 0.5f, 0)
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        if (Vector3.Distance(transform.position, movepoint.position) <= 0.05f //+ new Vector3(0, 0.5f, 0)
+        if (Vector3.Distance(transform.position, movepoint.position + new Vector3(0, 0.25f, 0)) <= 0.05f //+ new Vector3(0, 0.5f, 0)
         && !movementLocked)
         {
+
             //This only moves the player when a button is getting pressed down.
             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
             {
-                UpdateAnimator('x');
                 if (!IsMovementBlocked('x'))
                 {
-                    movepoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
+                    movepoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f);
 
                     //animator.SetFloat("Horizontal", )
                 }
@@ -58,7 +64,6 @@ public class PlayerTileMovement : MonoBehaviour
             }
             else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
             {
-                UpdateAnimator('y');
                 if (!IsMovementBlocked('y'))
                 {
                     movepoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f);
@@ -66,7 +71,7 @@ public class PlayerTileMovement : MonoBehaviour
                 }
             }
         }
-        if (!movementLocked) animator.SetFloat("Speed", movement.sqrMagnitude);
+        // if (!movementLocked) animator.SetFloat("Speed", movement.sqrMagnitude);
     }
 
     void CheckIfPlayerIsIdle()
@@ -141,22 +146,34 @@ public class PlayerTileMovement : MonoBehaviour
 
     //Called to update player animator based on movement
     //NOTE: This shit is so ass but also quite functional
-    void UpdateAnimator(char axis)
-    {
-        if (axis == 'x')
-        {
-            animator.SetFloat("Horizontal", movement.x);
-            animator.SetFloat("Vertical", 0);
-        }
-        else if (axis == 'y')
-        {
-            animator.SetFloat("Vertical", movement.y);
-            animator.SetFloat("Horizontal", 0);
+    // void UpdateAnimator(char axis)
+    // {
+    //     if (axis == 'x')
+    //     {
+    //         animator.SetFloat("Horizontal", movement.x);
+    //         animator.SetFloat("Vertical", 0);
+    //     }
+    //     else if (axis == 'y')
+    //     {
+    //         animator.SetFloat("Vertical", movement.y);
+    //         animator.SetFloat("Horizontal", 0);
 
-        }
-        else
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning("UpdateAnimator fed unrecognized character. Please check PlayerTileMovement.");
+    //     }
+    // }
+    void UpdateAnimator(Vector2 dir)
+    {
+        animator.SetFloat("Horizontal", -dir.x);
+        animator.SetFloat("Vertical", -dir.y);
+        animator.SetFloat("Speed", dir.sqrMagnitude); // For blend tree or idle detection
+        // If the player is moving, update last direction
+        if (dir.sqrMagnitude > 0.01f)
         {
-            Debug.LogWarning("UpdateAnimator fed unrecognized character. Please check PlayerTileMovement.");
+            animator.SetFloat("LastHorizontal", dir.x);
+            animator.SetFloat("LastVertical", dir.y);
         }
     }
 
@@ -165,7 +182,7 @@ public class PlayerTileMovement : MonoBehaviour
         FindObjectOfType<PlayerPositionManager>().RememberPlayerPosition(); //Sets player position
         yield return new WaitForSeconds(2); //This is hardcoded. Adjust this with animation speed
     }
-    
+
     //This only seems to trigger half the time but I can't figure out how to make it trigger all the time.
     //I wanted to move this to TallGrass but it only works on the player. Oh Well!
     private void OnTriggerEnter2D(Collider2D other)

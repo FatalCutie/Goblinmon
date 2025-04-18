@@ -6,8 +6,8 @@ using UnityEngine.UI;
 //In the future this could be merged into FusionButton, but for now this is functional, if unoptimal
 public class SwitchingButton : MonoBehaviour
 {
-    private Goblinmon selectedUnit1;
-    private Goblinmon selectedUnit2;
+    [SerializeField] private Goblinmon selectedUnit1;
+    [SerializeField] private Goblinmon selectedUnit2;
     [SerializeField] private PartyStorage partyStorage;
     public enum ButtonMode {OVERWORLD, SWITCH}
     public ButtonMode buttonMode = ButtonMode.OVERWORLD; //Default to overworld

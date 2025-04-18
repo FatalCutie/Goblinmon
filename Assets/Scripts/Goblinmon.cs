@@ -39,25 +39,30 @@ public class Goblinmon : MonoBehaviourID
         float decider = FindObjectOfType<BattleSystem>().rnd.Next(1, 16);
         float randomDamageModifier = 0.84f + decider * 0.01f; //Creates damage range of .85 and 1
 
-        int returnDamage = move.damage;
+        float returnDamage = move.damage;
 
         //Each attack point = roughly 50% more damage, defense roughly 33% reduction
         if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
             returnDamage = returnDamage * ((2 + attacker.defenseModifier) / 2) * ((3 + defenseModifier) / 3);
         else returnDamage = returnDamage * ((2 + attacker.attackModifier) / 2) * ((3 + defenseModifier) / 3);
         returnDamage = (int)(returnDamage * randomDamageModifier);
-        return returnDamage * GetWeaknessMultiplier(move);
+        return (int) (returnDamage * GetWeaknessMultiplier(move));
     }
 
-    public int GetWeaknessMultiplier(SOMove move)
+    public float GetWeaknessMultiplier(SOMove move)
     {
-        int toReturn = 0;
+        float toReturn = 0;
+        //calculate weaknesses
         foreach (SOType type in goblinData.types)
         {
             if (type.weakness.Contains(move.moveType)) toReturn += 2;
-
         }
-        if (toReturn < 1) toReturn = 1; //if no weaknesses return 1
+        if (toReturn < 1) toReturn = 1; //if no damage modifiers return 1
+        //calculate resistances
+        foreach (SOType type in goblinData.types)
+        {
+            if (type == move.moveType) toReturn *= .5f;
+        }
 
         return toReturn;
     }

@@ -11,8 +11,8 @@ public class FusionButton : MonoBehaviour
     public enum ButtonMode {OVERWORLD, FUSION}
     public ButtonMode buttonMode = ButtonMode.OVERWORLD; //Default to overworld
     public GameObject unitButtonHolder;
-    private Goblinmon selectedUnit1;
-    private Goblinmon selectedUnit2;
+    [SerializeField] private Goblinmon selectedUnit1;
+    [SerializeField] private Goblinmon selectedUnit2;
     [SerializeField] private FusionCalculator fusionCalculator;
     [SerializeField] private PartyStorage partyManager;
     [SerializeField] private SwitchingButton sb;
