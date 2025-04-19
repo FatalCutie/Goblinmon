@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.Tilemaps;
 
 public class PlayerTileMovement : MonoBehaviour
@@ -21,6 +22,8 @@ public class PlayerTileMovement : MonoBehaviour
     public bool playerIsIdle = false;
     [SerializeField] private Vector3 direction;
     [SerializeField] private Vector3 currentPosition;
+    [SerializeField] private float moveMultiplier = 1;
+    private bool flipper = true;
 
     public LayerMask movementStopperLayer;
 
@@ -56,7 +59,7 @@ public class PlayerTileMovement : MonoBehaviour
             {
                 if (!IsMovementBlocked('x'))
                 {
-                    movepoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f);
+                    movepoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f) * moveMultiplier;
 
                     //animator.SetFloat("Horizontal", )
                 }
@@ -66,7 +69,7 @@ public class PlayerTileMovement : MonoBehaviour
             {
                 if (!IsMovementBlocked('y'))
                 {
-                    movepoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f);
+                    movepoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f) * moveMultiplier;
 
                 }
             }
@@ -196,4 +199,18 @@ public class PlayerTileMovement : MonoBehaviour
         }
     }
 
+    public void FlipWalkingAnimation()
+    {
+        Debug.Log("Flipping!");
+        if (flipper)
+        {
+            flipper = !flipper;
+            animator.SetBool("Foot", false);
+        }
+        else
+        {
+            flipper = !flipper;
+            animator.SetBool("Foot", true);
+        }
+    }
 }
