@@ -3397,6 +3397,7 @@ MonoBehaviour:
   direction: {x: 0, y: 0, z: 0}
   currentPosition: {x: 0, y: 0, z: 0}
   moveMultiplier: 0.75
+  catchWalkRecalls: 3
   movementStopperLayer:
     serializedVersion: 2
     m_Bits: 64

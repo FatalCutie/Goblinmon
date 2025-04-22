@@ -24,6 +24,8 @@ public class PlayerTileMovement : MonoBehaviour
     [SerializeField] private Vector3 currentPosition;
     [SerializeField] private float moveMultiplier = 1;
     private bool flipper = true;
+    public int catchWalkRecalls = 4;
+    int catchWalkRecallsBaseline;
 
     public LayerMask movementStopperLayer;
 
@@ -32,6 +34,7 @@ public class PlayerTileMovement : MonoBehaviour
         movepoint.parent = null;
         currentPosition = transform.position;
         StartCoroutine(UnlockPlayerMovement()); //Unlock player movement after transition
+        catchWalkRecallsBaseline = catchWalkRecalls;
     }
 
     void Update()
@@ -199,18 +202,37 @@ public class PlayerTileMovement : MonoBehaviour
         }
     }
 
+    //For an unknown reason FlipWalkingAnimation is called a certain number of times
+    //based on the animation speed because it runs on EVERY SINGLE BRANCH OF THE ANIMATION TREE. 
+    //I have tried to diagnose the bug for literal HOURS and am tired of thinking about it
+    //so catchWalkRecalls is the solution. Remember to adjust it when you adjust movespeed.
     public void FlipWalkingAnimation()
     {
-        Debug.Log("Flipping!");
-        if (flipper)
+        if (catchWalkRecalls <= 0)
         {
-            flipper = !flipper;
-            animator.SetBool("Foot", false);
+            // Debug.Log($"The bool is: {animator.GetBool("Foot")}");
+            // Debug.Log($"Flipper is {flipper}");
+            if (flipper)
+            {
+                flipper = false;
+                // animator.SetTrigger("LeftFoot");
+                animator.SetBool("Foot", false);
+                catchWalkRecalls = catchWalkRecallsBaseline;
+            }
+            else
+            {
+                flipper = true;
+                // animator.SetTrigger("RightFoot");
+                animator.SetBool("Foot", true);
+                catchWalkRecalls = catchWalkRecallsBaseline;
+            }
         }
-        else
-        {
-            flipper = !flipper;
-            animator.SetBool("Foot", true);
-        }
+        else catchWalkRecalls--;
+        // AnimatorClipInfo[] clips = animator.GetCurrentAnimatorClipInfo(0);
+        // foreach (AnimatorClipInfo i in clips)
+        // {
+        //     Debug.Log(i.clip.name);
+        // }
+
     }
 }
