@@ -123,7 +123,7 @@ public class PlayerTileMovement : MonoBehaviour
     {
         if (axis == 'x')
         {
-            if (!Physics2D.OverlapCircle(movepoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), .3f, movementStopperLayer))
+            if (!Physics2D.OverlapCircle(movepoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), .1f, movementStopperLayer))
                 return false;
             else
             {
@@ -134,7 +134,7 @@ public class PlayerTileMovement : MonoBehaviour
         }
         else if (axis == 'y')
         {
-            if (!Physics2D.OverlapCircle(movepoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f), .3f, movementStopperLayer))
+            if (!Physics2D.OverlapCircle(movepoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f), .1f, movementStopperLayer))
                 return false;
             else
             {

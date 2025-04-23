@@ -187,9 +187,9 @@ public class FusionCalculator : MonoBehaviour
             } else if(unitTwo == fire2){
                 return fire2Grass2;
             } else if(unitTwo == grass1){
-                return grass1Grass1;
-            } else if(unitTwo == grass2){
                 return grass1Grass2;
+            } else if(unitTwo == grass2){
+                return grass2Grass2;
             } else if(unitTwo == ice1){
                 return grass2Ice1;
             } else if(unitTwo == ice2){
