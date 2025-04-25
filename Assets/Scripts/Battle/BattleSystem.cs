@@ -498,7 +498,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator ReturnToOverworld()
     {
         yield return new WaitForSeconds(standardWaitTime * 3);
-        FindObjectOfType<SceneController>().TransitionScene("OverworldScene");
+        FindObjectOfType<SceneController>().TransitionScene("Overworld");
         yield return new WaitForSeconds(2f); //Hardcoded with transition time
         FindObjectOfType<AudioManager>().Stop("win");
     }

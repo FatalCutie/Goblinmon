@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7d119150f4997c42bbd717171d509c8, type: 3}
-  m_Name: Water
+  m_Script: {fileID: 11500000, guid: 7ce7ab67607e6454d8e0e7dd79f416e1, type: 3}
+  m_Name: Ice
   m_EditorClassIdentifier: 
-  weakness:
-  - {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
+  text:
+  - We don't get much snow out here, but when we do it's so beautiful I have to come
+    out and enjoy it.
+  - Hm? Do you want to battle? Be warned, I won't melt so easy.
+  battle: 1

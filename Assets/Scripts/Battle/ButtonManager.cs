@@ -77,7 +77,7 @@ public class ButtonManager : MonoBehaviour
     {
         FindObjectOfType<AudioManager>().Play("press");
         FindObjectOfType<AudioManager>().Stop("battle");
-        FindObjectOfType<SceneController>().TransitionScene("OverworldScene");
+        FindObjectOfType<SceneController>().TransitionScene("Overworld");
     }
 
     public void disableSwitchingMenuAfterSwitch(){

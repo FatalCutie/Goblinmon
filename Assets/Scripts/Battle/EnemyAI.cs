@@ -219,7 +219,7 @@ public class EnemyAI : MonoBehaviour
                 unitID++;
             }
         }
-        party[unitID].currentHP = unitToSave.currentHP;
+        party[unitID].currentHP = unitToSave.currentHP; //Throws error
     }
 
     //Switch into the given safe unit

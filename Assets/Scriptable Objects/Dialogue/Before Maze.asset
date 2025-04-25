@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce7ab67607e6454d8e0e7dd79f416e1, type: 3}
+  m_Name: Before Maze
+  m_EditorClassIdentifier: 
+  text:
+  - I saw a woman go in there screaming about a "hedge maze" and being "the best"
+  - I didn't catch everything but it looked like she was raving to herself about
+    being maze builder in the world.
+  - I don't think she ever came out, I hope she's ok.
+  battle: 0

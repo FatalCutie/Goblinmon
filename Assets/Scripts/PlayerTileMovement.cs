@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.Tilemaps;
@@ -194,6 +195,8 @@ public class PlayerTileMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         //Flip inGrass bool
+        if (other.tag == "Movepoint") return;
+        Debug.Log(other.tag);
         if (other.CompareTag("Tall Grass"))
         {
             Debug.Log("Entering tall grass!");
