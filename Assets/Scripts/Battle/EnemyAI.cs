@@ -235,7 +235,7 @@ public class EnemyAI : MonoBehaviour
         {
             StartCoroutine(bs.ScrollText($"Come back {bs.enemyUnit.goblinData.gName}!"));
             yield return new WaitForSeconds(standardWaitTime / 2);
-            bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
+            StartCoroutine(RetrieveUnit());
             yield return new WaitForSeconds(standardWaitTime);
             StartCoroutine(bs.ScrollText($"Go, {unit.goblinData.gName}!"));
             yield return new WaitForSeconds(standardWaitTime / 2);
@@ -258,9 +258,27 @@ public class EnemyAI : MonoBehaviour
         //Update HUD
         bs.enemyHUD.SetHUD(gob);
         bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = self.goblinData.sprite;
+        StartCoroutine(ThrowOutUnit());
         yield return new WaitForSeconds(standardWaitTime * .75f);
 
         EndTurn();
+    }
+
+    private IEnumerator ThrowOutUnit()
+    {
+        bs.battleAnimator.SetTrigger("ThrowOutEnemy");
+        Debug.Log("THrowing out enemy");
+        if (!bs.SkipOpeningAnimations) yield return new WaitForSeconds(0.67f);
+        Debug.Log("Enemy should grow");
+        bs.enemyAnimator.SetBool("EnemyBeingCaught", false);
+        bs.enemyUIAnimator.SetBool("PanelOpen", true);
+    }
+
+    public IEnumerator RetrieveUnit()
+    {
+        bs.enemyAnimator.SetBool("EnemyBeingCaught", true);
+        bs.enemyUIAnimator.SetBool("PanelOpen", false);
+        yield return new WaitForEndOfFrame();
     }
 
     #endregion

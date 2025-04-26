@@ -98,7 +98,8 @@ public class BattleSystem : MonoBehaviour
         pSpriteR = playerUnit.GetComponent<SpriteRenderer>();
         pSpriteR.sprite = playerUnit.goblinData.sprite;
 
-        enemyUnit = enemyGO.GetComponent<Goblinmon>();
+        enemyUnit = enemyGO.GetComponent<Goblinmon>(); //I have no fucking clue where this is initialized
+        enemyUnit.CloneIdFrom(FindObjectOfType<EnemyPartyStorage>().goblinmon[0]);
         eSpriteR = enemyUnit.GetComponent<SpriteRenderer>();
         eAI.InitializeUnitsForEnemyAI(enemyUnit, playerUnit);
         eSpriteR.sprite = enemyUnit.goblinData.sprite;
@@ -576,7 +577,8 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator KillEnemyUnit()
     {
         //Unit dies
-        enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
+        // enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
+        StartCoroutine(eAI.RetrieveUnit());
         StartCoroutine(ScrollText($"{enemyUnit.goblinData.gName} fainted!"));
         yield return new WaitForSeconds(standardWaitTime);
 
