@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 73e9c40b4f6fd064cb10c61f4a2e4aac
+guid: 3638ea3c1ba067e4c83b71a6e60a5cca
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -121,18 +121,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Tileset1
+  - name: smaller grass
     originalName: 
-    pivot: {x: 0.5769231, y: -0.14545456}
+    pivot: {x: 0.5, y: -0.02173913}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 416
-      height: 440
-    spriteID: 678a9cbea2518164e889fb045a1ec6fb
+      width: 14
+      height: 46
+    spriteID: d77ece8dd2432b742b63d3dac0b2d94c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -144,24 +144,24 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 2114072655
-    name: Tileset1
+    guid: -690002388
+    name: smaller grass
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Tileset1
+    - name: smaller grass
       frameIndex: 0
       cellRect:
-        x: 0
-        y: 64
-        width: 416
-        height: 440
-      spriteId: 678a9cbea2518164e889fb045a1ec6fb
+        x: 1
+        y: 1
+        width: 14
+        height: 46
+      spriteId: d77ece8dd2432b742b63d3dac0b2d94c
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 480, y: 480}
+  canvasSize: {x: 16, y: 48}

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SnowyGrass : RandomEncounter
+public class LowThirdEncounter : RandomEncounter
 {
     void Update()
     {

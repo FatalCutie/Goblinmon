@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Route1 : RandomEncounter
+public class HigherThirdEnounter : RandomEncounter
 {
     void Update()
     {
