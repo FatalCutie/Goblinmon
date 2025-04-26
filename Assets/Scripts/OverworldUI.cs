@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Diagnostics;
 
 public class OverworldUI : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class OverworldUI : MonoBehaviour
     public GameObject catchingItemUI;
     public PlayerTileMovement player;
     public PartyStorage partyStorage;
+    [SerializeField] private FusionButton fb;
+    [SerializeField] private SwitchingButton sb;
 
     void Start()
     {
@@ -50,6 +53,10 @@ public class OverworldUI : MonoBehaviour
     //Closes the unit and item panel
     public void ClosePanel()
     {
+        //Uncheck buttons when closing menu
+        if (fb.buttonMode == FusionButton.ButtonMode.FUSION) fb.SwitchButtonMode();
+        else if (sb.buttonMode == SwitchingButton.ButtonMode.SWITCH) sb.SwitchButtonMode();
+
         partyStorage.menuOpen = false;
         UnitMenuAnimator.SetBool("PanelOpen", false);
         ItemUIAnimator.SetBool("ItemsOpen", false);

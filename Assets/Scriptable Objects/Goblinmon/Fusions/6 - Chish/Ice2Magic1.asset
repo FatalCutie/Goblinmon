@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Chill Kid
   gLevel: 0
-  sprite: {fileID: 21300000, guid: 54ad6f350e041ae48a1020c1aa0cf435, type: 3}
+  sprite: {fileID: 21300000, guid: 3ea510c967394b6418678be46cbcf20c, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

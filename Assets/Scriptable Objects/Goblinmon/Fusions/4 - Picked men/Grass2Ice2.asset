@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Chilled Men
   gLevel: 0
-  sprite: {fileID: 21300000, guid: d8e293a6a94c9e94c89a7b74df68aa70, type: 3}
+  sprite: {fileID: 21300000, guid: 71498b9c2c138f04ba0551e786f427ea, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

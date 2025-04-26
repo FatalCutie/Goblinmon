@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Soaked Head
   gLevel: 0
-  sprite: {fileID: 21300000, guid: 2eeac7d0949a6ed4898f29fb8b9d2376, type: 3}
+  sprite: {fileID: 21300000, guid: a6449b48f2a5e144cb634dfb5e99d6b3, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

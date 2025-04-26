@@ -95372,6 +95372,8 @@ MonoBehaviour:
   catchingItemUI: {fileID: 0}
   player: {fileID: 1300853274}
   partyStorage: {fileID: 701498593}
+  fb: {fileID: 976442062}
+  sb: {fileID: 1167149918}
 --- !u!224 &2061171737 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 844971534288585057, guid: fe32112ec3770da4b96b41b8ca8db1e5, type: 3}

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Soaked Apple
   gLevel: 0
-  sprite: {fileID: 21300000, guid: 221b56ce6716d1d4ab92128fbaaf6de5, type: 3}
+  sprite: {fileID: 21300000, guid: 2c254aa3993b81e4a95bd3c0cb3fbd81, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

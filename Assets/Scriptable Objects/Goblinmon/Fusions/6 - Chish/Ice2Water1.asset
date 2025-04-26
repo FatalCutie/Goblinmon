@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Chilled Jet
   gLevel: 0
-  sprite: {fileID: 21300000, guid: d319b45a86471124ca3d71f4ce1b03fd, type: 3}
+  sprite: {fileID: 21300000, guid: 3e5d3aef7dc0f214d8e000376beb2838, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Cool Crab
   gLevel: 0
-  sprite: {fileID: 21300000, guid: e8bce34f8a669e04f831358afa9cdfb8, type: 3}
+  sprite: {fileID: 21300000, guid: 8b5da0c61de7794468c48608d4df4699, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

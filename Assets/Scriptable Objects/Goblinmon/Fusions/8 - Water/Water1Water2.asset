@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Aquatic Danger
   gLevel: 0
-  sprite: {fileID: 21300000, guid: 97fc42809506f304297c7c558731badb, type: 3}
+  sprite: {fileID: 21300000, guid: 9e34ec3e357103b45896976cf9e8321c, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

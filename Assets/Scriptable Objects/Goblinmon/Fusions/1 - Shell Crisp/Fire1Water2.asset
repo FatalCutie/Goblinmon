@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Crispy Danger
   gLevel: 0
-  sprite: {fileID: 21300000, guid: 6e2bc746134ab76449f19d25b42410b1, type: 3}
+  sprite: {fileID: 21300000, guid: 3e086a062b84dc241b88e64205086d37, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

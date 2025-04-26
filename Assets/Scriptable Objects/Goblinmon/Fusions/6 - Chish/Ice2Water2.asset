@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Chilled Danger
   gLevel: 0
-  sprite: {fileID: 21300000, guid: aecd6583294710846bf68235f40c8cb8, type: 3}
+  sprite: {fileID: 21300000, guid: 20ba50ebe1ab1a34abf1c1493c10b024, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

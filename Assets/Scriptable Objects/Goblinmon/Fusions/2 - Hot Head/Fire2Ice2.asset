@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Cool Head
   gLevel: 0
-  sprite: {fileID: 21300000, guid: e1a6b262631d6c545ad385362abe7010, type: 3}
+  sprite: {fileID: 21300000, guid: 89c20901e2be3b040836c548baad2330, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

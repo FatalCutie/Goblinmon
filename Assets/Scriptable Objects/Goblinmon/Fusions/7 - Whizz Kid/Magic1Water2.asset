@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Danger Whizz
   gLevel: 0
-  sprite: {fileID: 21300000, guid: 68aa048069cb72e46b92afb9a94e99e0, type: 3}
+  sprite: {fileID: 21300000, guid: 654571994718a4a4095f0f1720b80c0b, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1

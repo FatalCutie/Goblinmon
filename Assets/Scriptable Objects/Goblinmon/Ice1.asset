@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Cool Dude
   gLevel: 5
-  sprite: {fileID: 21300000, guid: c0f6ff776b6635d4cbf19db0f0e442d7, type: 3}
+  sprite: {fileID: 21300000, guid: 83e2ecbf284cfe745ae5c10ea443b9e4, type: 3}
   maxHP: 60
   catchRate: 255
   types:

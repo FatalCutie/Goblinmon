@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gName: Soaked Dude
   gLevel: 0
-  sprite: {fileID: 21300000, guid: 3be9ef69203578a4a8dea547e7180eb9, type: 3}
+  sprite: {fileID: 21300000, guid: 543578abea034124eb7d86dafd86cfb1, type: 3}
   maxHP: 0
   catchRate: 255
-  type: {fileID: 0}
+  types: []
   moveset: []
   isFusion: 1
