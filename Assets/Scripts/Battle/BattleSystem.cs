@@ -195,6 +195,7 @@ public class BattleSystem : MonoBehaviour
                     int i = rnd.Next(0, types.Capacity);
                     SOType temp = types[i];
                     StartCoroutine(ScrollText($"The move switches type to {temp.name}!"));
+                    move.moveType = temp; //this isn't ideal but it works
                     yield return new WaitForSeconds(standardWaitTime);
                 }
 

@@ -384,6 +384,7 @@ public class EnemyAI : MonoBehaviour
                     int i = rnd.Next(0, bs.types.Capacity);
                     SOType temp = bs.types[i];
                     StartCoroutine(bs.ScrollText($"The move switches type to {temp.name}!"));
+                    move.moveType = temp; //this isn't ideal but it works
                     yield return new WaitForSeconds(standardWaitTime);
                 }
                 bool isDead = actualPlayer.TakeDamage(move, self);

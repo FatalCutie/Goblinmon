@@ -14,8 +14,8 @@ public class PlayerTileMovement : MonoBehaviour
     public bool movementLocked = true;
     Vector2 movement; //This is sloppy and a bandaid port. Fix this later
     private Vector3 currentTilePosition;
-    [SerializeField] private Tilemap longGrassTilemap;
-    [SerializeField] private GameObject tilemapDetector;
+    // [SerializeField] private Tilemap longGrassTilemap;
+    // [SerializeField] private GameObject tilemapDetector;
     public bool inGrass;
     private Vector2 lastPosition;
     public float idleTimer = 0f;
@@ -29,6 +29,7 @@ public class PlayerTileMovement : MonoBehaviour
     int catchWalkRecallsBaseline;
 
     public LayerMask movementStopperLayer;
+    public bool canWildEncounter = false; //enabled in UnlockPlayerMovement
 
     void Start()
     {
@@ -43,18 +44,18 @@ public class PlayerTileMovement : MonoBehaviour
         PlayerMovement();
         if (!movementLocked) CheckIfPlayerIsIdle();
         currentPosition = transform.position; //this sucks
-        direction = currentPosition - (movepoint.position + new Vector3(0, 0.25f, 0));
+        direction = currentPosition - (movepoint.position + new Vector3(0, 0.10f, 0));
         UpdateAnimator(direction);
     }
 
     void PlayerMovement()
     {
         //if (!movementLocked) 
-        transform.position = Vector3.MoveTowards(transform.position, movepoint.position + new Vector3(0, 0.25f, 0), movespeed * Time.deltaTime); // + new Vector3(0, 0.5f, 0)
+        transform.position = Vector3.MoveTowards(transform.position, movepoint.position + new Vector3(0, 0.10f, 0), movespeed * Time.deltaTime); // + new Vector3(0, 0.5f, 0)
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        if (Vector3.Distance(transform.position, movepoint.position + new Vector3(0, 0.25f, 0)) <= 0.05f //+ new Vector3(0, 0.5f, 0)
+        if (Vector3.Distance(transform.position, movepoint.position + new Vector3(0, 0.10f, 0)) <= 0.05f //+ new Vector3(0, 0.5f, 0)
         && !movementLocked)
         {
 
@@ -117,6 +118,7 @@ public class PlayerTileMovement : MonoBehaviour
             }
         }
     }
+
     //Makes sure player can move to object
     //NOTE: It's way more optimal to check Used By Composite in Tilemap Collider 2D but then the collision checking doesn't work
     //I don't know if this will be relevant to performance problems later but I'm leaving the note here just in case
@@ -124,8 +126,17 @@ public class PlayerTileMovement : MonoBehaviour
     {
         if (axis == 'x')
         {
-            if (!Physics2D.OverlapCircle(movepoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), .1f, movementStopperLayer))
+            if (!Physics2D.OverlapCircle(movepoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), .05f, movementStopperLayer))
+            {
+                //Remains of a system to make sure movepoint is in grass, so player doesn't get in battle while leaving grass
+                // Collider2D collider = Physics2D.OverlapCircle(movepoint.position + new Vector3(Input.GetAxisRaw("Horizontal") * 0.75f, 0f, 0f), .05f);
+                // if (collider != null && collider.CompareTag("Tall Grass"))
+                // {
+                //     Debug.Log("Tall Grass!");
+                //     // Do something if the object with the specific tag is at that position
+                // }
                 return false;
+            }
             else
             {
                 FindObjectOfType<AudioManager>().Play("damage");
@@ -135,7 +146,7 @@ public class PlayerTileMovement : MonoBehaviour
         }
         else if (axis == 'y')
         {
-            if (!Physics2D.OverlapCircle(movepoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f), .1f, movementStopperLayer))
+            if (!Physics2D.OverlapCircle(movepoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f), .05f, movementStopperLayer))
                 return false;
             else
             {
@@ -151,26 +162,6 @@ public class PlayerTileMovement : MonoBehaviour
         }
     }
 
-    //Called to update player animator based on movement
-    //NOTE: This shit is so ass but also quite functional
-    // void UpdateAnimator(char axis)
-    // {
-    //     if (axis == 'x')
-    //     {
-    //         animator.SetFloat("Horizontal", movement.x);
-    //         animator.SetFloat("Vertical", 0);
-    //     }
-    //     else if (axis == 'y')
-    //     {
-    //         animator.SetFloat("Vertical", movement.y);
-    //         animator.SetFloat("Horizontal", 0);
-
-    //     }
-    //     else
-    //     {
-    //         Debug.LogWarning("UpdateAnimator fed unrecognized character. Please check PlayerTileMovement.");
-    //     }
-    // }
     void UpdateAnimator(Vector2 dir)
     {
         animator.SetFloat("Horizontal", -dir.x);
@@ -187,6 +178,7 @@ public class PlayerTileMovement : MonoBehaviour
     IEnumerator UnlockPlayerMovement()
     {
         FindObjectOfType<PlayerPositionManager>().RememberPlayerPosition(); //Sets player position
+        canWildEncounter = true;
         yield return new WaitForSeconds(2); //This is hardcoded. Adjust this with animation speed
     }
 
@@ -199,7 +191,7 @@ public class PlayerTileMovement : MonoBehaviour
         //Debug.Log(other.tag);
         if (other.CompareTag("Tall Grass"))
         {
-            Debug.Log("Entering tall grass!");
+            // Debug.Log("Entering tall grass!");
             // inGrass = true;
             other.GetComponent<TallGrass>().RandomEncounter();
         }
