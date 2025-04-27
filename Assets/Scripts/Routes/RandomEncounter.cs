@@ -20,11 +20,12 @@ public abstract class RandomEncounter : MonoBehaviour
         GameObject go = Instantiate(enemyPartyStoragePrefab); //Instantiate Object
         Goblinmon g = CreateGoblinmon(unit, go); //Create Goblinmon unit
         go.GetComponent<EnemyPartyStorage>().PopulateEnemy(g); //Adds goblinmon to party
+        go.GetComponent<EnemyPartyStorage>().battleMusic = TriggerBattleOverworld.BattleMusic.BM_WILD;
 
         //Load Scene
         FindObjectOfType<PlayerTileMovement>().movementLocked = true; //Lock player movement during transition
         FindObjectOfType<PlayerPositionManager>().SavePlayersPosition(); //Save players position for after battle
-        FindObjectOfType<AudioManager>().Play("battle"); //Battle music needs to be trimmed, plays as scene transitions
+        FindObjectOfType<AudioManager>().Play("battleWild"); //Battle music needs to be trimmed, plays as scene transitions
         FindObjectOfType<SceneController>().TransitionScene("BattleScene");
         // SceneManager.LoadScene("BattleScene");
     }

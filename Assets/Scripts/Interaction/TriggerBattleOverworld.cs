@@ -11,6 +11,8 @@ public class TriggerBattleOverworld : MonoBehaviour
     private List<Goblinmon> enemyTeam = new List<Goblinmon>();
     [SerializeField] private List<SOGoblinmon> enemyTeamSO;
     public GameObject enemyPartyStoragePrefab;
+    public enum BattleMusic { BM_TRAINER, BM_ELITE, BM_LEGENDARY, BM_WILD };
+    public BattleMusic battleMusic = BattleMusic.BM_TRAINER;
 
     void Start(){
     }
@@ -54,11 +56,23 @@ public class TriggerBattleOverworld : MonoBehaviour
         GameObject go = Instantiate(enemyPartyStoragePrefab); //Instantiate Object
         InitializeGoblinmonParty(go); //populate Goblinmon
         go.GetComponent<EnemyPartyStorage>().PopulateEnemyParty(enemyTeam); //
+        go.GetComponent<EnemyPartyStorage>().battleMusic = battleMusic;
 
         //Load Scene
         FindObjectOfType<PlayerTileMovement>().movementLocked = true; //Lock player movement during transition
         FindObjectOfType<PlayerPositionManager>().SavePlayersPosition(); //Save players position for after battle
-        FindObjectOfType<AudioManager>().Play("battle"); //Battle music needs to be trimmed, plays as scene transitions
+        switch (battleMusic)
+        {
+            case BattleMusic.BM_TRAINER:
+                FindObjectOfType<AudioManager>().Play("battleTrainer");
+                break;
+            case BattleMusic.BM_ELITE:
+                FindObjectOfType<AudioManager>().Play("battleElite");
+                break;
+            case BattleMusic.BM_LEGENDARY:
+                FindObjectOfType<AudioManager>().Play("battleLegendary");
+                break;
+        }
         FindObjectOfType<SceneController>().TransitionScene("BattleScene");
         // SceneManager.LoadScene("BattleScene");
     }

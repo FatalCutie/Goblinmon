@@ -6,6 +6,7 @@ public class EnemyPartyStorage : MonoBehaviour
 {
     public EnemyPartyStorage instance;
     public List<Goblinmon> goblinmon;
+    public TriggerBattleOverworld.BattleMusic battleMusic = TriggerBattleOverworld.BattleMusic.BM_TRAINER;
 
     void Awake()
     {

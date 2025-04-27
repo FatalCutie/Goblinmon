@@ -140,6 +140,7 @@ public class PlayerTileMovement : MonoBehaviour
             else
             {
                 FindObjectOfType<AudioManager>().Play("damage");
+                animator.SetFloat("Horizontal", Input.GetAxisRaw("Horizontal")); //this doesn't update idle
                 idleTimer = 0f;
                 return true;
             }
@@ -151,6 +152,7 @@ public class PlayerTileMovement : MonoBehaviour
             else
             {
                 FindObjectOfType<AudioManager>().Play("damage");
+                animator.SetFloat("Horizontal", Input.GetAxisRaw("Vertical")); //this doesn't update idle
                 idleTimer = 0f;
                 return true;
             }

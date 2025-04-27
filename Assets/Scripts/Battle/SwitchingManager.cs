@@ -122,13 +122,17 @@ public class SwitchingManager : MonoBehaviour
     public IEnumerator SwitchUnit(Goblinmon unit)
     {
         //Makes switching look smooth for player
-        StartCoroutine(bs.ScrollText("Come back " + bs.playerUnit.goblinData.gName + "!"));
-        yield return new WaitForSeconds(1);
-        bs.playerAnimator.SetBool("Player Out", false);
-        yield return new WaitForSeconds(.4f);
-        bs.battleAnimator.SetTrigger("RetrievePlayer");
-        bs.playerUIAnimator.SetBool("PanelOpen", false);
-        yield return new WaitForSeconds(.5f);
+        if (bs.playerUnit.currentHP! <= 0)
+        {
+            StartCoroutine(bs.ScrollText("Come back " + bs.playerUnit.goblinData.gName + "!"));
+            yield return new WaitForSeconds(1);
+            bs.playerAnimator.SetBool("Player Out", false);
+            yield return new WaitForSeconds(.4f);
+            bs.battleAnimator.SetTrigger("RetrievePlayer");
+            bs.playerUIAnimator.SetBool("PanelOpen", false);
+            yield return new WaitForSeconds(.5f);
+        }
+
 
         //Save health data of Unit being swapped
         SavePlayerData();

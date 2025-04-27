@@ -473,8 +473,26 @@ public class BattleSystem : MonoBehaviour
     {
         if (state == BattleState.WON)
         {
-            FindObjectOfType<AudioManager>().Stop("battle");
-            FindObjectOfType<AudioManager>().Play("win");
+            //Change music
+            switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
+            {
+                case TriggerBattleOverworld.BattleMusic.BM_TRAINER:
+                    FindObjectOfType<AudioManager>().Stop("battleTrainer");
+                    FindObjectOfType<AudioManager>().Play("winTrainer");
+                    break;
+                case TriggerBattleOverworld.BattleMusic.BM_ELITE:
+                    FindObjectOfType<AudioManager>().Stop("battleElite");
+                    FindObjectOfType<AudioManager>().Play("winElite");
+                    break;
+                case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
+                    FindObjectOfType<AudioManager>().Stop("battleLegendary");
+                    FindObjectOfType<AudioManager>().Play("winLegendary");
+                    break;
+                case TriggerBattleOverworld.BattleMusic.BM_WILD:
+                    FindObjectOfType<AudioManager>().Stop("battleWild");
+                    FindObjectOfType<AudioManager>().Play("winWild");
+                    break;
+            }
             StartCoroutine(ScrollText("You won the battle!"));
             sm.SavePlayerData(); //Save health of active Goblinmon
             StartCoroutine(ReturnToOverworld());

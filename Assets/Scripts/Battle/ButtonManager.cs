@@ -76,7 +76,21 @@ public class ButtonManager : MonoBehaviour
     public void TestingRun()
     {
         FindObjectOfType<AudioManager>().Play("press");
-        FindObjectOfType<AudioManager>().Stop("battle");
+        switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
+        {
+            case TriggerBattleOverworld.BattleMusic.BM_TRAINER:
+                FindObjectOfType<AudioManager>().Stop("battleTrainer");
+                break;
+            case TriggerBattleOverworld.BattleMusic.BM_ELITE:
+                FindObjectOfType<AudioManager>().Stop("battleElite");
+                break;
+            case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
+                FindObjectOfType<AudioManager>().Stop("battleLegendary");
+                break;
+            case TriggerBattleOverworld.BattleMusic.BM_WILD:
+                FindObjectOfType<AudioManager>().Stop("battleWild");
+                break;
+        }
         FindObjectOfType<SceneController>().TransitionScene("Overworld");
     }
 
