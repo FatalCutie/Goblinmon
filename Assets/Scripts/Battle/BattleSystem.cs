@@ -520,7 +520,21 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(standardWaitTime * 3);
         FindObjectOfType<SceneController>().TransitionScene("Overworld");
         yield return new WaitForSeconds(2f); //Hardcoded with transition time
-        FindObjectOfType<AudioManager>().Stop("win");
+        switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
+        {
+            case TriggerBattleOverworld.BattleMusic.BM_TRAINER:
+                FindObjectOfType<AudioManager>().Stop("winTrainer");
+                break;
+            case TriggerBattleOverworld.BattleMusic.BM_ELITE:
+                FindObjectOfType<AudioManager>().Stop("winElite");
+                break;
+            case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
+                FindObjectOfType<AudioManager>().Stop("winLegendary");
+                break;
+            case TriggerBattleOverworld.BattleMusic.BM_WILD:
+                FindObjectOfType<AudioManager>().Stop("winWild");
+                break;
+        }
     }
 
     public void PlayerTurn()

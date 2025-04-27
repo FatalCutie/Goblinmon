@@ -267,9 +267,7 @@ public class EnemyAI : MonoBehaviour
     private IEnumerator ThrowOutUnit()
     {
         bs.battleAnimator.SetTrigger("ThrowOutEnemy");
-        Debug.Log("THrowing out enemy");
         if (!bs.SkipOpeningAnimations) yield return new WaitForSeconds(0.67f);
-        Debug.Log("Enemy should grow");
         bs.enemyAnimator.SetBool("EnemyBeingCaught", false);
         bs.enemyUIAnimator.SetBool("PanelOpen", true);
     }
