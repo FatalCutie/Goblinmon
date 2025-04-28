@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: Fire1Ice1
   m_EditorClassIdentifier: 
   gName: Cool Crisp
-  gLevel: 0
+  gLevel: 12
   sprite: {fileID: 21300000, guid: d62520a709c7d7a4886ebfb7bbd21bda, type: 3}
-  maxHP: 5
-  catchRate: 255
-  type: {fileID: 0}
-  moveset: []
+  maxHP: 115
+  catchRate: 30
+  types:
+  - {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
+  - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: 039eecb9dc998ea4dae04971b9fc2889, type: 2}
+  - {fileID: 11400000, guid: a2776a5a7eb2dad4f89ee6f963e5bc87, type: 2}
+  - {fileID: 11400000, guid: 10fc0ce7145678f47bb8fc3eafd3e1e6, type: 2}
+  - {fileID: 11400000, guid: 61fcd56a517bd65469cf878e3dcd78d6, type: 2}
   isFusion: 1

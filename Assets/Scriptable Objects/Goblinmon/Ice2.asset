@@ -15,8 +15,8 @@ MonoBehaviour:
   gName: Chish
   gLevel: 5
   sprite: {fileID: 21300000, guid: 937e0dafa192b234984efe4e473a78ff, type: 3}
-  maxHP: 60
-  catchRate: 255
+  maxHP: 65
+  catchRate: 100
   types:
   - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
   moveset:

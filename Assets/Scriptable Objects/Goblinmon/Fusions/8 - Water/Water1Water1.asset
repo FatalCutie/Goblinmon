@@ -13,10 +13,15 @@ MonoBehaviour:
   m_Name: Water1Water1
   m_EditorClassIdentifier: 
   gName: Eternal Jet
-  gLevel: 0
+  gLevel: 11
   sprite: {fileID: 21300000, guid: 656769e96033eb24dab21a2e8aacde1f, type: 3}
-  maxHP: 0
-  catchRate: 255
-  types: []
-  moveset: []
+  maxHP: 110
+  catchRate: 50
+  types:
+  - {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: 0416015516b9d514e8b65ae26a9f930f, type: 2}
+  - {fileID: 11400000, guid: 2181615d35ee744419d29ce4880400bf, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   isFusion: 1

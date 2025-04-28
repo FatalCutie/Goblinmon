@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: Grass2Water1
   m_EditorClassIdentifier: 
   gName: Picked Jet
-  gLevel: 0
+  gLevel: 110
   sprite: {fileID: 21300000, guid: 2581b976ccebf9843b53e224ef722998, type: 3}
-  maxHP: 0
-  catchRate: 255
-  type: {fileID: 0}
-  moveset: []
+  maxHP: 105
+  catchRate: 30
+  types:
+  - {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
+  - {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: 4316a193d3779df40929d4047635aa9a, type: 2}
+  - {fileID: 11400000, guid: ec222377cdec369459d47eb543663660, type: 2}
+  - {fileID: 11400000, guid: 0416015516b9d514e8b65ae26a9f930f, type: 2}
+  - {fileID: 11400000, guid: 2181615d35ee744419d29ce4880400bf, type: 2}
   isFusion: 1

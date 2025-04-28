@@ -15,8 +15,8 @@ MonoBehaviour:
   gName: Wise Ape
   gLevel: 5
   sprite: {fileID: 21300000, guid: 02a9c74886354a64488b9c3ac6e13f30, type: 3}
-  maxHP: 60
-  catchRate: 255
+  maxHP: 70
+  catchRate: 50
   types:
   - {fileID: 11400000, guid: 95adcac05f621d7458c3941039edbe1a, type: 2}
   moveset:

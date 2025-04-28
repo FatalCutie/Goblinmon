@@ -13,10 +13,15 @@ MonoBehaviour:
   m_Name: Ice1Ice1
   m_EditorClassIdentifier: 
   gName: Cool Dudes
-  gLevel: 0
+  gLevel: 12
   sprite: {fileID: 21300000, guid: 88ab05a813700bb4895701f0c9e8bf3e, type: 3}
-  maxHP: 0
-  catchRate: 255
-  types: []
-  moveset: []
+  maxHP: 120
+  catchRate: 40
+  types:
+  - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: 10fc0ce7145678f47bb8fc3eafd3e1e6, type: 2}
+  - {fileID: 11400000, guid: 61fcd56a517bd65469cf878e3dcd78d6, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   isFusion: 1

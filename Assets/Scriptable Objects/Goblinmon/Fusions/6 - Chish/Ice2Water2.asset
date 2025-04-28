@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: Ice2Water2
   m_EditorClassIdentifier: 
   gName: Chilled Danger
-  gLevel: 0
+  gLevel: 10
   sprite: {fileID: 21300000, guid: 20ba50ebe1ab1a34abf1c1493c10b024, type: 3}
-  maxHP: 0
-  catchRate: 255
-  types: []
-  moveset: []
+  maxHP: 95
+  catchRate: 40
+  types:
+  - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
+  - {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: b1c8bfe80ba669946b81b7f0bf727827, type: 2}
+  - {fileID: 11400000, guid: 94913ede91d48b94888112e87229d4e6, type: 2}
+  - {fileID: 11400000, guid: 1fee6524187d02d4cbc7cac98283781b, type: 2}
+  - {fileID: 11400000, guid: 6e6b55a8a8a789c479f3b9ea00d3efb1, type: 2}
   isFusion: 1

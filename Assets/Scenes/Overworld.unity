@@ -985,6 +985,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 84073c5a1e6e3474ba7a160ab0319945, type: 3}
+    - target: {fileID: 5732568108746393150, guid: 35cf97872b448a24686c130b80e068c6, type: 3}
+      propertyPath: speech
+      value: 
+      objectReference: {fileID: 11400000, guid: c7398bffa00c0924fa6bb5399b67b5a7, type: 2}
     - target: {fileID: 6047176810667168044, guid: 35cf97872b448a24686c130b80e068c6, type: 3}
       propertyPath: enemyTeamSO.Array.data[0]
       value: 
@@ -40365,7 +40369,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   encounter: {fileID: 647943010}
-  encounterChance: 8
+  encounterChance: 4
 --- !u!66 &647943005
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -43816,6 +43820,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 9bfc3276ebcb86e48b3051c862beb49c, type: 3}
+    - target: {fileID: 5732568108746393150, guid: 35cf97872b448a24686c130b80e068c6, type: 3}
+      propertyPath: speech
+      value: 
+      objectReference: {fileID: 11400000, guid: 80c3d79fd00719e4dac903a5c571adbd, type: 2}
     - target: {fileID: 6047176810667168044, guid: 35cf97872b448a24686c130b80e068c6, type: 3}
       propertyPath: enemyTeamSO.Array.data[0]
       value: 

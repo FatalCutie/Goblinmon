@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: Ice1Magic1
   m_EditorClassIdentifier: 
   gName: Cool Kid
-  gLevel: 0
+  gLevel: 12
   sprite: {fileID: 21300000, guid: 92ab5784d51bfa24099080435a3026d5, type: 3}
-  maxHP: 0
-  catchRate: 255
-  type: {fileID: 0}
-  moveset: []
+  maxHP: 115
+  catchRate: 30
+  types:
+  - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
+  - {fileID: 11400000, guid: 95adcac05f621d7458c3941039edbe1a, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: 10fc0ce7145678f47bb8fc3eafd3e1e6, type: 2}
+  - {fileID: 11400000, guid: 61fcd56a517bd65469cf878e3dcd78d6, type: 2}
+  - {fileID: 11400000, guid: 32c577a50a2543d49ab666480d341f1e, type: 2}
+  - {fileID: 11400000, guid: 93c24ebaedc09894caa79ab408ae741a, type: 2}
   isFusion: 1

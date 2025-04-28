@@ -15,8 +15,8 @@ MonoBehaviour:
   gName: Hot Head
   gLevel: 5
   sprite: {fileID: 21300000, guid: 3fc5824c44d3a064197232da33f76017, type: 3}
-  maxHP: 60
-  catchRate: 255
+  maxHP: 65
+  catchRate: 100
   types:
   - {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
   moveset:

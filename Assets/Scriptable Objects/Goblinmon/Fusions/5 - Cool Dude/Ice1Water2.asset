@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: Ice1Water2
   m_EditorClassIdentifier: 
   gName: Soaked Dude
-  gLevel: 0
+  gLevel: 11
   sprite: {fileID: 21300000, guid: 543578abea034124eb7d86dafd86cfb1, type: 3}
-  maxHP: 0
-  catchRate: 255
-  types: []
-  moveset: []
+  maxHP: 110
+  catchRate: 40
+  types:
+  - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
+  - {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: 10fc0ce7145678f47bb8fc3eafd3e1e6, type: 2}
+  - {fileID: 11400000, guid: 61fcd56a517bd65469cf878e3dcd78d6, type: 2}
+  - {fileID: 11400000, guid: 1fee6524187d02d4cbc7cac98283781b, type: 2}
+  - {fileID: 11400000, guid: 6e6b55a8a8a789c479f3b9ea00d3efb1, type: 2}
   isFusion: 1

@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: Ice1Water1
   m_EditorClassIdentifier: 
   gName: Cool Jet
-  gLevel: 0
+  gLevel: 12
   sprite: {fileID: 21300000, guid: 733afd3997718924c91ea11a7a23e2e6, type: 3}
-  maxHP: 0
-  catchRate: 255
-  type: {fileID: 0}
-  moveset: []
+  maxHP: 115
+  catchRate: 40
+  types:
+  - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
+  - {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: 10fc0ce7145678f47bb8fc3eafd3e1e6, type: 2}
+  - {fileID: 11400000, guid: 61fcd56a517bd65469cf878e3dcd78d6, type: 2}
+  - {fileID: 11400000, guid: 0416015516b9d514e8b65ae26a9f930f, type: 2}
+  - {fileID: 11400000, guid: 2181615d35ee744419d29ce4880400bf, type: 2}
   isFusion: 1

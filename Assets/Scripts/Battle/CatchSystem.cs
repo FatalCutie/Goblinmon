@@ -40,7 +40,7 @@ public class CatchSystem : MonoBehaviour
         SOGoblinmon gd = g.goblinData;
 
         //Run calculation to see if catch is successful
-        //TODO: Replace 16 with ball modifier. Lower number = better ball
+        //TODO: Replace 4 with ball modifier. Lower number = better ball
         float number = gd.maxHP * gd.catchRate * 4 / (g.currentHP * 10);
         //Debug.Log($"{gd.maxHP * gd.catchRate * 4} / {g.currentHP * 255}");
         float numberToBeat = bs.rnd.Next(0, 255);

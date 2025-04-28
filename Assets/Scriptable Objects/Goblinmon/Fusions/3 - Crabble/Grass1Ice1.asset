@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: Grass1Ice1
   m_EditorClassIdentifier: 
   gName: Cool Crab
-  gLevel: 0
+  gLevel: 11
   sprite: {fileID: 21300000, guid: 8b5da0c61de7794468c48608d4df4699, type: 3}
-  maxHP: 0
-  catchRate: 255
-  types: []
-  moveset: []
+  maxHP: 110
+  catchRate: 30
+  types:
+  - {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
+  - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: f751293e65136a54688edc2f17070b3c, type: 2}
+  - {fileID: 11400000, guid: a944f4791975adb4886cf30285acfa34, type: 2}
+  - {fileID: 11400000, guid: 10fc0ce7145678f47bb8fc3eafd3e1e6, type: 2}
+  - {fileID: 11400000, guid: 61fcd56a517bd65469cf878e3dcd78d6, type: 2}
   isFusion: 1

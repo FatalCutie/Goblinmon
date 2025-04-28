@@ -15,8 +15,8 @@ MonoBehaviour:
   gName: Aqua Jet
   gLevel: 8
   sprite: {fileID: 21300000, guid: 0567a32ccb240e148aeff93393c56147, type: 3}
-  maxHP: 65
-  catchRate: 120
+  maxHP: 75
+  catchRate: 100
   types:
   - {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
   moveset:

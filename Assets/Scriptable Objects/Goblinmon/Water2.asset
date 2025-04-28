@@ -16,7 +16,7 @@ MonoBehaviour:
   gLevel: 5
   sprite: {fileID: 21300000, guid: 15bc00d8057230d4abbff397361e5c4b, type: 3}
   maxHP: 60
-  catchRate: 255
+  catchRate: 80
   types:
   - {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
   moveset:

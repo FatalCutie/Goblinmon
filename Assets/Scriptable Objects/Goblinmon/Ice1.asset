@@ -15,8 +15,8 @@ MonoBehaviour:
   gName: Cool Dude
   gLevel: 5
   sprite: {fileID: 21300000, guid: 83e2ecbf284cfe745ae5c10ea443b9e4, type: 3}
-  maxHP: 60
-  catchRate: 255
+  maxHP: 80
+  catchRate: 80
   types:
   - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
   moveset:

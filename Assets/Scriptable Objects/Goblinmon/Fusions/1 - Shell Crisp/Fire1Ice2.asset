@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: Fire1Ice2
   m_EditorClassIdentifier: 
   gName: Chill Shell
-  gLevel: 0
+  gLevel: 10
   sprite: {fileID: 21300000, guid: 693be82384052844ab50d8767fd4cef3, type: 3}
-  maxHP: 5
-  catchRate: 255
-  type: {fileID: 0}
-  moveset: []
+  maxHP: 100
+  catchRate: 30
+  types:
+  - {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
+  - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: 039eecb9dc998ea4dae04971b9fc2889, type: 2}
+  - {fileID: 11400000, guid: a2776a5a7eb2dad4f89ee6f963e5bc87, type: 2}
+  - {fileID: 11400000, guid: b1c8bfe80ba669946b81b7f0bf727827, type: 2}
+  - {fileID: 11400000, guid: 94913ede91d48b94888112e87229d4e6, type: 2}
   isFusion: 1

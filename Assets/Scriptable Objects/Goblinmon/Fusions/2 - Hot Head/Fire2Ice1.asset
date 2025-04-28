@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: Fire2Ice1
   m_EditorClassIdentifier: 
   gName: Ice Head
-  gLevel: 0
+  gLevel: 11
   sprite: {fileID: 21300000, guid: f88c0d8e46908604fade9c448cd50be4, type: 3}
-  maxHP: 5
-  catchRate: 255
-  type: {fileID: 0}
-  moveset: []
+  maxHP: 110
+  catchRate: 30
+  types:
+  - {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
+  - {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: 8ed11e006a8d9704ebf097cf2f9fcbfc, type: 2}
+  - {fileID: 11400000, guid: 382d97f6f7caae84f8c3bdff08779f9c, type: 2}
+  - {fileID: 11400000, guid: 10fc0ce7145678f47bb8fc3eafd3e1e6, type: 2}
+  - {fileID: 11400000, guid: 61fcd56a517bd65469cf878e3dcd78d6, type: 2}
   isFusion: 1

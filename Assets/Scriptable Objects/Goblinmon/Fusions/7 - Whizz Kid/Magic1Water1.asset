@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: Magic1Water1
   m_EditorClassIdentifier: 
   gName: Whizz Jet
-  gLevel: 0
+  gLevel: 11
   sprite: {fileID: 21300000, guid: cf595d631e0821a45b948dcb7eef44b8, type: 3}
-  maxHP: 0
-  catchRate: 255
-  type: {fileID: 0}
-  moveset: []
+  maxHP: 110
+  catchRate: 30
+  types:
+  - {fileID: 11400000, guid: 95adcac05f621d7458c3941039edbe1a, type: 2}
+  - {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: 32c577a50a2543d49ab666480d341f1e, type: 2}
+  - {fileID: 11400000, guid: 93c24ebaedc09894caa79ab408ae741a, type: 2}
+  - {fileID: 11400000, guid: 0416015516b9d514e8b65ae26a9f930f, type: 2}
+  - {fileID: 11400000, guid: 2181615d35ee744419d29ce4880400bf, type: 2}
   isFusion: 1

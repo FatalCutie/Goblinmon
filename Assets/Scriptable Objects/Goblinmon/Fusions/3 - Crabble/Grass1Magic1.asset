@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: Grass1Magic1
   m_EditorClassIdentifier: 
   gName: Apple Whiz
-  gLevel: 0
+  gLevel: 11
   sprite: {fileID: 21300000, guid: 0815441462e685446b414bdb63e8b6e3, type: 3}
-  maxHP: 0
-  catchRate: 255
-  type: {fileID: 0}
-  moveset: []
+  maxHP: 110
+  catchRate: 30
+  types:
+  - {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
+  - {fileID: 11400000, guid: 95adcac05f621d7458c3941039edbe1a, type: 2}
+  moveset:
+  - {fileID: 11400000, guid: f751293e65136a54688edc2f17070b3c, type: 2}
+  - {fileID: 11400000, guid: a944f4791975adb4886cf30285acfa34, type: 2}
+  - {fileID: 11400000, guid: 32c577a50a2543d49ab666480d341f1e, type: 2}
+  - {fileID: 11400000, guid: 93c24ebaedc09894caa79ab408ae741a, type: 2}
   isFusion: 1
