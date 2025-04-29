@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using System;
 using System.Diagnostics;
+using Microsoft.Unity.VisualStudio.Editor;
+using UnityEngine.UI;
 
 public class OverworldUI : MonoBehaviour
 {
@@ -12,16 +14,20 @@ public class OverworldUI : MonoBehaviour
     [SerializeField] private Animator ItemUIAnimator;
     private bool ItemUIOpen;
     public GameObject unitMenu;
-    public GameObject fusionItemUI;
-    public GameObject catchingItemUI;
+    public GameObject shopUI;
     public PlayerTileMovement player;
     public PartyStorage partyStorage;
     [SerializeField] private FusionButton fb;
     [SerializeField] private SwitchingButton sb;
+    public TextMeshProUGUI fusionItems;
+    public UnityEngine.UI.Image fusionItemsImage;
+    public TextMeshProUGUI captureItems;
+    public PlayerPositionManager ppm;
 
     void Start()
     {
         partyStorage = FindObjectOfType<PartyStorage>();
+        shopUI.SetActive(false);
     }
     void Update()
     {
@@ -36,11 +42,17 @@ public class OverworldUI : MonoBehaviour
                     return;
             }
         }
+
+        if (!ppm) ppm = FindObjectOfType<PlayerPositionManager>();
+        if (Int32.Parse(fusionItems.text) != ppm.fusionItems) fusionItems.text = $"{ppm.fusionItems}";
+        if (Int32.Parse(captureItems.text) != ppm.captureItems) captureItems.text = $"{ppm.captureItems}";
     }
 
     //Opens the unit and item panel
     public void OpenPanel()
     {
+        if (shopUI.activeSelf) return; //can't open menu in shop
+
         //if (!dataPopulated) UpdateUnitInformation(); //Populate buttons with party
         partyStorage.menuOpen = true;
         UnitMenuAnimator.SetBool("PanelOpen", true);
@@ -115,6 +127,28 @@ public class OverworldUI : MonoBehaviour
     public void UpdateItemUI()
     {
         //TODO: Implement Items
+    }
+
+    public void OpenShopUI()
+    {
+        shopUI.SetActive(true);
+        FindObjectOfType<PlayerTileMovement>().movementLocked = true;
+        FindObjectOfType<ShopButton>().RefreshPlayerMoneyTotal();
+    }
+
+    public void CloseShopUI()
+    {
+        shopUI.SetActive(false);
+        FindObjectOfType<AudioManager>().Play("press");
+        FindObjectOfType<PlayerTileMovement>().movementLocked = false;
+    }
+
+    public IEnumerator FlashFusionItemsRed()
+    {
+        fusionItemsImage.color = Color.red;
+        FindObjectOfType<AudioManager>().Play("damage");
+        yield return new WaitForSeconds(.2f);
+        fusionItemsImage.color = Color.white;
     }
 
 

@@ -17,6 +17,12 @@ public class InteractionDetector : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.E)){
             interactableInRange?.Interact();
+            //Close AFK panel if interacting
+            if (FindObjectOfType<PlayerTileMovement>().idleTimer >= 3f)
+            {
+                FindObjectOfType<PlayerTileMovement>().idleTimer = 0;
+                FindObjectOfType<OverworldUI>().CloseItemMenuOnIdle();
+            }
         }
     }
 

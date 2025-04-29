@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce7ab67607e6454d8e0e7dd79f416e1, type: 3}
+  m_Name: Jugan
+  m_EditorClassIdentifier: 
+  text:
+  - Heya neighbor, I'm professor Jugan!
+  - When I'm not grading my students game, I like to research the monsters that roam
+    this world and learn all about them!
+  - Did you know that when a monster turns purple, it means they want to play fetch?
+  - If they turn orange that means they're craving ice cream, but watch out! If they
+    turn Navy Blue that means they're allergic!
+  - Not to be confused with just plain blue, which means..
+  - Well, I'm not quite sure what that means. Looks like I still have more to learn!
+  battle: 0

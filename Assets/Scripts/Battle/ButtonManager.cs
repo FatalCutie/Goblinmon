@@ -75,7 +75,7 @@ public class ButtonManager : MonoBehaviour
 
     public void TestingRun()
     {
-        FindObjectOfType<AudioManager>().Play("press");
+        FindObjectOfType<AudioManager>().Play("run");
         switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
         {
             case TriggerBattleOverworld.BattleMusic.BM_TRAINER:

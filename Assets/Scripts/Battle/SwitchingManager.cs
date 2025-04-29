@@ -122,7 +122,7 @@ public class SwitchingManager : MonoBehaviour
     public IEnumerator SwitchUnit(Goblinmon unit)
     {
         //Makes switching look smooth for player
-        if (bs.playerUnit.currentHP! <= 0)
+        if (bs.playerUnit.currentHP >= 0)
         {
             StartCoroutine(bs.ScrollText("Come back " + bs.playerUnit.goblinData.gName + "!"));
             yield return new WaitForSeconds(1);
@@ -175,7 +175,7 @@ public class SwitchingManager : MonoBehaviour
                 {
                     break;
                 }
-                //Debug.Log($"Iteration {i}: ID {g.ID} does not equal {playerUnitToSave.ID}");
+                Debug.Log($"Iteration {i}: ID {g.ID} does not equal {playerUnitToSave.ID}");
                 i++;
             }
             ps.goblinmon[i].currentHP = playerUnitToSave.currentHP;

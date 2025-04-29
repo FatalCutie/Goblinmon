@@ -110,7 +110,7 @@ public class PlayerTileMovement : MonoBehaviour
         {
             if (Vector2.Distance(transform.position, lastPosition) > 0.1f)
             {
-                // Player is moving, reset the idle timer
+                // Player is moving or interacting, reset the idle timer
                 idleTimer = 0f;
                 lastPosition = transform.position;
                 overworldUI.CloseItemMenuOnIdle();

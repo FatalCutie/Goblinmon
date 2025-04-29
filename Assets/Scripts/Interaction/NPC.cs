@@ -6,21 +6,36 @@ public class NPC : MonoBehaviour, IInteractable
 {
     public DialogueManager dm;
     public DialogueSO speech;
+    public enum NPCBehavior { NPC_TALK, NPC_BATTLE, NPC_SHOP, NPC_HEAL };
+    public NPCBehavior behavior = NPCBehavior.NPC_TALK;
     public bool canInteract = true;
-    public bool triggerBattle = false;
 
     public void Interact()
     {
         if(canInteract){
             canInteract = false;
-            StartCoroutine(dm.ScrollText(speech, this));
+            switch (behavior)
+            {
+                case NPCBehavior.NPC_TALK:
+                    StartCoroutine(dm.ScrollText(speech, this));
+                    break;
+                case NPCBehavior.NPC_BATTLE:
+                    StartCoroutine(dm.ScrollText(speech, this));
+                    break;
+                case NPCBehavior.NPC_SHOP:
+                    FindObjectOfType<OverworldUI>().OpenShopUI();
+                    canInteract = true;
+                    break;
+                case NPCBehavior.NPC_HEAL:
+                    //heal party
+                    break;
+            }
         }
     }
 
     void Start()
     {
         dm = FindObjectOfType<DialogueManager>();
-        if(this.gameObject.GetComponent<TriggerBattleOverworld>()) triggerBattle = true;
     }
 
 }

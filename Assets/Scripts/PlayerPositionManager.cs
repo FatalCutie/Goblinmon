@@ -9,6 +9,7 @@ public class PlayerPositionManager : MonoBehaviour
     private PlayerPositionManager instance;
     public int fusionItems;
     public int captureItems;
+    public int playerMoney;
 
     void Awake()
     {
@@ -26,6 +27,7 @@ public class PlayerPositionManager : MonoBehaviour
     public void SavePlayersPosition(){
         Transform player = FindObjectOfType<PlayerTileMovement>().movepoint;
         playerPosition = player.position + new Vector3(0f, 0.5f, 0);
+
     }
 
     //Places player in previous position
@@ -38,7 +40,6 @@ public class PlayerPositionManager : MonoBehaviour
             player.movepoint.position = playerPosition - new Vector3(0f, 0.5f, 0); //Move movepoint first 
             player.gameObject.transform.position = playerPosition; //Then actual player
             player.movementLocked = false;
-
         }
     }
 }

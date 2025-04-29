@@ -11,6 +11,7 @@ public class FusionButton : MonoBehaviour
     public enum ButtonMode {OVERWORLD, FUSION}
     public ButtonMode buttonMode = ButtonMode.OVERWORLD; //Default to overworld
     public GameObject unitButtonHolder;
+    [SerializeField] private Image fusionButtonImage;
     [SerializeField] private Goblinmon selectedUnit1;
     [SerializeField] private Goblinmon selectedUnit2;
     [SerializeField] private FusionCalculator fusionCalculator;
@@ -27,6 +28,12 @@ public class FusionButton : MonoBehaviour
     public void SwitchButtonMode(){
         switch(buttonMode){
             case ButtonMode.OVERWORLD:
+                if (FindObjectOfType<PlayerPositionManager>().fusionItems <= 0)
+                {
+                    StartCoroutine(FindObjectOfType<OverworldUI>().FlashFusionItemsRed());
+                    StartCoroutine(FlashFusionButtonRed());
+                    return;
+                }
                 //Switch unit buttons to fusion mode
                 ButtonCheck(); //Check to see if in switching mode
                 foreach(Transform t in unitButtonHolder.transform){
@@ -63,8 +70,13 @@ public class FusionButton : MonoBehaviour
     public void SelectUnitForFusion(Goblinmon g){
         if (selectedUnit1 == null)
         {
-            selectedUnit1 = g;
-            FlipButtonColor();
+            if (!g.goblinData.isFusion)
+            {
+                selectedUnit1 = g;
+                FlipButtonColor();
+            }
+            else FindObjectOfType<AudioManager>().Play("damage");
+
         }
         else if (g == selectedUnit1)
         {
@@ -73,17 +85,22 @@ public class FusionButton : MonoBehaviour
         }
         else if (selectedUnit2 == null && g != selectedUnit1)
         {
-            selectedUnit2 = g;
-            FlipButtonColor();
-            SOGoblinmon fusion = fusionCalculator.CalculateFusionUnit(selectedUnit1.goblinData, selectedUnit2.goblinData); //get fusion
-            if(!fusion){
-                Debug.LogWarning("Fusion calculator returned null. Please check if selected units are valid!");
-                SwitchButtonMode(); //Exit fusion mode
-                return; //I don't think this return does anything but I like how it looks
-            } 
-            Goblinmon unit = InitializeFusedGoblinmon(fusion); //initialize fusion
-            FuseUnits(selectedUnit1, selectedUnit2, unit); 
-            SwitchButtonMode(); //Exit fusion mode after fusion
+            if (!g.goblinData.isFusion)
+            {
+                selectedUnit2 = g;
+                FlipButtonColor();
+                SOGoblinmon fusion = fusionCalculator.CalculateFusionUnit(selectedUnit1.goblinData, selectedUnit2.goblinData); //get fusion
+                if (!fusion)
+                {
+                    Debug.LogWarning("Fusion calculator returned null. Please check if selected units are valid!");
+                    SwitchButtonMode(); //Exit fusion mode
+                    return; //I don't think this return does anything but I like how it looks
+                }
+                Goblinmon unit = InitializeFusedGoblinmon(fusion); //initialize fusion
+                FuseUnits(selectedUnit1, selectedUnit2, unit);
+                SwitchButtonMode(); //Exit fusion mode after fusion}
+            }
+            else FindObjectOfType<AudioManager>().Play("damage");
         }
     }
 
@@ -111,6 +128,7 @@ public class FusionButton : MonoBehaviour
             }
             j++;
         }
+        FindObjectOfType<PlayerPositionManager>().fusionItems--;
         partyManager.goblinmon[i] = fused; //Add fusion to party
         //Debug.Log("Clearing list!");
     }
@@ -141,5 +159,12 @@ public class FusionButton : MonoBehaviour
 
             }
         }
+    }
+
+    private IEnumerator FlashFusionButtonRed()
+    {
+        fusionButtonImage.color = Color.red;
+        yield return new WaitForSeconds(.2f);
+        fusionButtonImage.color = Color.white;
     }
 }

@@ -59,7 +59,8 @@ public class DialogueManager : MonoBehaviour
         //Close textbox when out of lines
         animator.SetBool("Open", false);
         pTM.movementLocked = false;
-        if(toReturn.triggerBattle){
+        if (toReturn.behavior == NPC.NPCBehavior.NPC_BATTLE)
+        {
             toReturn.gameObject.GetComponent<TriggerBattleOverworld>().TriggerBattleSequence();
         }
         if (toReturn)

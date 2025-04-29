@@ -6,6 +6,7 @@ public class EnemyPartyStorage : MonoBehaviour
 {
     public EnemyPartyStorage instance;
     public List<Goblinmon> goblinmon;
+    public int money;
     public TriggerBattleOverworld.BattleMusic battleMusic = TriggerBattleOverworld.BattleMusic.BM_TRAINER;
 
     void Awake()
@@ -24,10 +25,12 @@ public class EnemyPartyStorage : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void PopulateEnemyParty(List<Goblinmon> newUnits){
-        foreach(Goblinmon u in newUnits){
+    public void PopulateEnemyParty(List<Goblinmon> newUnits, int playerReward)
+    {
+        foreach (Goblinmon u in newUnits){
             goblinmon.Add(u);
         }
+        money = playerReward;
     }
 
     public void PopulateEnemy(Goblinmon unit)
