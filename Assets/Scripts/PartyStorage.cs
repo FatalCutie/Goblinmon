@@ -11,7 +11,7 @@ public class PartyStorage : MonoBehaviour
     [SerializeField] private bool hasGottenGoblinmon = true;
     [SerializeField] OverworldUI owUI;
     public bool menuOpen = false;
-    void Awake()
+    void Awake() //Doesn't work going from title screen to game?
     {
         if (instance == null)
             instance = this;

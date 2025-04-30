@@ -119,7 +119,7 @@ public class SwitchingButton : MonoBehaviour
                     b.color = Color.white;
                     return;
                 }
-                else if (selectedUnit1 && t.GetComponent<UnitButton>().unit.ID == selectedUnit1.ID)
+                else if (selectedUnit1 && t.GetComponent<UnitButton>().unit.ID == selectedUnit1.ID) //NullReferenceException?
                 {
                     if (b.color != Color.yellow) b.color = Color.yellow;
                 }

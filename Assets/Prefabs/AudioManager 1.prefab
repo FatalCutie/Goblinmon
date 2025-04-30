@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &353620831262186064
+--- !u!1 &252452615198852898
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1759794172490637004}
-  - component: {fileID: 2825816154538640254}
+  - component: {fileID: 1401485664602263909}
+  - component: {fileID: 6362843950205772320}
   m_Layer: 0
-  m_Name: AudioManager
+  m_Name: AudioManager 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1759794172490637004
+--- !u!4 &1401485664602263909
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 353620831262186064}
+  m_GameObject: {fileID: 252452615198852898}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,13 +32,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2825816154538640254
+--- !u!114 &6362843950205772320
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 353620831262186064}
+  m_GameObject: {fileID: 252452615198852898}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31dfafbabd6e58a40a5a18adb2eb9dbd, type: 3}
@@ -73,20 +73,6 @@ MonoBehaviour:
     sBlend: 0
     loop: 0
     source: {fileID: 0}
-  - name: win
-    clip: {fileID: 8300000, guid: 7f3aaaca4d7929c4292c68387360010c, type: 3}
-    volume: 1
-    pitch: 1
-    sBlend: 0
-    loop: 1
-    source: {fileID: 0}
-  - name: battle
-    clip: {fileID: 8300000, guid: cc634489087a45042b37f70b1f928006, type: 3}
-    volume: 0.15
-    pitch: 1
-    sBlend: 0
-    loop: 1
-    source: {fileID: 0}
   - name: shake
     clip: {fileID: 8300000, guid: d7fd96ebfc1c1044c86edfd96ad4cabc, type: 3}
     volume: 0.15
@@ -96,8 +82,64 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: catch
     clip: {fileID: 8300000, guid: 7b199ca3e48ff1843960bc9ac7307999, type: 3}
-    volume: 0.15
+    volume: 0.3
     pitch: 1
     sBlend: 0
     loop: 0
+    source: {fileID: 0}
+  - name: battleWild
+    clip: {fileID: 8300000, guid: 0880f2932f63f4f44be8e3b41858759f, type: 3}
+    volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: winWild
+    clip: {fileID: 8300000, guid: 1a1abc0cbd6de014f9ef26652eaeed72, type: 3}
+    volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: battleTrainer
+    clip: {fileID: 8300000, guid: 349313710d5724944a3c31d0c5418aea, type: 3}
+    volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: winTrainer
+    clip: {fileID: 8300000, guid: 75368a4a166ee6b4a824fc29496b8210, type: 3}
+    volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: battleLegendary
+    clip: {fileID: 8300000, guid: e777e44288e08b1449ca6f607bb0646a, type: 3}
+    volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: battleElite
+    clip: {fileID: 8300000, guid: fa4ac0283ec377a41a7be39599741bcb, type: 3}
+    volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: introduction
+    clip: {fileID: 8300000, guid: 13f8de435c23e204f9825c731c1ce903, type: 3}
+    volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: winElite
+    clip: {fileID: 8300000, guid: cac4572b35ba251438b4d39e4b816f29, type: 3}
+    volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 1
     source: {fileID: 0}

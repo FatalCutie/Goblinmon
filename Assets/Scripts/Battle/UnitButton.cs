@@ -1,5 +1,6 @@
 using System.Data;
 using TMPro;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +14,7 @@ public class UnitButton : MonoBehaviour
     public TextMeshProUGUI level;
     private SwitchingManager sm;
     public Slider hp;
-    public enum ButtonMode { SWITCH, RELEASE, OVERWORLD, FUSION, MOVE }
+    public enum ButtonMode { SWITCH, RELEASE, OVERWORLD, FUSION, MOVE, TITLE_SCREEN }
     public Image unitImage;
 
     public bool activeUnit = false;
@@ -47,8 +48,9 @@ public class UnitButton : MonoBehaviour
                 //Debug.Log("HP does not line up with internal! Fixing!");
                 hp.value = FindObjectOfType<BattleSystem>().playerUnit.currentHP;
             }
-
         }
+
+        if (buttonMode == ButtonMode.TITLE_SCREEN) UpdateUnitButtonDisplay();
 
     }
 
@@ -76,6 +78,15 @@ public class UnitButton : MonoBehaviour
             case ButtonMode.MOVE:
                 AddUnitToMovingButton();
                 break;
+            case ButtonMode.TITLE_SCREEN:
+                //Add unit to party
+                Goblinmon g = FindObjectOfType<PartyStorage>().AddComponent<Goblinmon>();
+                g.goblinData = unit.goblinData;
+                g.currentHP = g.goblinData.maxHP;
+                FindObjectOfType<PartyStorage>().goblinmon.Add(g);
+                FindObjectOfType<TitleScreen>().LoadIntoGame();
+                //Transition to overworld
+                break;
         }
     }
 
@@ -85,5 +96,11 @@ public class UnitButton : MonoBehaviour
 
     public void AddUnitToMovingButton(){
         FindObjectOfType<SwitchingButton>().PickPartyMembersToSwitch(unit);
+    }
+    public void UpdateUnitButtonDisplay()
+    {
+        text.text = unit.goblinData.gName;
+        unitImage.sprite = unit.goblinData.sprite; //update preview sprite
+        level.text = $"Lv. {unit.goblinData.gLevel}";
     }
 }

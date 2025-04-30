@@ -9,10 +9,12 @@ public class DialogueManager : MonoBehaviour
     private PlayerTileMovement pTM;
     [SerializeField] private Animator animator;
     public DialogueSO so;
+    public GameObject nextLineImage;
 
     void Start()
     {
         pTM = FindObjectOfType<PlayerTileMovement>();
+        nextLineImage.SetActive(false);
     }
     void Update()
     {
@@ -26,7 +28,7 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = ""; //Clear previous text/sample text from editor
         //Open textbox
         animator.SetBool("Open", true);
-        pTM.movementLocked = true;
+        if (pTM) pTM.movementLocked = true;
         yield return new WaitForSeconds(0.25f); //Panel open animation takes a fourth of a second
 
         foreach (string line in so.text){
@@ -48,9 +50,11 @@ public class DialogueManager : MonoBehaviour
             bool waitingForInput = true;
             while (waitingForInput)
             {
+                nextLineImage.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return))
                 {
-                    waitingForInput = false; 
+                    waitingForInput = false;
+                    nextLineImage.SetActive(false);
                 }
                 yield return null;  //Wait one frame before checking again
             }
@@ -58,14 +62,22 @@ public class DialogueManager : MonoBehaviour
         }
         //Close textbox when out of lines
         animator.SetBool("Open", false);
-        pTM.movementLocked = false;
-        if (toReturn.behavior == NPC.NPCBehavior.NPC_BATTLE)
-        {
-            toReturn.gameObject.GetComponent<TriggerBattleOverworld>().TriggerBattleSequence();
-        }
+        if (pTM) pTM.movementLocked = false;
         if (toReturn)
         {
-            toReturn.canInteract = true;
+            if (toReturn.behavior == NPC.NPCBehavior.NPC_BATTLE)
+            {
+                toReturn.gameObject.GetComponent<TriggerBattleOverworld>().TriggerBattleSequence();
+            }
+            if (toReturn)
+            {
+                toReturn.canInteract = true;
+            }
+        }
+        else
+        {
+            //If on title screen
+            if (FindObjectOfType<TitleScreen>()) FindObjectOfType<TitleScreen>().RevealStarters();
         }
     }
 

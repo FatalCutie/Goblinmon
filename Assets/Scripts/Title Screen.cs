@@ -9,10 +9,16 @@ public class TitleScreen : MonoBehaviour
 
     public GameObject titleScreenUI;
     public GameObject infoScreenUI;
+    public SceneController sc;
+    public DialogueManager dm;
+    public DialogueSO openingCrawl;
+    public GameObject unitChoice;
+
 
     void Start(){
         titleScreenUI.SetActive(true);
         infoScreenUI.SetActive(false);
+        unitChoice.SetActive(false);
     }
 
     public void LoadBattleScene(){
@@ -31,4 +37,23 @@ public class TitleScreen : MonoBehaviour
         titleScreenUI.SetActive(true);
         infoScreenUI.SetActive(false);
     }
+
+    public void BeginOpeningCrawl()
+    {
+        FindObjectOfType<AudioManager>().Play("introduction");
+        titleScreenUI.SetActive(false);
+        StartCoroutine(dm.ScrollText(openingCrawl, null));
+    }
+
+    public void RevealStarters()
+    {
+        unitChoice.SetActive(true);
+    }
+
+    public void LoadIntoGame()
+    {
+        FindObjectOfType<AudioManager>().Stop("introduction");
+        sc.TransitionScene("Overworld");
+    }
+
 }
