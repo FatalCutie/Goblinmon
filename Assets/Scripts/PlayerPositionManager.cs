@@ -10,6 +10,8 @@ public class PlayerPositionManager : MonoBehaviour
     public int fusionItems;
     public int captureItems;
     public int playerMoney;
+    public bool chungusBattled = false;
+    public GameObject chungus;
 
     void Awake()
     {
@@ -20,8 +22,12 @@ public class PlayerPositionManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         DontDestroyOnLoad(gameObject);
+    }
+
+    void Start()
+    {
+        if (chungusBattled) chungus.SetActive(false); //This won't work and will need to be changed
     }
 
     public void SavePlayersPosition(){

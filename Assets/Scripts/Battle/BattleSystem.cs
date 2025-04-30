@@ -48,6 +48,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] public Animator playerAnimator;
     [SerializeField] public Animator battleAnimator;
     [SerializeField] public Animator enemyAnimator;
+    private EnemyPartyStorage eps;
     public Animator enemyUIAnimator;
     public Animator playerUIAnimator;
     public bool SkipOpeningAnimations = false;
@@ -73,6 +74,7 @@ public class BattleSystem : MonoBehaviour
             state = BattleState.LOST;
             EndBattle();
         }
+        if (!eps) eps = FindObjectOfType<EnemyPartyStorage>();
     }
 
     IEnumerator SetupBattle()
@@ -474,7 +476,7 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.WON)
         {
             //Change music
-            switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
+            switch (eps.battleMusic)
             {
                 case TriggerBattleOverworld.BattleMusic.BM_TRAINER:
                     FindObjectOfType<AudioManager>().Stop("battleTrainer");
@@ -494,8 +496,11 @@ public class BattleSystem : MonoBehaviour
                     break;
             }
             StartCoroutine(ScrollText("You won the battle!"));
-            sm.SavePlayerData(); //Save health of active Goblinmon
-            StartCoroutine(ReturnToOverworld());
+            if (eps.battleMusic == TriggerBattleOverworld.BattleMusic.BM_TRAINER)
+                StartCoroutine(PayoutAfterWin());
+            else StartCoroutine(ReturnToOverworld());
+
+
             //StartCoroutine(BackToTitle());
         }
         else if (state == BattleState.LOST)
@@ -508,6 +513,14 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    public IEnumerator PayoutAfterWin()
+    {
+        yield return new WaitForSeconds(standardWaitTime * 2);
+        StartCoroutine(ScrollText($"You earned ${eps.money} for your victory!"));
+        FindObjectOfType<PlayerPositionManager>().playerMoney += eps.money;
+        StartCoroutine(ReturnToOverworld());
+    }
+
     public IEnumerator BackToTitle()
     {
         yield return new WaitForSeconds(10f);
@@ -517,6 +530,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator ReturnToOverworld()
     {
+        sm.SavePlayerData(); //Save health of active Goblinmon
         yield return new WaitForSeconds(standardWaitTime * 3);
         FindObjectOfType<SceneController>().TransitionScene("Overworld");
         yield return new WaitForSeconds(2f); //Hardcoded with transition time

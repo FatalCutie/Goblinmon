@@ -27,6 +27,7 @@ public class PlayerTileMovement : MonoBehaviour
     private bool flipper = true;
     public int catchWalkRecalls = 4;
     int catchWalkRecallsBaseline;
+    [SerializeField] bool cheatsEnabled;
 
     public LayerMask movementStopperLayer;
     public bool canWildEncounter = false; //enabled in UnlockPlayerMovement
@@ -46,6 +47,23 @@ public class PlayerTileMovement : MonoBehaviour
         currentPosition = transform.position; //this sucks
         direction = currentPosition - (movepoint.position + new Vector3(0, 0.10f, 0));
         UpdateAnimator(direction);
+        if (cheatsEnabled)
+        {
+            if (Input.GetKeyDown(KeyCode.RightBracket))
+            {
+                if (canWildEncounter)
+                {
+                    FindObjectOfType<AudioManager>().Play("press");
+                    canWildEncounter = !canWildEncounter;
+                }
+                else
+                {
+                    FindObjectOfType<AudioManager>().Play("damage");
+                    canWildEncounter = !canWildEncounter;
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.H)) FindObjectOfType<NPC>().HealPlayerUnits();
+        }
     }
 
     void PlayerMovement()

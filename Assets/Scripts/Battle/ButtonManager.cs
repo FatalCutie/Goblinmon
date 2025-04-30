@@ -1,5 +1,5 @@
 using System;
-
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 
@@ -10,7 +10,11 @@ public class ButtonManager : MonoBehaviour
     public GameObject buttonsBasic;
     public GameObject buttonsAttack;
     public GameObject switchingMenu;
+    public TextMeshProUGUI captureItemsCount;
+    [SerializeField] private UnityEngine.UI.Image catchButtonImage;
+    [SerializeField] private UnityEngine.UI.Image runButtonImage;
     [SerializeField] private BattleSystem bs;
+    [SerializeField] private PlayerPositionManager ppm;
     [SerializeField] private List<AttackButton> attackButtons;
 
 
@@ -19,6 +23,11 @@ public class ButtonManager : MonoBehaviour
         if (buttonsAttack.activeSelf) buttonsAttack.SetActive(false);
         if (buttonsBasic.activeSelf) buttonsBasic.SetActive(false);
         switchingMenu.SetActive(false);
+    }
+    void Update()
+    {
+        if (!ppm) ppm = FindObjectOfType<PlayerPositionManager>();
+        UpdateCatcherCount();
     }
 
     //If disabling the game object raises issues in the future
@@ -66,24 +75,74 @@ public class ButtonManager : MonoBehaviour
         switchingMenu.SetActive(false);
     }
 
+    public void UpdateCatcherCount()
+    {
+        if (int.TryParse(captureItemsCount.text.TrimStart('x'), out int currentCount))
+        {
+            if (currentCount != ppm.captureItems)
+            {
+                captureItemsCount.text = $"x{ppm.captureItems}";
+            }
+        }
+    }
+
     public void Catch()
     {
-        FindObjectOfType<AudioManager>().Play("press");
-        disableButtonsDuringAttack();
-        StartCoroutine(FindObjectOfType<CatchSystem>().AttemptToCatch(bs.enemyUnit));
+        if (CheckForCatchingResources() && CheckIfCatchingTrainersUnit())
+        {
+            FindObjectOfType<AudioManager>().Play("press");
+            disableButtonsDuringAttack();
+            ppm.captureItems--;
+            StartCoroutine(FindObjectOfType<CatchSystem>().AttemptToCatch(bs.enemyUnit));
+        }
+
+    }
+
+    public bool CheckForCatchingResources()
+    {
+        if (ppm.captureItems > 0)
+        {
+            return true;
+        }
+        else
+        {
+            StartCoroutine(FlashCatchingButtonRed());
+            return false;
+        }
+    }
+
+    public bool CheckIfCatchingTrainersUnit()
+    {
+        if (FindObjectOfType<EnemyPartyStorage>().battleMusic == TriggerBattleOverworld.BattleMusic.BM_TRAINER
+            || FindObjectOfType<EnemyPartyStorage>().battleMusic == TriggerBattleOverworld.BattleMusic.BM_ELITE)
+        {
+            StartCoroutine(bs.ScrollText("You can't catch another trainers monster!"));
+            StartCoroutine(FlashCatchingButtonRed());
+            return false;
+        }
+        else return true;
+    }
+
+    private IEnumerator FlashCatchingButtonRed()
+    {
+        catchButtonImage.color = Color.red;
+        FindObjectOfType<AudioManager>().Play("damage");
+        yield return new WaitForSeconds(.2f);
+        catchButtonImage.color = Color.white;
     }
 
     public void TestingRun()
     {
-        FindObjectOfType<AudioManager>().Play("run");
         switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
         {
             case TriggerBattleOverworld.BattleMusic.BM_TRAINER:
-                FindObjectOfType<AudioManager>().Stop("battleTrainer");
-                break;
+                StartCoroutine(bs.ScrollText("You can't flee from a trainer fight!"));
+                StartCoroutine(FlashRunButtonRed());
+                return;
             case TriggerBattleOverworld.BattleMusic.BM_ELITE:
-                FindObjectOfType<AudioManager>().Stop("battleElite");
-                break;
+                StartCoroutine(bs.ScrollText("You can't flee from a trainer fight!"));
+                StartCoroutine(FlashRunButtonRed());
+                return;
             case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
                 FindObjectOfType<AudioManager>().Stop("battleLegendary");
                 break;
@@ -91,7 +150,17 @@ public class ButtonManager : MonoBehaviour
                 FindObjectOfType<AudioManager>().Stop("battleWild");
                 break;
         }
+        FindObjectOfType<AudioManager>().Play("run");
+        bs.ScrollText("You ran away!");
         FindObjectOfType<SceneController>().TransitionScene("Overworld");
+    }
+
+    private IEnumerator FlashRunButtonRed()
+    {
+        runButtonImage.color = Color.red;
+        FindObjectOfType<AudioManager>().Play("damage");
+        yield return new WaitForSeconds(.2f);
+        runButtonImage.color = Color.white;
     }
 
     public void disableSwitchingMenuAfterSwitch(){

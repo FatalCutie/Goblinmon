@@ -14,6 +14,7 @@ public class NPC : MonoBehaviour, IInteractable
     {
         if(canInteract){
             canInteract = false;
+
             switch (behavior)
             {
                 case NPCBehavior.NPC_TALK:
@@ -27,10 +28,21 @@ public class NPC : MonoBehaviour, IInteractable
                     canInteract = true;
                     break;
                 case NPCBehavior.NPC_HEAL:
-                    //heal party
+                    HealPlayerUnits();
+                    StartCoroutine(dm.ScrollText(speech, this));
                     break;
             }
         }
+    }
+
+    public void HealPlayerUnits()
+    {
+        PartyStorage ps = FindObjectOfType<PartyStorage>();
+        for (int i = 0; i < ps.goblinmon.Count; i++)
+        {
+            ps.goblinmon[i].currentHP = ps.goblinmon[i].goblinData.maxHP;
+        }
+        FindObjectOfType<AudioManager>().Play("catch");
     }
 
     void Start()
