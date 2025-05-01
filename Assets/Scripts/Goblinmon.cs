@@ -43,7 +43,7 @@ public class Goblinmon : MonoBehaviourID
 
         //Each attack point = roughly 50% more damage, defense roughly 33% reduction
         if (move.moveModifier == SOMove.MoveModifier.DEFENSE_SCALE)
-            returnDamage = returnDamage * ((2 + attacker.defenseModifier) / 2) * ((3 + defenseModifier) / 3);
+            returnDamage = returnDamage * ((2 + attacker.defenseModifier) / 2) * ((3 + defenseModifier + move.statModifier) / 3);
         else returnDamage = returnDamage * ((2 + attacker.attackModifier) / 2) * ((3 + defenseModifier) / 3);
         returnDamage = (int)(returnDamage * randomDamageModifier);
         return (int) (returnDamage * GetWeaknessMultiplier(move));

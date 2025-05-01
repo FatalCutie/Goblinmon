@@ -13,6 +13,7 @@ public class TitleScreen : MonoBehaviour
     public DialogueManager dm;
     public DialogueSO openingCrawl;
     public GameObject unitChoice;
+    public bool skipOpening = false;
 
 
     void Start(){
@@ -40,9 +41,22 @@ public class TitleScreen : MonoBehaviour
 
     public void BeginOpeningCrawl()
     {
-        FindObjectOfType<AudioManager>().Play("introduction");
-        titleScreenUI.SetActive(false);
-        StartCoroutine(dm.ScrollText(openingCrawl, null));
+        if (skipOpening)
+        {
+            titleScreenUI.SetActive(false);
+            unitChoice.SetActive(true);
+        }
+        else
+        {
+            FindObjectOfType<AudioManager>().Play("introduction");
+            titleScreenUI.SetActive(false);
+            StartCoroutine(dm.ScrollText(openingCrawl, null));
+        }
+    }
+
+    public void OpeningCrawlToggle(bool toggleValue)
+    {
+        skipOpening = toggleValue;
     }
 
     public void RevealStarters()

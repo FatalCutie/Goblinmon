@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -52,6 +53,9 @@ public class BattleSystem : MonoBehaviour
     public Animator enemyUIAnimator;
     public Animator playerUIAnimator;
     public bool SkipOpeningAnimations = false;
+    public bool squidReleased = false;
+    public SOMove squidDOT;
+    public bool healEveryTurn = false;
 
     #endregion
     void Start()
@@ -150,8 +154,7 @@ public class BattleSystem : MonoBehaviour
             case SOMove.MoveAction.ATTACK:
                 if (move.moveModifier == SOMove.MoveModifier.ATTACK) //Debug Pass move
                 {
-                    state = BattleState.ENEMYTURN;
-                    eAI.FindOptimalOption();
+                    EndTurn();
                 }
                 else StartCoroutine(PlayerAttack(move)); //Move modifiers handled in IEnumerator
                 break;
@@ -169,93 +172,93 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator PlayerAttack(SOMove move)
     {
-        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} used {move.name}!"));
+
+        if (move.moveModifier != SOMove.MoveModifier.SQUID) StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} used {move.moveName}!"));
+        else StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} releases the Squid!"));
         yield return new WaitForSeconds(standardWaitTime);
-        if (!eAI.twoTurnMove)
+        //Multi Hit Move attack
+        if (move.moveModifier == SOMove.MoveModifier.MULTI_HIT || move.moveModifier == SOMove.MoveModifier.RIGGED_MULTI_HIT)
         {
-            //Multi Hit Move attack
-            if (move.moveModifier == SOMove.MoveModifier.MULTI_HIT)
-            {
-                StartCoroutine(MultiHitAttack(move));
-            }
-            else if (move.moveModifier == SOMove.MoveModifier.TWO_TURN)
-            {
-                //Hide unit
-                playerUnit.GetComponent<SpriteRenderer>().sprite = null;
-                StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} dove under water!"));
-                yield return new WaitForSeconds(standardWaitTime);
+            StartCoroutine(MultiHitAttack(move));
+        }
+        else if (move.moveModifier == SOMove.MoveModifier.TWO_TURN)
+        {
+            //Hide unit
+            playerUnit.GetComponent<SpriteRenderer>().sprite = null;
+            StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} is charging up!"));
+            yield return new WaitForSeconds(standardWaitTime);
 
-                //End turn, move will land in PlayerTurn() on the next turn
-                twoTurnMove = move; //stash move for PlayerTurn()
-                state = BattleState.ENEMYTURN;
-                eAI.FindOptimalOption();
-            }
-            else
-            {
-                if (move.moveModifier == SOMove.MoveModifier.RANDOM_TYPE)
-                {
-                    int i = rnd.Next(0, types.Capacity);
-                    SOType temp = types[i];
-                    StartCoroutine(ScrollText($"The move switches type to {temp.name}!"));
-                    move.moveType = temp; //this isn't ideal but it works
-                    yield return new WaitForSeconds(standardWaitTime);
-                }
-
-                bool isDead = enemyUnit.TakeDamage(move, playerUnit);
-
-                enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
-                if (enemyUnit.GetWeaknessMultiplier(move) > 1) //If super effective 
-                {
-                    FindObjectOfType<AudioManager>().Play("superEffective");
-                    yield return new WaitForSeconds(standardWaitTime / 2);
-                    StartCoroutine(ScrollText("The attack is super effective!"));
-                }
-                else
-                {
-                    FindObjectOfType<AudioManager>().Play("damage");
-                    yield return new WaitForSeconds(standardWaitTime / 2);
-                    StartCoroutine(ScrollText("The attack is successful!"));
-                }
-                if (move.moveModifier == SOMove.MoveModifier.RECOIL)
-                {
-                    yield return new WaitForSeconds(standardWaitTime);
-                    int recoilDamage;
-                    recoilDamage = Mathf.RoundToInt(move.damage * enemyUnit.GetWeaknessMultiplier(move) * (move.statModifier * 0.01f));
-                    StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} was hurt by recoil!"));
-                    playerUnit.currentHP -= recoilDamage;
-                    if (playerUnit.currentHP < 0) playerUnit.currentHP = 0;
-                    playerHUD.setHP(playerUnit.currentHP, playerUnit);
-                    if (playerUnit.currentHP == 0)
-                    {
-                        StartCoroutine(RetrieveDeadUnit());
-                    }
-                }
-                yield return new WaitForSeconds(standardWaitTime);
-                if (isDead)
-                {
-                    StartCoroutine(KillEnemyUnit());
-                }
-                else
-                {
-                    state = BattleState.ENEMYTURN;
-                    eAI.FindOptimalOption();
-                }
-            }
+            //End turn, move will land in PlayerTurn() on the next turn
+            twoTurnMove = move; //stash move for PlayerTurn()
+            EndTurn();
         }
         else
         {
-            StartCoroutine(ScrollText("The attack missed!"));
+            if (move.moveModifier == SOMove.MoveModifier.RANDOM_TYPE)
+            {
+                int i = rnd.Next(0, types.Capacity);
+                SOType temp = types[i];
+                StartCoroutine(ScrollText($"The move switches type to {temp.name}!"));
+                move.moveType = temp; //this isn't ideal but it works
+                yield return new WaitForSeconds(standardWaitTime);
+            }
+
+            bool isDead = enemyUnit.TakeDamage(move, playerUnit);
+            if (move.moveModifier == SOMove.MoveModifier.SQUID && !squidReleased) squidReleased = !squidReleased; //Release the squid
+            enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
+            if (enemyUnit.GetWeaknessMultiplier(move) > 1) //If super effective 
+            {
+                FindObjectOfType<AudioManager>().Play("superEffective");
+                yield return new WaitForSeconds(standardWaitTime / 2);
+                StartCoroutine(ScrollText("The attack is super effective!"));
+            }
+            else
+            {
+                FindObjectOfType<AudioManager>().Play("damage");
+                yield return new WaitForSeconds(standardWaitTime / 2);
+                StartCoroutine(ScrollText("The attack is successful!"));
+            }
+            if (move.moveModifier == SOMove.MoveModifier.RECOIL)
+            {
+                yield return new WaitForSeconds(standardWaitTime);
+                int recoilDamage;
+                recoilDamage = Mathf.RoundToInt(move.damage * enemyUnit.GetWeaknessMultiplier(move) * (move.statModifier * 0.01f));
+                StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} was hurt by recoil!"));
+                playerUnit.currentHP -= recoilDamage;
+                if (playerUnit.currentHP < 0) playerUnit.currentHP = 0;
+                playerHUD.setHP(playerUnit.currentHP, playerUnit);
+                if (playerUnit.currentHP == 0)
+                {
+                    StartCoroutine(RetrieveDeadUnit());
+                }
+            }
             yield return new WaitForSeconds(standardWaitTime);
-            state = BattleState.ENEMYTURN;
-            eAI.FindOptimalOption();
+            if (isDead)
+            {
+                StartCoroutine(KillEnemyUnit());
+            }
+            else
+            {
+                EndTurn();
+            }
         }
+        //     }
+        //     else
+        //     {
+        //         StartCoroutine(ScrollText("The attack missed!"));
+        //         yield return new WaitForSeconds(standardWaitTime);
+        //         state = BattleState.ENEMYTURN;
+        //         eAI.FindOptimalOption();
+        //     }
 
     }
 
     public IEnumerator MultiHitAttack(SOMove move)
     {
         bool dead = false;
-        int hits = rnd.Next(2, 5);
+        int hits;
+        if (move.moveModifier == SOMove.MoveModifier.MULTI_HIT) hits = rnd.Next(2, 5);
+        else hits = rnd.Next(4, 5); //rigged multi hit 
         bool strongAttack = enemyUnit.GetWeaknessMultiplier(move) > 1;
         for (int i = 0; i < hits; i++)
         {
@@ -289,8 +292,7 @@ public class BattleSystem : MonoBehaviour
             if (strongAttack) StartCoroutine(ScrollText("The attack is super effective!"));
             else StartCoroutine(ScrollText("The attack is successful!"));
             yield return new WaitForSeconds(standardWaitTime);
-            state = BattleState.ENEMYTURN;
-            eAI.FindOptimalOption();
+            EndTurn();
         }
     }
     //This can be cleaned up
@@ -391,9 +393,7 @@ public class BattleSystem : MonoBehaviour
                 }
         }
 
-        //End Turn
-        state = BattleState.ENEMYTURN;
-        eAI.FindOptimalOption();
+        EndTurn();
     }
     //This can be cleaned up
     public IEnumerator DebuffEnemy(SOMove move)
@@ -449,8 +449,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         //End Turn
-        state = BattleState.ENEMYTURN;
-        eAI.FindOptimalOption();
+        EndTurn();
     }
 
     public IEnumerator PlayerHeal(SOMove move)
@@ -459,6 +458,7 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(standardWaitTime);
 
         //Heal Player
+        if (move.moveModifier == SOMove.MoveModifier.OVER_TIME && !healEveryTurn) healEveryTurn = !healEveryTurn;
         playerUnit.currentHP += move.damage; //heal
         if (playerUnit.currentHP > playerUnit.goblinData.maxHP) playerUnit.currentHP = playerUnit.goblinData.maxHP; //So player doesn't heal over max
         playerHUD.setHP(playerUnit.currentHP, playerUnit);
@@ -466,8 +466,7 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(standardWaitTime);
 
         //End Turn
-        state = BattleState.ENEMYTURN;
-        eAI.FindOptimalOption();
+        EndTurn();
     }
     #endregion
 
@@ -645,7 +644,7 @@ public class BattleSystem : MonoBehaviour
 
     private IEnumerator CompleteTwoTurnMove()
     {
-        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} lunges from the water!")); //this can be adjusted if another two turner is added later
+        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} releases a beam of water!")); //this can be adjusted if another two turner is added later
         yield return new WaitForSeconds(standardWaitTime);
         playerUnit.GetComponent<SpriteRenderer>().sprite = playerUnit.goblinData.sprite;
         bool strongAttack = enemyUnit.GetWeaknessMultiplier(twoTurnMove) > 1;
@@ -672,8 +671,7 @@ public class BattleSystem : MonoBehaviour
         else
         {
             twoTurnMove = null;
-            state = BattleState.ENEMYTURN;
-            eAI.FindOptimalOption();
+            EndTurn();
         }
     }
 
@@ -712,6 +710,63 @@ public class BattleSystem : MonoBehaviour
         {
             state = BattleState.LOST;
             EndBattle();
+        }
+    }
+
+    public void EndTurn()
+    {
+        if (healEveryTurn)
+        {
+            StartCoroutine(HealEveryTurn());
+        }
+        else if (squidReleased)
+        {
+            StartCoroutine(DealSquidDamage());
+        }
+        else
+        {
+            state = BattleState.ENEMYTURN;
+            eAI.FindOptimalOption();
+        }
+
+    }
+
+    public IEnumerator DealSquidDamage()
+    {
+        StartCoroutine(ScrollText("The squid is loose!"));
+        yield return new WaitForSeconds(standardWaitTime);
+        enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
+        FindObjectOfType<AudioManager>().Play("damage");
+        bool isDead = enemyUnit.TakeDamage(squidDOT, playerUnit);
+        yield return new WaitForSeconds(standardWaitTime);
+        if (isDead)
+        {
+            StartCoroutine(KillEnemyUnit());
+        }
+        else
+        {
+            state = BattleState.ENEMYTURN;
+            eAI.FindOptimalOption();
+        }
+    }
+
+    public IEnumerator HealEveryTurn()
+    {
+        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} restored some health!"));
+        yield return new WaitForSeconds(standardWaitTime);
+        //Heal Player
+        playerUnit.currentHP += 15; //heal
+        if (playerUnit.currentHP > playerUnit.goblinData.maxHP) playerUnit.currentHP = playerUnit.goblinData.maxHP; //So player doesn't heal over max
+        playerHUD.setHP(playerUnit.currentHP, playerUnit);
+        yield return new WaitForSeconds(standardWaitTime);
+        if (squidReleased)
+        {
+            StartCoroutine(DealSquidDamage());
+        }
+        else
+        {
+            state = BattleState.ENEMYTURN;
+            eAI.FindOptimalOption();
         }
     }
 }

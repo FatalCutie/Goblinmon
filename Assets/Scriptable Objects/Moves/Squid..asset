@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveName: Release the Squid
   moveDescription: Releases the Squid.
-  moveType: {fileID: 11400000, guid: 6fcbb1821f4ac1b48a96e578594a1018, type: 2}
-  damage: 0
-  moveAction: 2
-  statModified: 0
+  moveType: {fileID: 11400000, guid: 95adcac05f621d7458c3941039edbe1a, type: 2}
+  damage: 35
+  moveAction: 0
+  moveModifier: 10
   statModifier: 0

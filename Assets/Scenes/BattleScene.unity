@@ -10596,6 +10596,8 @@ MonoBehaviour:
   enemyUIAnimator: {fileID: 2049049726}
   playerUIAnimator: {fileID: 1550094415}
   SkipOpeningAnimations: 0
+  squidReleased: 0
+  squidDOT: {fileID: 11400000, guid: 5974ce91673e3a544b323ba6708af0e8, type: 2}
 --- !u!114 &2087887650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10660,6 +10662,8 @@ MonoBehaviour:
   actualPlayer: {fileID: 0}
   standardWaitTime: 2
   twoTurnMove: {fileID: 0}
+  squidReleased: 0
+  squidDOT: {fileID: 11400000, guid: a9909c0a13abc564693ca91fb6647772, type: 2}
 --- !u!212 &2087887653
 SpriteRenderer:
   m_ObjectHideFlags: 0

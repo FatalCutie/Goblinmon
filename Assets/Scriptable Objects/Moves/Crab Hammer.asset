@@ -16,7 +16,7 @@ MonoBehaviour:
   moveDescription: Recklesly lash out with your claws, dealing severe damage with
     recoil.
   moveType: {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
-  damage: 50
+  damage: 40
   moveAction: 0
   moveModifier: 9
-  statModifier: 15
+  statModifier: 10

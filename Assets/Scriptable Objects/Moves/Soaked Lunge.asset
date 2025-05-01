@@ -15,7 +15,7 @@ MonoBehaviour:
   moveName: Soaked Lunge
   moveDescription: The user lashes out, dealing damage to its enemy.
   moveType: {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
-  damage: 25
+  damage: 30
   moveAction: 0
   moveModifier: 0
   statModifier: 0

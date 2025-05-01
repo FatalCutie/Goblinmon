@@ -22,6 +22,6 @@ MonoBehaviour:
   moveset:
   - {fileID: 11400000, guid: 10fc0ce7145678f47bb8fc3eafd3e1e6, type: 2}
   - {fileID: 11400000, guid: 61fcd56a517bd65469cf878e3dcd78d6, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 70d3705f4fc6756418ae128facfba2b1, type: 2}
+  - {fileID: 11400000, guid: 4c4826bd81c40224287b20f134d960d5, type: 2}
   isFusion: 1

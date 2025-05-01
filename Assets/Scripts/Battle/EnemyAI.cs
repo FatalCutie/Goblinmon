@@ -21,6 +21,8 @@ public class EnemyAI : MonoBehaviour
     System.Random rnd = new System.Random();
     public float standardWaitTime = 1; //Standard Wait Time
     public SOMove twoTurnMove;
+    public bool squidReleased;
+    public SOMove squidDOT;
 
     #endregion
 
@@ -354,60 +356,62 @@ public class EnemyAI : MonoBehaviour
 
         //TODO: Attack based on BattleSystem instead of internal tracking of player?
 
-        StartCoroutine(bs.ScrollText($"{self.goblinData.gName} used {move.name}!"));
+        if (move.moveModifier != SOMove.MoveModifier.SQUID) StartCoroutine(bs.ScrollText($"{self.goblinData.gName} used {move.moveName}!"));
+        else StartCoroutine(bs.ScrollText($"{self.goblinData.gName} releases the Squid!"));
         yield return new WaitForSeconds(standardWaitTime);
         //Attack player
-        if (!bs.twoTurnMove)
+        // if (!bs.twoTurnMove)
+        // {
+        if (move.moveModifier == SOMove.MoveModifier.MULTI_HIT)
         {
-            if (move.moveModifier == SOMove.MoveModifier.MULTI_HIT)
-            {
-                StartCoroutine(MultiHitAttack(move));
-            }
-            else if (move.moveModifier == SOMove.MoveModifier.TWO_TURN)
-            {
-                //Hide unit
-                bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
-                StartCoroutine(bs.ScrollText($"{bs.enemyUnit.goblinData.gName} dove under water!"));
-                yield return new WaitForSeconds(standardWaitTime);
+            StartCoroutine(MultiHitAttack(move));
+        }
+        else if (move.moveModifier == SOMove.MoveModifier.TWO_TURN)
+        {
+            //Hide unit
+            bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
+            StartCoroutine(bs.ScrollText($"{bs.enemyUnit.goblinData.gName} is charging up!"));
+            yield return new WaitForSeconds(standardWaitTime);
 
-                //End turn, move will land in PlayerTurn() on the next turn
-                twoTurnMove = move; //stash move for FindOptimalOption()
-                EndTurn();
+            //End turn, move will land in PlayerTurn() on the next turn
+            twoTurnMove = move; //stash move for FindOptimalOption()
+            EndTurn();
+        }
+        else
+        {
+            bool strongAttack = bs.playerUnit.GetWeaknessMultiplier(move) > 1;
+            if (move.moveModifier == SOMove.MoveModifier.RANDOM_TYPE)
+            {
+                int i = rnd.Next(0, bs.types.Capacity);
+                SOType temp = bs.types[i];
+                StartCoroutine(bs.ScrollText($"The move switches type to {temp.name}!"));
+                move.moveType = temp; //this isn't ideal but it works
+                yield return new WaitForSeconds(standardWaitTime);
+            }
+            bool isDead = actualPlayer.TakeDamage(move, self);
+            if (move.moveModifier == SOMove.MoveModifier.SQUID && !squidReleased) squidReleased = !squidReleased; //Release the squid
+            bs.playerHUD.setHP(actualPlayer.currentHP, actualPlayer);
+            //Different text/sounds based on attack effectiveness
+            if (strongAttack)
+            {
+                FindObjectOfType<AudioManager>().Play("superEffective");
+                yield return new WaitForSeconds(standardWaitTime / 2);
+                StartCoroutine(bs.ScrollText("It was super effective!"));
             }
             else
             {
-                bool strongAttack = bs.playerUnit.GetWeaknessMultiplier(move) > 1;
-                if (move.moveModifier == SOMove.MoveModifier.RANDOM_TYPE)
-                {
-                    int i = rnd.Next(0, bs.types.Capacity);
-                    SOType temp = bs.types[i];
-                    StartCoroutine(bs.ScrollText($"The move switches type to {temp.name}!"));
-                    move.moveType = temp; //this isn't ideal but it works
-                    yield return new WaitForSeconds(standardWaitTime);
-                }
-                bool isDead = actualPlayer.TakeDamage(move, self);
-                bs.playerHUD.setHP(actualPlayer.currentHP, actualPlayer);
-                //Different text/sounds based on attack effectiveness
-                if (strongAttack)
-                {
-                    FindObjectOfType<AudioManager>().Play("superEffective");
-                    yield return new WaitForSeconds(standardWaitTime / 2);
-                    StartCoroutine(bs.ScrollText("It was super effective!"));
-                }
-                else
-                {
-                    FindObjectOfType<AudioManager>().Play("damage");
-                    yield return new WaitForSeconds(standardWaitTime / 2);
-                    StartCoroutine(bs.ScrollText("The attack was successful!"));
-                }
-                if (move.moveModifier == SOMove.MoveModifier.RECOIL)
-                {
-                    yield return new WaitForSeconds(standardWaitTime);
-                    int recoilDamage = Mathf.RoundToInt(move.damage * bs.playerUnit.GetWeaknessMultiplier(move) * (move.statModifier * 0.01f));
-                    StartCoroutine(bs.ScrollText($"{bs.enemyUnit.goblinData.gName} was hurt by recoil!"));
-                    bs.enemyUnit.currentHP -= recoilDamage;
-                    if (bs.enemyUnit.currentHP < 0) bs.enemyUnit.currentHP = 0;
-                    bs.enemyHUD.setHP(bs.enemyUnit.currentHP, bs.enemyUnit);
+                FindObjectOfType<AudioManager>().Play("damage");
+                yield return new WaitForSeconds(standardWaitTime / 2);
+                StartCoroutine(bs.ScrollText("The attack was successful!"));
+            }
+            if (move.moveModifier == SOMove.MoveModifier.RECOIL)
+            {
+                yield return new WaitForSeconds(standardWaitTime);
+                int recoilDamage = Mathf.RoundToInt(move.damage * bs.playerUnit.GetWeaknessMultiplier(move) * (move.statModifier * 0.01f));
+                StartCoroutine(bs.ScrollText($"{bs.enemyUnit.goblinData.gName} was hurt by recoil!"));
+                bs.enemyUnit.currentHP -= recoilDamage;
+                if (bs.enemyUnit.currentHP < 0) bs.enemyUnit.currentHP = 0;
+                bs.enemyHUD.setHP(bs.enemyUnit.currentHP, bs.enemyUnit);
                     if (bs.enemyUnit.currentHP == 0)
                     {
                         StartCoroutine(bs.KillEnemyUnit());
@@ -426,13 +430,13 @@ public class EnemyAI : MonoBehaviour
                 }
             }
 
-        }
-        else
-        {
-            StartCoroutine(bs.ScrollText("The attack missed!"));
-            yield return new WaitForSeconds(standardWaitTime);
-            EndTurn();
-        }
+        // }
+        // else
+        // {
+        //     StartCoroutine(bs.ScrollText("The attack missed!"));
+        //     yield return new WaitForSeconds(standardWaitTime);
+        //     EndTurn();
+        // }
 
     }
 
@@ -479,7 +483,7 @@ public class EnemyAI : MonoBehaviour
 
     private IEnumerator CompleteTwoTurnMove()
     {
-        StartCoroutine(bs.ScrollText($"{bs.enemyUnit.goblinData.gName} lunges from the water!")); //this can be adjusted if another two turner is added later
+        StartCoroutine(bs.ScrollText($"{bs.enemyUnit.goblinData.gName} releases a beam of water!")); //this can be adjusted if another two turner is added later
         yield return new WaitForSeconds(standardWaitTime);
         bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = bs.enemyUnit.goblinData.sprite;
         bool strongAttack = bs.playerUnit.GetWeaknessMultiplier(twoTurnMove) > 1;
@@ -637,12 +641,42 @@ public class EnemyAI : MonoBehaviour
     //Update internal player then end turn
     public void EndTurn()
     {
-        bs.state = BattleState.PLAYERTURN;
-        if (internalPlayer != actualPlayer //Pretty sure this always updates player because of IDs 
+        if (squidReleased)
+        {
+            StartCoroutine(DealSquidDamage());
+        }
+        else
+        {
+            bs.state = BattleState.PLAYERTURN;
+            if (internalPlayer != actualPlayer //Pretty sure this always updates player because of IDs 
         || internalPlayer.currentHP != actualPlayer.currentHP)
-            UpdateInternalPlayerUnit();
+                UpdateInternalPlayerUnit();
 
-        if (!bs.twoTurnMove) bm.enableBasicButtonsOnPress();
-        bs.PlayerTurn();
+            if (!bs.twoTurnMove) bm.enableBasicButtonsOnPress();
+            bs.PlayerTurn();
+        }
+
+    }
+
+    public IEnumerator DealSquidDamage()
+    {
+        StartCoroutine(bs.ScrollText("The squid is loose!"));
+        yield return new WaitForSeconds(standardWaitTime);
+        bool isDead = bs.playerUnit.TakeDamage(squidDOT, bs.enemyUnit);
+        yield return new WaitForSeconds(standardWaitTime);
+        if (isDead)
+        {
+            StartCoroutine(bs.RetrieveDeadUnit());
+        }
+        else
+        {
+            bs.state = BattleState.PLAYERTURN;
+            if (internalPlayer != actualPlayer //Pretty sure this always updates player because of IDs 
+        || internalPlayer.currentHP != actualPlayer.currentHP)
+                UpdateInternalPlayerUnit();
+
+            if (!bs.twoTurnMove) bm.enableBasicButtonsOnPress();
+            bs.PlayerTurn();
+        }
     }
 }

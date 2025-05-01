@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81d8f5b3b64d7b64ca0188bc5e013542, type: 3}
   m_Name: Roast
   m_EditorClassIdentifier: 
-  moveName: Roast
+  moveName: Toast
   moveDescription: Turn up the heat, burning your enemy.
   moveType: {fileID: 11400000, guid: 2e2babe7c2ecbed49a6a63e29634baaa, type: 2}
-  damage: 0
+  damage: 35
   moveAction: 0
   moveModifier: 0
   statModifier: 0

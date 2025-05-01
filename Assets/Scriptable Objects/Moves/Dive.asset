@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81d8f5b3b64d7b64ca0188bc5e013542, type: 3}
   m_Name: Dive
   m_EditorClassIdentifier: 
-  moveName: Dive
-  moveDescription: Hide under water for one turn, then unleash a strong attack the
-    next.
+  moveName: Water Blast
+  moveDescription: Charge for one turn, then release a torrent of water.
   moveType: {fileID: 11400000, guid: 94060c55b409aec478f3026404d33697, type: 2}
-  damage: 50
+  damage: 60
   moveAction: 0
   moveModifier: 6
   statModifier: 0

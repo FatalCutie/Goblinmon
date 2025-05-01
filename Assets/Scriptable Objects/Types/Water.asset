@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weakness:
   - {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
+  - {fileID: 11400000, guid: 82524e671964cbf4080af6fa86470594, type: 2}

@@ -136,6 +136,7 @@ public class SwitchingManager : MonoBehaviour
 
         //Save health data of Unit being swapped
         SavePlayerData();
+        if (bs.healEveryTurn) bs.healEveryTurn = !bs.healEveryTurn;
 
         //Switches the active unit
         UpdatePlayerInformation(unit);

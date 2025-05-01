@@ -16,8 +16,8 @@ public class SOMove : ScriptableObject
     [System.Serializable]
     public enum MoveModifier
     {
-        NONE, ATTACK, DEFENSE, ATTACK_DEFENSE, RAMP,
-        MULTI_HIT, TWO_TURN, RANDOM_TYPE, DEFENSE_SCALE, RECOIL
+        NONE, ATTACK, DEFENSE, ATTACK_DEFENSE, RAMP, MULTI_HIT,
+        TWO_TURN, RANDOM_TYPE, DEFENSE_SCALE, RECOIL, SQUID, OVER_TIME, RIGGED_MULTI_HIT
     };
     public MoveModifier moveModifier = MoveModifier.NONE; //Defaulting to none
     public int statModifier; //How many points it buffs stat
