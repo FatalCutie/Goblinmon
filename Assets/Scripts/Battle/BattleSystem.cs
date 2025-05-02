@@ -495,8 +495,10 @@ public class BattleSystem : MonoBehaviour
                     break;
             }
             StartCoroutine(ScrollText("You won the battle!"));
+            eps.MarkNPCAsDefeated();
             if (eps.battleMusic == TriggerBattleOverworld.BattleMusic.BM_TRAINER)
                 StartCoroutine(PayoutAfterWin());
+
             else StartCoroutine(ReturnToOverworld());
 
 

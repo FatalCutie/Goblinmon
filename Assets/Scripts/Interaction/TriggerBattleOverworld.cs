@@ -13,6 +13,7 @@ public class TriggerBattleOverworld : MonoBehaviour
     public GameObject enemyPartyStoragePrefab;
     public enum BattleMusic { BM_TRAINER, BM_ELITE, BM_LEGENDARY, BM_WILD };
     public BattleMusic battleMusic = BattleMusic.BM_TRAINER;
+    public string npcId;
     [SerializeField] int rewardMoney = 1000;
 
     void Start(){
@@ -56,7 +57,7 @@ public class TriggerBattleOverworld : MonoBehaviour
         //Instantiate prefab with goblinmon team
         GameObject go = Instantiate(enemyPartyStoragePrefab); //Instantiate Object
         InitializeGoblinmonParty(go); //populate Goblinmon
-        go.GetComponent<EnemyPartyStorage>().PopulateEnemyParty(enemyTeam, rewardMoney); //
+        go.GetComponent<EnemyPartyStorage>().PopulateEnemyParty(enemyTeam, rewardMoney, npcId); //
         go.GetComponent<EnemyPartyStorage>().battleMusic = battleMusic;
 
         //Load Scene

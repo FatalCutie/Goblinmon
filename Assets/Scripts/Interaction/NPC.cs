@@ -6,9 +6,18 @@ public class NPC : MonoBehaviour, IInteractable
 {
     public DialogueManager dm;
     public DialogueSO speech;
-    public enum NPCBehavior { NPC_TALK, NPC_BATTLE, NPC_SHOP, NPC_HEAL };
+    public DialogueSO afterBattleText;
+    public enum NPCBehavior { NPC_TALK, NPC_BATTLE, NPC_SHOP, NPC_HEAL, NPC_ENDGAME };
     public NPCBehavior behavior = NPCBehavior.NPC_TALK;
     public bool canInteract = true;
+    public string npcId;
+    public bool hasBeenDefeated = false;
+
+    void Start()
+    {
+        dm = FindObjectOfType<DialogueManager>();
+        if (NPCTracker.IsDefeated(npcId)) hasBeenDefeated = !hasBeenDefeated;
+    }
 
     public void Interact()
     {
@@ -21,7 +30,8 @@ public class NPC : MonoBehaviour, IInteractable
                     StartCoroutine(dm.ScrollText(speech, this));
                     break;
                 case NPCBehavior.NPC_BATTLE:
-                    StartCoroutine(dm.ScrollText(speech, this));
+                    if (!hasBeenDefeated) StartCoroutine(dm.ScrollText(speech, this));
+                    else StartCoroutine(dm.ScrollText(afterBattleText, this));
                     break;
                 case NPCBehavior.NPC_SHOP:
                     FindObjectOfType<OverworldUI>().OpenShopUI();
@@ -43,11 +53,6 @@ public class NPC : MonoBehaviour, IInteractable
             ps.goblinmon[i].currentHP = ps.goblinmon[i].goblinData.maxHP;
         }
         FindObjectOfType<AudioManager>().Play("catch");
-    }
-
-    void Start()
-    {
-        dm = FindObjectOfType<DialogueManager>();
     }
 
 }

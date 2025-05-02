@@ -31,6 +31,8 @@ public class PlayerTileMovement : MonoBehaviour
 
     public LayerMask movementStopperLayer;
     public bool canWildEncounter = false; //enabled in UnlockPlayerMovement
+    public DialogueSO endText;
+    public NPC endingNPC; //I am ashamed at how utterly horrible this is but crunch is crunch
 
     void Start()
     {
@@ -201,8 +203,16 @@ public class PlayerTileMovement : MonoBehaviour
     IEnumerator UnlockPlayerMovement()
     {
         FindObjectOfType<PlayerPositionManager>().RememberPlayerPosition(); //Sets player position
-        canWildEncounter = true;
-        yield return new WaitForSeconds(2); //This is hardcoded. Adjust this with animation speed
+        if (!NPCTracker.IsDefeated("boss")) //hardcoded NPC id
+        {
+            canWildEncounter = true;
+            yield return new WaitForSeconds(2); //This is hardcoded. Adjust this with animation speed
+        }
+        else //If final boss beaten
+        {
+            StartCoroutine(FindObjectOfType<DialogueManager>().ScrollText(endText, endingNPC));
+        }
+
     }
 
     //This only seems to trigger half the time but I can't figure out how to make it trigger all the time.

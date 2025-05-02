@@ -136,8 +136,8 @@ MonoBehaviour:
     sBlend: 0
     loop: 1
     source: {fileID: 0}
-  - name: winElite
-    clip: {fileID: 8300000, guid: cac4572b35ba251438b4d39e4b816f29, type: 3}
+  - name: end
+    clip: {fileID: 8300000, guid: 47edb27f03242124586039911ea137ed, type: 3}
     volume: 0.15
     pitch: 1
     sBlend: 0

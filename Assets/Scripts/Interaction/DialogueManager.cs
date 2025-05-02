@@ -2,6 +2,7 @@ using System.Collections;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEditor.SearchService;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -65,10 +66,12 @@ public class DialogueManager : MonoBehaviour
         if (pTM) pTM.movementLocked = false;
         if (toReturn)
         {
-            if (toReturn.behavior == NPC.NPCBehavior.NPC_BATTLE)
+            if (toReturn.behavior == NPC.NPCBehavior.NPC_BATTLE && !toReturn.hasBeenDefeated)
             {
                 toReturn.gameObject.GetComponent<TriggerBattleOverworld>().TriggerBattleSequence();
             }
+            else if (toReturn.behavior == NPC.NPCBehavior.NPC_ENDGAME)
+                FindObjectOfType<SceneController>().TransitionScene("Ending"); //End the game
             if (toReturn)
             {
                 toReturn.canInteract = true;

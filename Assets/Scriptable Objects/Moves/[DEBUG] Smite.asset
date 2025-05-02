@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveName: Fall.
   moveDescription: You shouldn't be seeing this. Bask in awe.
-  moveType: {fileID: 11400000, guid: 95adcac05f621d7458c3941039edbe1a, type: 2}
+  moveType: {fileID: 11400000, guid: 82524e671964cbf4080af6fa86470594, type: 2}
   damage: 9999
   moveAction: 0
   moveModifier: 0
