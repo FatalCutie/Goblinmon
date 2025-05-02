@@ -28,6 +28,6 @@ MonoBehaviour:
   - Pick your favorite! I should mention each monster does have a "level" assigned
     to them, but that doesn't actually indicate how strong they are.
   - This "level" is a good indication of how much damage a monster can take, but
-    perhaps a monsters strength lies in their strength, not their bulk!
+    perhaps a monsters strength lies in their power, not their bulk!
   - I'll get out of your way now. Welcome to Fusionmon!
   battle: 0

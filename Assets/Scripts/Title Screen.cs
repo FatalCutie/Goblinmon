@@ -14,12 +14,14 @@ public class TitleScreen : MonoBehaviour
     public DialogueSO openingCrawl;
     public GameObject unitChoice;
     public bool skipOpening = false;
+    public GameObject jugan;
 
 
     void Start(){
         titleScreenUI.SetActive(true);
         infoScreenUI.SetActive(false);
         unitChoice.SetActive(false);
+        jugan.SetActive(false);
     }
 
     public void LoadBattleScene(){
@@ -50,6 +52,7 @@ public class TitleScreen : MonoBehaviour
         {
             FindObjectOfType<AudioManager>().Play("introduction");
             titleScreenUI.SetActive(false);
+            jugan.SetActive(true);
             StartCoroutine(dm.ScrollText(openingCrawl, null));
         }
     }
@@ -61,6 +64,7 @@ public class TitleScreen : MonoBehaviour
 
     public void RevealStarters()
     {
+        jugan.SetActive(false);
         unitChoice.SetActive(true);
     }
 

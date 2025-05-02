@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce7ab67607e6454d8e0e7dd79f416e1, type: 3}
   m_Name: Boss
   m_EditorClassIdentifier: 
-  text: []
+  text:
+  - 'Hm? Do you mind? '
+  - Whatever. I don't have time for this.
+  - Don't bore me.
   battle: 0

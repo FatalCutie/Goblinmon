@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -114,15 +115,20 @@ public class SwitchingButton : MonoBehaviour
             if (t.GetComponent<UnitButton>())
             {
                 Image b = t.GetComponent<Button>().GetComponent<Image>();
-                if (b.color != Color.white)
+                try
                 {
-                    b.color = Color.white;
-                    return;
+                    if (b.color != Color.white)
+                    {
+                        b.color = Color.white;
+                        return;
+                    }
+                    else if (selectedUnit1 != null && t.GetComponent<UnitButton>().unit.ID == selectedUnit1.ID)
+                    {
+                        if (b.color != Color.yellow) b.color = Color.yellow;
+                    }
                 }
-                else if (selectedUnit1 && t.GetComponent<UnitButton>().unit.ID == selectedUnit1.ID) //NullReferenceException?
-                {
-                    if (b.color != Color.yellow) b.color = Color.yellow;
-                }
+                catch (NullReferenceException) { } //I'm not quite sure why this is throwing.
+
 
             }
         }

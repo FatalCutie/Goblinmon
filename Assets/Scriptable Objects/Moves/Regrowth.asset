@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Regrowth
   m_EditorClassIdentifier: 
   moveName: Regrowth
-  moveDescription: Root yourself in the ground, restoring health.
+  moveDescription: Remember the tree you came from, restoring health.
   moveType: {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
   damage: 35
   moveAction: 3

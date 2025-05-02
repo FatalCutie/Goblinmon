@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Jugan
   m_EditorClassIdentifier: 
   text:
-  - Heya neighbor, I'm professor Jugan!
+  - Heya neighbor, I'm Professor Jugan! I slipped you a few capture boxes in the
+    Scene Transition to get you started.
   - When I'm not grading my students game, I like to research the monsters that roam
     this world and learn all about them!
   - Did you know that when a monster turns purple, it means they want to play fetch?

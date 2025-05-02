@@ -159,7 +159,7 @@ Transform:
   m_GameObject: {fileID: 38726195}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 40.65143, y: 18.594727, z: -0.41187832}
+  m_LocalPosition: {x: 0, y: 18.594727, z: -0.41187832}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 107229521}
   - component: {fileID: 107229525}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Title Screen Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -445,6 +445,7 @@ MonoBehaviour:
   openingCrawl: {fileID: 11400000, guid: f056d1f5777ae21409af4497c08e7b70, type: 2}
   unitChoice: {fileID: 854223356}
   skipOpening: 0
+  jugan: {fileID: 727303212}
 --- !u!1001 &143738658
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -701,7 +702,7 @@ GameObject:
   - component: {fileID: 363388809}
   - component: {fileID: 363388808}
   m_Layer: 5
-  m_Name: Canvas (2)
+  m_Name: Dialogue Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -784,6 +785,7 @@ RectTransform:
   m_Children:
   - {fileID: 172709335}
   - {fileID: 854223357}
+  - {fileID: 727303213}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1384,6 +1386,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 690078680}
+  m_CullTransparentMesh: 1
+--- !u!1 &727303212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 727303213}
+  - component: {fileID: 727303215}
+  - component: {fileID: 727303214}
+  m_Layer: 5
+  m_Name: Jugan
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &727303213
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727303212}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 363388811}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 167.9189, y: 167.9189}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &727303214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727303212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: c2097aac6d21cc546809c2a5b3915b68, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &727303215
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727303212}
   m_CullTransparentMesh: 1
 --- !u!1 &776070807
 GameObject:
@@ -3325,7 +3402,7 @@ Transform:
   m_GameObject: {fileID: 1912465879}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 40.65143, y: 18.594727, z: -0.41187832}
+  m_LocalPosition: {x: 0, y: 18.594727, z: -0.41187832}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3580,10 +3657,10 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1178965854}
+  - {fileID: 363388811}
   - {fileID: 107229524}
   - {fileID: 1769202844}
   - {fileID: 1090297719}
   - {fileID: 364913616}
   - {fileID: 143738658}
   - {fileID: 1893317309}
-  - {fileID: 363388811}

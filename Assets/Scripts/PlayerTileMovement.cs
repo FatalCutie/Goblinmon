@@ -68,36 +68,39 @@ public class PlayerTileMovement : MonoBehaviour
 
     void PlayerMovement()
     {
-        //if (!movementLocked) 
-        transform.position = Vector3.MoveTowards(transform.position, movepoint.position + new Vector3(0, 0.10f, 0), movespeed * Time.deltaTime); // + new Vector3(0, 0.5f, 0)
+        // Get raw input
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        if (Vector3.Distance(transform.position, movepoint.position + new Vector3(0, 0.10f, 0)) <= 0.05f //+ new Vector3(0, 0.5f, 0)
-        && !movementLocked)
-        {
+        // Update animation based on input every frame (even if not moving)
+        UpdateAnimator(-movement);
 
-            //This only moves the player when a button is getting pressed down.
-            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
+        // Move towards the movepoint (offset slightly upward, e.g., for visual layering)
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            movepoint.position + new Vector3(0, 0.10f, 0),
+            movespeed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, movepoint.position + new Vector3(0, 0.10f, 0)) <= 0.05f
+            && !movementLocked)
+        {
+            // Handle horizontal input
+            if (Mathf.Abs(movement.x) == 1f)
             {
                 if (!IsMovementBlocked('x'))
                 {
-                    movepoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f) * moveMultiplier;
-
-                    //animator.SetFloat("Horizontal", )
+                    movepoint.position += new Vector3(movement.x, 0f, 0f) * moveMultiplier;
                 }
-
             }
-            else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
+            // Handle vertical input
+            else if (Mathf.Abs(movement.y) == 1f)
             {
                 if (!IsMovementBlocked('y'))
                 {
-                    movepoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f) * moveMultiplier;
-
+                    movepoint.position += new Vector3(0f, movement.y, 0f) * moveMultiplier;
                 }
             }
         }
-        // if (!movementLocked) animator.SetFloat("Speed", movement.sqrMagnitude);
     }
 
     void CheckIfPlayerIsIdle()
