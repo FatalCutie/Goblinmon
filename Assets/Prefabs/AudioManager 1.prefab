@@ -145,8 +145,15 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: grass
     clip: {fileID: 8300000, guid: 4199bd914a4ee134db480404768b5209, type: 3}
-    volume: 0.445
-    pitch: 1
+    volume: 0.1
+    pitch: 0.48
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: cave
+    clip: {fileID: 8300000, guid: cbf7816301eacf44e9948fe9b56f4c27, type: 3}
+    volume: 0.1
+    pitch: 0.52
     sBlend: 0
     loop: 0
     source: {fileID: 0}

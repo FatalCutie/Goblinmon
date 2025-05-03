@@ -49,7 +49,7 @@ public class OverworldUI : MonoBehaviour
     public void OpenPanel()
     {
         if (shopUI.activeSelf) return; //can't open menu in shop
-
+        if (FindObjectOfType<PlayerTileMovement>().movementLocked) return;
         //if (!dataPopulated) UpdateUnitInformation(); //Populate buttons with party
         partyStorage.menuOpen = true;
         UnitMenuAnimator.SetBool("PanelOpen", true);
@@ -128,6 +128,7 @@ public class OverworldUI : MonoBehaviour
 
     public void OpenShopUI()
     {
+        if (FindObjectOfType<PlayerTileMovement>().movementLocked) return;
         shopUI.SetActive(true);
         FindObjectOfType<PlayerTileMovement>().movementLocked = true;
         FindObjectOfType<ShopButton>().RefreshPlayerMoneyTotal();

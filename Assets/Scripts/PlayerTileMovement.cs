@@ -204,6 +204,7 @@ public class PlayerTileMovement : MonoBehaviour
         {
             yield return new WaitForSeconds(2); //This is hardcoded. Adjust this with animation speed
             canWildEncounter = true;
+            if (!FindObjectOfType<PlayerPositionManager>().lost) movementLocked = false;
         }
         else //If final boss beaten
         {

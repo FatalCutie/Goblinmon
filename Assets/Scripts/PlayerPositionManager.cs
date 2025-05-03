@@ -60,7 +60,6 @@ public class PlayerPositionManager : MonoBehaviour
             player.movementLocked = true;
             player.movepoint.position = playerPosition - new Vector3(0f, movepointOffset, 0); //Move movepoint first 
             player.gameObject.transform.position = playerPosition; //Then actual player
-            player.movementLocked = false;
         }
     }
 

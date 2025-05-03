@@ -19,12 +19,6 @@ public class TriggerBattleOverworld : MonoBehaviour
 
     void Update()
     {
-        //Triggers battle for Debug purposes
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            TriggerBattleSequence();
-            //SceneManager.LoadScene("BattleScene");
-        }
     }
 
     void InitializeGoblinmonParty(GameObject go)

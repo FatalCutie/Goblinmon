@@ -15,7 +15,7 @@ MonoBehaviour:
   moveName: Spin Out
   moveDescription: Fail a rad trick, sliding into the enemy 2-5 times
   moveType: {fileID: 11400000, guid: 4e40158ed9433f446937422b3c69635a, type: 2}
-  damage: 15
+  damage: 12
   moveAction: 0
   moveModifier: 5
   statModifier: 0

@@ -148,7 +148,7 @@ public class SwitchingManager : MonoBehaviour
         bs.playerAnimator.SetBool("Player Out", true);
         bs.playerUIAnimator.SetBool("PanelOpen", true);
         yield return new WaitForSeconds(1);
-
+        if (bs.twoTurnMove) bs.twoTurnMove = null; //clear two turn move
         //End the players turn unless just switched from KO
         if (bs.state == BattleState.ENEMYTURN)
         {

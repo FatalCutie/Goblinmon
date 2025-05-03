@@ -180,7 +180,7 @@ public class BattleSystem : MonoBehaviour
         else if (move.moveModifier == SOMove.MoveModifier.TWO_TURN)
         {
             //Hide unit
-            playerUnit.GetComponent<SpriteRenderer>().sprite = null;
+            // playerUnit.GetComponent<SpriteRenderer>().sprite = null;
             StartCoroutine(ScrollText($"{playerUnit.goblinData.gName} is charging up!"));
             yield return new WaitForSeconds(standardWaitTime);
 
@@ -600,7 +600,7 @@ public class BattleSystem : MonoBehaviour
             StartCoroutine(ThrowOutUnit());
             firstScroll = !firstScroll;
         }
-        else StartCoroutine(ScrollText("Choose an action:"));
+        //else StartCoroutine(ScrollText("Choose an action:"));
     }
 
     //Makes text scroll across dialogue box

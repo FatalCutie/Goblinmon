@@ -18,9 +18,7 @@ public class DialogueManager : MonoBehaviour
     }
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.O)) animator.SetBool("Open", true);
-        if(Input.GetKeyDown(KeyCode.P)) animator.SetBool("Open", false);
-        if (Input.GetKeyDown(KeyCode.I)) StartCoroutine(ScrollText(so, null));
+
     }
     public IEnumerator ScrollText(DialogueSO so, NPC toReturn)
     {

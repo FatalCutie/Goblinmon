@@ -16,7 +16,7 @@ MonoBehaviour:
   moveDescription: The picked men chuck whatever seeds they can find at the target,
     hitting 2-5 times
   moveType: {fileID: 11400000, guid: 806a87d982b171243bcb78f69c361224, type: 2}
-  damage: 15
+  damage: 12
   moveAction: 0
   moveModifier: 5
   statModifier: 0

@@ -71,7 +71,6 @@ public class EnemyAI : MonoBehaviour
             enemyRamping--;
             self.attackModifier--;
             StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack fell by 1!"));
-            if (!twoTurnMove) return; //skip choose action text
         }
         if (!twoTurnMove)
         {
@@ -378,7 +377,7 @@ public class EnemyAI : MonoBehaviour
         else if (move.moveModifier == SOMove.MoveModifier.TWO_TURN)
         {
             //Hide unit
-            bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
+            // bs.enemyUnit.GetComponent<SpriteRenderer>().sprite = null;
             StartCoroutine(bs.ScrollText($"{bs.enemyUnit.goblinData.gName} is charging up!"));
             yield return new WaitForSeconds(standardWaitTime);
 
