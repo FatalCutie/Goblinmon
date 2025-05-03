@@ -3,21 +3,21 @@ using UnityEngine;
 using System;
 public class PartyStorage : MonoBehaviour
 {
-    public PartyStorage instance;
+    public static PartyStorage instance;
     [SerializeField] public List<SOGoblinmon> goblinmonSO;
     public List<Goblinmon> goblinmon;
     [SerializeField] private bool hasGottenGoblinmon = true;
     [SerializeField] OverworldUI owUI;
     public bool menuOpen = false;
-    void Awake() //Doesn't work going from title screen to game?
+    void Awake()
     {
         if (instance == null)
             instance = this;
         else
         {
-            //Destroy(gameObject);
+            Destroy(gameObject);
             //Override previous instance, because older session should have more up to date info
-            Destroy(instance);
+            // Destroy(instance);
             instance = this;
             return;
         }

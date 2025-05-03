@@ -91683,11 +91683,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f7eeba8ef790693468126a35db4b159e, type: 2}
   - {fileID: 11400000, guid: af63e05a06a3e4a458c44d8902558ec4, type: 2}
   enemyPartyStoragePrefab: {fileID: 4300079924289081473, guid: c041c2dfafb1605438ee1985f5fb340c, type: 3}
---- !u!1 &887915776 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1526652467626258029, guid: 35cf97872b448a24686c130b80e068c6, type: 3}
-  m_PrefabInstance: {fileID: 1126405019}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &890642929
 GameObject:
   m_ObjectHideFlags: 0
@@ -94597,7 +94592,8 @@ MonoBehaviour:
   captureItems: 5
   playerMoney: 500
   chungusBattled: 0
-  chungus: {fileID: 887915776}
+  lost: 0
+  losingText: {fileID: 11400000, guid: 6b4b0d72a5f2f254aaf26bc1f6d9aa5c, type: 2}
 --- !u!1 &1106672085
 GameObject:
   m_ObjectHideFlags: 0
@@ -108140,16 +108136,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.size
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 7589598587805ce4c8d755f64f2c68f1, type: 2}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
+      propertyPath: goblinmonSO.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 83c547bcfd76d6242bc521c02f6e2a33, type: 2}
+    - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
+      propertyPath: goblinmonSO.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 47c66c8755c2e5347b0d53ab1b890dc7, type: 2}
+    - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[3]
       value: 
-      objectReference: {fileID: 11400000, guid: af63e05a06a3e4a458c44d8902558ec4, type: 2}
+      objectReference: {fileID: 11400000, guid: 47c66c8755c2e5347b0d53ab1b890dc7, type: 2}
     - target: {fileID: 224494961514223343, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: goblinmonSO.Array.data[4]
       value: 
@@ -108204,7 +108208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5783054446306834807, guid: 5d1af842e2ec78249a5092c45c42fd9b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

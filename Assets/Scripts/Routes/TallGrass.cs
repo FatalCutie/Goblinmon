@@ -11,7 +11,7 @@ public class TallGrass : MonoBehaviour
 
     public void RandomEncounter(){
         int i = rnd.Next(0, encounterChance);
-        Debug.Log(i);
+        // Debug.Log(i);
         if (i == 1 && FindObjectOfType<PlayerTileMovement>().canWildEncounter) encounter.GenerateRandomEncounter();
     }
 

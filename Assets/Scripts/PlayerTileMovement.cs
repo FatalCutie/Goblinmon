@@ -199,10 +199,11 @@ public class PlayerTileMovement : MonoBehaviour
     IEnumerator UnlockPlayerMovement()
     {
         FindObjectOfType<PlayerPositionManager>().RememberPlayerPosition(); //Sets player position
+        FindObjectOfType<PlayerPositionManager>().CheckIfLoser();
         if (!NPCTracker.IsDefeated("boss")) //hardcoded NPC id
         {
-            canWildEncounter = true;
             yield return new WaitForSeconds(2); //This is hardcoded. Adjust this with animation speed
+            canWildEncounter = true;
         }
         else //If final boss beaten
         {

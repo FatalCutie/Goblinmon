@@ -6,13 +6,13 @@ using UnityEngine;
 public class PlayerPositionManager : MonoBehaviour
 {
     [SerializeField] private Vector3 playerPosition = new Vector3();
-    private PlayerPositionManager instance;
+    public static PlayerPositionManager instance;
     public int fusionItems;
     public int captureItems;
     public int playerMoney;
     public bool chungusBattled = false;
-    public GameObject chungus;
-    private bool lost;
+    public bool lost;
+    public DialogueSO losingText;
 
     void Awake()
     {
@@ -26,14 +26,21 @@ public class PlayerPositionManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start()
+    public void CheckIfLoser()
     {
-        if (chungusBattled) chungus.SetActive(false); //This won't work and will need to be changed
         if (lost)
         {
             lost = !lost;
-            FindObjectOfType<NPC>().HealPlayerUnits();
+            StartCoroutine(IfPlayerLost());
         }
+    }
+
+
+    public IEnumerator IfPlayerLost()
+    {
+        StartCoroutine(FindObjectOfType<DialogueManager>().ScrollText(losingText, null));
+        yield return new WaitForSeconds(1);
+        FindObjectOfType<NPC>().HealPlayerUnits();
     }
 
     public void SavePlayersPosition(){
@@ -50,7 +57,7 @@ public class PlayerPositionManager : MonoBehaviour
         if (playerPosition != new Vector3(2.625f, -0.25f, 0) && player.movepoint.position != playerPosition)
         {
             player.movementLocked = true;
-            player.movepoint.position = playerPosition - new Vector3(0f, 0.5f, 0); //Move movepoint first 
+            player.movepoint.position = playerPosition - new Vector3(0f, 0.1f, 0); //Move movepoint first 
             player.gameObject.transform.position = playerPosition; //Then actual player
             player.movementLocked = false;
         }
@@ -58,7 +65,8 @@ public class PlayerPositionManager : MonoBehaviour
 
     public void PlayerLostBattle()
     {
+        Debug.Log("I lost");
         playerPosition = new Vector3(-0.375f, 8, 0);
-        lost = !lost;
+        lost = true;
     }
 }

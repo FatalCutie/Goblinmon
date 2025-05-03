@@ -504,6 +504,7 @@ public class BattleSystem : MonoBehaviour
             }
             StartCoroutine(ScrollText("You won the battle!"));
             eps.MarkNPCAsDefeated();
+            DestroyEnemyPartyStorage();
             if (eps.battleMusic == TriggerBattleOverworld.BattleMusic.BM_TRAINER)
                 StartCoroutine(PayoutAfterWin());
 
@@ -514,13 +515,33 @@ public class BattleSystem : MonoBehaviour
         }
         else if (state == BattleState.LOST)
         {
-            FindObjectOfType<AudioManager>().Stop("battle");
+            switch (eps.battleMusic)
+            {
+                case TriggerBattleOverworld.BattleMusic.BM_TRAINER:
+                    FindObjectOfType<AudioManager>().Stop("battleTrainer");
+                    break;
+                case TriggerBattleOverworld.BattleMusic.BM_ELITE:
+                    FindObjectOfType<AudioManager>().Stop("battleElite");
+                    break;
+                case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
+                    FindObjectOfType<AudioManager>().Stop("battleLegendary");
+                    break;
+                case TriggerBattleOverworld.BattleMusic.BM_WILD:
+                    FindObjectOfType<AudioManager>().Stop("battleWild");
+                    break;
+            }
             FindObjectOfType<AudioManager>().Play("run");
             StartCoroutine(ScrollText("You were defeated."));
+            DestroyEnemyPartyStorage();
             FindObjectOfType<PlayerPositionManager>().PlayerLostBattle(); //Player will wake up at healer
             StartCoroutine(ReturnToOverworld());
             //StartCoroutine(BackToTitle());
         }
+    }
+
+    public void DestroyEnemyPartyStorage()
+    {
+        Destroy(eps.gameObject);
     }
 
     public IEnumerator PayoutAfterWin()
@@ -541,24 +562,24 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator ReturnToOverworld()
     {
         sm.SavePlayerData(); //Save health of active Goblinmon
-        yield return new WaitForSeconds(standardWaitTime * 3);
+        yield return new WaitForSeconds(standardWaitTime * 2);
         FindObjectOfType<SceneController>().TransitionScene("Overworld");
         yield return new WaitForSeconds(2f); //Hardcoded with transition time
-        switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
-        {
-            case TriggerBattleOverworld.BattleMusic.BM_TRAINER:
-                FindObjectOfType<AudioManager>().Stop("winTrainer");
-                break;
-            case TriggerBattleOverworld.BattleMusic.BM_ELITE:
-                FindObjectOfType<AudioManager>().Stop("winElite");
-                break;
-            case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
-                FindObjectOfType<AudioManager>().Stop("winLegendary");
-                break;
-            case TriggerBattleOverworld.BattleMusic.BM_WILD:
-                FindObjectOfType<AudioManager>().Stop("winWild");
-                break;
-        }
+        // switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
+        // {
+        //     case TriggerBattleOverworld.BattleMusic.BM_TRAINER:
+        //         FindObjectOfType<AudioManager>().Stop("winTrainer");
+        //         break;
+        //     case TriggerBattleOverworld.BattleMusic.BM_ELITE:
+        //         FindObjectOfType<AudioManager>().Stop("winElite");
+        //         break;
+        //     case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
+        //         FindObjectOfType<AudioManager>().Stop("winLegendary");
+        //         break;
+        //     case TriggerBattleOverworld.BattleMusic.BM_WILD:
+        //         FindObjectOfType<AudioManager>().Stop("winWild");
+        //         break;
+        // }
     }
 
     public void PlayerTurn()
