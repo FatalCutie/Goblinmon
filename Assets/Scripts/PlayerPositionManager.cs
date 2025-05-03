@@ -12,6 +12,7 @@ public class PlayerPositionManager : MonoBehaviour
     public int playerMoney;
     public bool chungusBattled = false;
     public GameObject chungus;
+    private bool lost;
 
     void Awake()
     {
@@ -28,6 +29,11 @@ public class PlayerPositionManager : MonoBehaviour
     void Start()
     {
         if (chungusBattled) chungus.SetActive(false); //This won't work and will need to be changed
+        if (lost)
+        {
+            lost = !lost;
+            FindObjectOfType<NPC>().HealPlayerUnits();
+        }
     }
 
     public void SavePlayersPosition(){
@@ -47,5 +53,11 @@ public class PlayerPositionManager : MonoBehaviour
             player.gameObject.transform.position = playerPosition; //Then actual player
             player.movementLocked = false;
         }
+    }
+
+    public void PlayerLostBattle()
+    {
+        playerPosition = new Vector3(-0.375f, 8, 0);
+        lost = !lost;
     }
 }

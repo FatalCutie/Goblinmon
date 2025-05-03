@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -50.481, y: -2.9}
+  m_AnchoredPosition: {x: -50.48, y: 11.12}
   m_SizeDelta: {x: 98.9445, y: 40.8997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6533174506047742154
@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Lv. 99
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ad2f7f6e7e774e1498f1084bf654d344, type: 2}
+  m_sharedMaterial: {fileID: 9028653559388713244, guid: ad2f7f6e7e774e1498f1084bf654d344, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -92,8 +92,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -436,8 +436,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 20.346, y: -0.000011206}
-  m_SizeDelta: {x: 40.6924, y: 40.6924}
+  m_AnchoredPosition: {x: -1.9, y: 22.9}
+  m_SizeDelta: {x: 21.9222, y: 21.9222}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6667203371477787249
 CanvasRenderer:
@@ -622,8 +622,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 36.8, y: 32.91}
-  m_SizeDelta: {x: 273.5061, y: 60.153}
+  m_AnchoredPosition: {x: 55.023, y: 34.9969}
+  m_SizeDelta: {x: 309.95, y: 55.9794}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6081554987543769465
 CanvasRenderer:
@@ -653,10 +653,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sample Text!!!
+  m_text: Soaked Danger
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ad2f7f6e7e774e1498f1084bf654d344, type: 2}
+  m_sharedMaterial: {fileID: 9028653559388713244, guid: ad2f7f6e7e774e1498f1084bf654d344, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -680,8 +680,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42
-  m_fontSizeBase: 42
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

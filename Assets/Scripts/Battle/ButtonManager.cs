@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class ButtonManager : MonoBehaviour
@@ -16,6 +16,7 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private BattleSystem bs;
     [SerializeField] private PlayerPositionManager ppm;
     [SerializeField] private List<AttackButton> attackButtons;
+    public bool releaseMode = false;
 
 
     void Start()
@@ -64,9 +65,19 @@ public class ButtonManager : MonoBehaviour
 
     public void disableSwitchingMenu()
     {
-        FindObjectOfType<AudioManager>().Play("press");
-        switchingMenu.SetActive(false);
-        buttonsBasic.SetActive(true);
+        if (!releaseMode)
+        {
+            FindObjectOfType<AudioManager>().Play("press");
+            switchingMenu.SetActive(false);
+            buttonsBasic.SetActive(true);
+        }
+        else
+        {
+            HideSwitchingMenuAfterCapture();
+            bs.state = BattleState.WON;
+            bs.EndBattle();
+        }
+
     }
 
     public void HideSwitchingMenuAfterCapture()
@@ -153,6 +164,57 @@ public class ButtonManager : MonoBehaviour
         FindObjectOfType<AudioManager>().Play("run");
         bs.ScrollText("You ran away!");
         FindObjectOfType<SceneController>().TransitionScene("Overworld");
+    }
+
+    public void RunAway()
+    {
+        if (!DoesPlayerGetAway())
+        {
+            StartCoroutine(PlayerFailsToRun());
+        }
+        else
+        {
+            disableButtonsDuringAttack();
+            switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
+            {
+                case TriggerBattleOverworld.BattleMusic.BM_TRAINER:
+                    StartCoroutine(bs.ScrollText("You can't flee from a trainer fight!"));
+                    StartCoroutine(FlashRunButtonRed());
+                    return;
+                case TriggerBattleOverworld.BattleMusic.BM_ELITE:
+                    StartCoroutine(bs.ScrollText("You can't flee from a trainer fight!"));
+                    StartCoroutine(FlashRunButtonRed());
+                    return;
+                case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
+                    FindObjectOfType<AudioManager>().Stop("battleLegendary");
+                    break;
+                case TriggerBattleOverworld.BattleMusic.BM_WILD:
+                    FindObjectOfType<AudioManager>().Stop("battleWild");
+                    break;
+            }
+            FindObjectOfType<AudioManager>().Play("run");
+            StartCoroutine(bs.ScrollText("You ran away!"));
+            FindObjectOfType<SceneController>().TransitionScene("Overworld");
+        }
+
+    }
+
+    public IEnumerator PlayerFailsToRun()
+    {
+        disableButtonsDuringAttack();
+        StartCoroutine(bs.ScrollText("You couldn't get away!"));
+        yield return new WaitForSeconds(bs.standardWaitTime);
+        bs.EndTurn();
+    }
+
+    //This is ripped from CatchSystem. It may have to be updated if CatchSystem is changed
+    public bool DoesPlayerGetAway()
+    {
+        SOGoblinmon gd = bs.enemyUnit.goblinData;
+        float number = gd.maxHP * gd.catchRate * 4 / (bs.enemyUnit.currentHP * 10);
+        float numberToBeat = bs.rnd.Next(0, 255);
+        if (number * 2 >= numberToBeat) return true;
+        return false;
     }
 
     private IEnumerator FlashRunButtonRed()

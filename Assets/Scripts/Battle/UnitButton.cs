@@ -35,6 +35,9 @@ public class UnitButton : MonoBehaviour
         {
             text.text = "";
             hp.gameObject.SetActive(false);
+            fusionIcon.gameObject.SetActive(false);
+            unitImage.gameObject.SetActive(false);
+            level.gameObject.SetActive(false);
         }
 
         //This is woefully inefficient

@@ -76,7 +76,6 @@ public class SwitchingManager : MonoBehaviour
                 UnitButton ub = go.gameObject.GetComponent<UnitButton>();
                 ub.buttonMode = UnitButton.ButtonMode.RELEASE;
             }
-
         }
         catch (NullReferenceException) { } //In case less units than buttons
 

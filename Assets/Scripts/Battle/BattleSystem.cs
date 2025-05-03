@@ -509,6 +509,7 @@ public class BattleSystem : MonoBehaviour
             FindObjectOfType<AudioManager>().Stop("battle");
             FindObjectOfType<AudioManager>().Play("run");
             StartCoroutine(ScrollText("You were defeated."));
+            FindObjectOfType<PlayerPositionManager>().PlayerLostBattle(); //Player will wake up at healer
             StartCoroutine(ReturnToOverworld());
             //StartCoroutine(BackToTitle());
         }

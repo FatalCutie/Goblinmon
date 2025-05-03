@@ -81,6 +81,7 @@ public class CatchSystem : MonoBehaviour
             StartCoroutine(bs.ScrollText("Please select a party member to release!"));
             FindObjectOfType<SwitchingManager>().FlipUnitButtonFunctionality(); //Pressed button will now release unit, not switch it
             FindObjectOfType<ButtonManager>().enableSwitchingMenu();
+            FindObjectOfType<ButtonManager>().releaseMode = true;
             //Standby waiting for a press
         }
     }
