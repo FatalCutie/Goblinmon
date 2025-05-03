@@ -14,11 +14,10 @@ public class MonoBehaviourID : MonoBehaviour
     }
 
     [ContextMenu("Force reset ID")]
-    private void ResetId()
+    public void ResetId()
     {
         _id.Value = Guid.NewGuid().ToString();
-
-        //Debug.Log("Setting new ID on object: " + gameObject.name, gameObject);
+        Debug.Log("Setting new ID on object: " + gameObject.name, gameObject);
     }
 
     //Need to check for duplicates when copying a gameobject/component

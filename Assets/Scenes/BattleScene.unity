@@ -643,7 +643,9 @@ MonoBehaviour:
   captureItems: 2
   playerMoney: 0
   chungusBattled: 0
-  chungus: {fileID: 0}
+  lost: 0
+  losingText: {fileID: 0}
+  movepointOffset: 0.1
 --- !u!1 &86482519
 GameObject:
   m_ObjectHideFlags: 0
@@ -10774,6 +10776,7 @@ MonoBehaviour:
   - {fileID: 412710924}
   - {fileID: 931614528}
   releaseMode: 0
+  cantClose: 0
 --- !u!114 &2087887651
 MonoBehaviour:
   m_ObjectHideFlags: 0

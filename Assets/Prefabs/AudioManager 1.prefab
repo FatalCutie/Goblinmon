@@ -141,12 +141,12 @@ MonoBehaviour:
     volume: 0.15
     pitch: 1
     sBlend: 0
-    loop: 1
+    loop: 0
     source: {fileID: 0}
   - name: grass
     clip: {fileID: 8300000, guid: 4199bd914a4ee134db480404768b5209, type: 3}
     volume: 0.445
     pitch: 1
     sBlend: 0
-    loop: 1
+    loop: 0
     source: {fileID: 0}

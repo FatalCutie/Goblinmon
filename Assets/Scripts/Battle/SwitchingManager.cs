@@ -97,6 +97,7 @@ public class SwitchingManager : MonoBehaviour
     public void GetNewPlayerUnit()
     {
         bm.enableSwitchingMenu();
+        bm.cantClose = true;
     }
 
     //Makes sure player is not switching to active unit

@@ -8,7 +8,6 @@ public class CatchSystem : MonoBehaviour
     PartyStorage ps;
     [SerializeField] Animator battleAnimator;
     [SerializeField] Animator enemyAnimator;
-    public Goblinmon tempHoler;
     float captureScore;
 
     void Start()
@@ -85,6 +84,18 @@ public class CatchSystem : MonoBehaviour
             //Standby waiting for a press
         }
     }
+
+    //Clone data from old unit to a new unit
+    private Goblinmon GoblinToAdd(Goblinmon g)
+    {
+        Goblinmon toReturn = FindObjectOfType<PartyStorage>().AddComponent<Goblinmon>();
+        toReturn.currentHP = g.currentHP;
+        toReturn.goblinData = g.goblinData;
+        toReturn.ResetId();
+        // toReturn.CloneIdFrom(g);
+        return toReturn;
+    }
+
     //Dummy void so we can disable the switching menu during victory
     public void BeginReleaseUnit(int i)
     {
@@ -105,16 +116,7 @@ public class CatchSystem : MonoBehaviour
         bs.EndBattle();
     }
 
-    //Clone data from old unit to a new unit
-    private Goblinmon GoblinToAdd(Goblinmon g)
-    {
-        Goblinmon toReturn = FindObjectOfType<PartyStorage>().AddComponent<Goblinmon>();
-        toReturn.currentHP = g.currentHP;
-        toReturn.goblinData = g.goblinData;
-        toReturn.CloneIdFrom(g);
-        tempHoler = toReturn;
-        return toReturn;
-    }
+
 
     private IEnumerator FailedCapture()
     {

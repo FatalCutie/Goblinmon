@@ -17,6 +17,7 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private PlayerPositionManager ppm;
     [SerializeField] private List<AttackButton> attackButtons;
     public bool releaseMode = false;
+    public bool cantClose = false;
 
 
     void Start()
@@ -59,13 +60,18 @@ public class ButtonManager : MonoBehaviour
     {
         FindObjectOfType<AudioManager>().Play("press");
         disableButtonsDuringAttack();
+        cantClose = false;
         switchingMenu.SetActive(true);
         //TODO: Update goblinmon on open?
     }
 
     public void disableSwitchingMenu()
     {
-        if (!releaseMode)
+        if (cantClose)
+        {
+            FindObjectOfType<AudioManager>().Play("damage");
+        }
+        else if (!releaseMode)
         {
             FindObjectOfType<AudioManager>().Play("press");
             switchingMenu.SetActive(false);
@@ -77,7 +83,6 @@ public class ButtonManager : MonoBehaviour
             bs.state = BattleState.WON;
             bs.EndBattle();
         }
-
     }
 
     public void HideSwitchingMenuAfterCapture()
