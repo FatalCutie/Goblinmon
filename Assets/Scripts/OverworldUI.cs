@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
-using System.Diagnostics;
-using Microsoft.Unity.VisualStudio.Editor;
-using UnityEngine.UI;
 
 public class OverworldUI : MonoBehaviour
 {

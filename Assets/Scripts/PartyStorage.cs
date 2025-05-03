@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEditor.SearchService;
-using UnityEngine.SceneManagement;
 public class PartyStorage : MonoBehaviour
 {
     public PartyStorage instance;

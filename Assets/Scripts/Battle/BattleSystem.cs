@@ -367,21 +367,29 @@ public class BattleSystem : MonoBehaviour
                     playerUnit.defenseModifier += move.statModifier;
                     playerUnit.attackModifier += move.statModifier;
                     if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
-                    if (playerUnit.defenseModifier > 6)
+                    if (playerUnit.defenseModifier > 6 && playerUnit.attackModifier > 6)
+                    {
+                        //clamp buff at 6
+                        playerUnit.defenseModifier = 6;
+                        playerUnit.attackModifier = 6;
+                        StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s  attack and defense can't go any higher!"));
+                        yield return new WaitForSeconds(standardWaitTime);
+                    }
+                    else if (playerUnit.defenseModifier > 6)
                     {
                         //clamp buff at 6
                         playerUnit.defenseModifier = 6;
                         StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s defense can't go any higher!"));
                         yield return new WaitForSeconds(standardWaitTime);
                     }
-                    if (playerUnit.attackModifier > 6)
+                    else if (playerUnit.attackModifier > 6)
                     {
                         //clamp buff at 6
                         playerUnit.attackModifier = 6;
                         StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack can't go any higher!"));
                         yield return new WaitForSeconds(standardWaitTime);
                     }
-                    StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack and defense were increased by {move.statModifier}!"));
+                    else StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack and defense were increased by {move.statModifier}!"));
                     yield return new WaitForSeconds(standardWaitTime);
                     break;
                 }
@@ -561,7 +569,6 @@ public class BattleSystem : MonoBehaviour
             playerUnit.attackModifier--;
             StartCoroutine(ScrollText($"{playerUnit.goblinData.gName}'s attack fell by 1!"));
             if (!twoTurnMove) return; //skip choose action text
-
         }
         if (twoTurnMove)
         {

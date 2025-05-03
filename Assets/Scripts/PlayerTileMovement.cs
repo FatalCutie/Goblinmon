@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Scripting.APIUpdating;
-using UnityEngine.Tilemaps;
 
 public class PlayerTileMovement : MonoBehaviour
 {

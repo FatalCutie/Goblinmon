@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEditor.SearchService;
-using UnityEngine.SceneManagement;
 
 //This script is for Trainer Battles. Check the appropriate Route RandomEncounter script
 //For wild battles.

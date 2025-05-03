@@ -86,7 +86,7 @@ public class SwitchingManager : MonoBehaviour
         foreach (Goblinmon go in ps.goblinmon)
         {
             //Look for a unit that isn't dead
-            if (go.currentHP >= 0)
+            if (go.currentHP > 0)
             {
                 return true;
             }

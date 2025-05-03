@@ -1,12 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class WarpTile : MonoBehaviour
 {
     public Vector3 warpCoords;
     [SerializeField] Animator transitionAnim;
+
+    public void Start()
+    {
+        transitionAnim = FindObjectOfType<SceneController>().transitionAnim;
+    }
 
     IEnumerator WarpToCoords()
     {

@@ -2,7 +2,6 @@ using System.Collections;
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEditor.SearchService;
 
 public class DialogueManager : MonoBehaviour
 {

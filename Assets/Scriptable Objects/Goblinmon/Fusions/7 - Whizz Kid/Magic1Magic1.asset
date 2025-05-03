@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Magic1Magic1
   m_EditorClassIdentifier: 
   gName: Warlock
-  gLevel: 110
+  gLevel: 11
   sprite: {fileID: 21300000, guid: a0564b2994f6658459d480fd06557bf3, type: 3}
   maxHP: 105
   catchRate: 30

@@ -41131,7 +41131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   encounter: {fileID: 647943010}
-  encounterChance: 4
+  encounterChance: 6
 --- !u!66 &647943005
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -93744,7 +93744,7 @@ GameObject:
   - component: {fileID: 918832360}
   m_Layer: 7
   m_Name: Special Grass
-  m_TagString: Untagged
+  m_TagString: Tall Grass
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94592,7 +94592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f41d7dbf79864a847a5ffe652d657dda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPosition: {x: 0, y: 0, z: 0}
+  playerPosition: {x: 2.625, y: -0.25, z: 0}
   fusionItems: 0
   captureItems: 5
   playerMoney: 500
@@ -107979,6 +107979,14 @@ PrefabInstance:
     - target: {fileID: 1401485664602263909, guid: 205fd0ee4704b0a4aaf30472e000764d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6362843950205772320, guid: 205fd0ee4704b0a4aaf30472e000764d, type: 3}
+      propertyPath: sounds.Array.data[1].volume
+      value: 0.565
+      objectReference: {fileID: 0}
+    - target: {fileID: 6362843950205772320, guid: 205fd0ee4704b0a4aaf30472e000764d, type: 3}
+      propertyPath: sounds.Array.data[3].volume
+      value: 0.625
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

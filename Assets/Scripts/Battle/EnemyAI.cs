@@ -20,9 +20,11 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Goblinmon actualPlayer;
     System.Random rnd = new System.Random();
     public float standardWaitTime = 1; //Standard Wait Time
+    private int enemyRamping;
     public SOMove twoTurnMove;
     public bool squidReleased;
     public SOMove squidDOT;
+
 
     #endregion
 
@@ -64,6 +66,13 @@ public class EnemyAI : MonoBehaviour
     //Find the best action and take it
     public void FindOptimalOption()
     {
+        if (enemyRamping > 0)
+        {
+            enemyRamping--;
+            self.attackModifier--;
+            StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack fell by 1!"));
+            if (!twoTurnMove) return; //skip choose action text
+        }
         if (!twoTurnMove)
         {
             //First check if health is low, if so find something to switch to
@@ -559,13 +568,64 @@ public class EnemyAI : MonoBehaviour
                     }
                     break;
                 }
+            case SOMove.MoveModifier.RAMP:
+                {
+
+                    self.attackModifier += move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
+                    if (self.attackModifier > 6)
+                    {
+                        //clamp buff at 6
+                        self.attackModifier = 6;
+                        StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack can't go any higher!"));
+                        enemyRamping = 3; //Attack decreased for 3 turns
+                        yield return new WaitForSeconds(standardWaitTime);
+                    }
+                    else
+                    {
+                        StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack was increased by {move.statModifier}!"));
+                        enemyRamping = 3; //Attack decreased for 3 turns
+                        yield return new WaitForSeconds(standardWaitTime);
+                    }
+                    break;
+                }
+            case SOMove.MoveModifier.ATTACK_DEFENSE:
+                {
+                    self.defenseModifier += move.statModifier;
+                    self.attackModifier += move.statModifier;
+                    if (move.statModifier <= 0) Debug.LogWarning("WARNING: " + move.moveName + "s stat modifier is 0. Is this intentional?");
+                    if (self.defenseModifier > 6 && self.attackModifier > 6)
+                    {
+                        //clamp buff at 6
+                        self.defenseModifier = 6;
+                        self.attackModifier = 6;
+                        StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s  attack and defense can't go any higher!"));
+                        yield return new WaitForSeconds(standardWaitTime);
+                    }
+                    else if (self.defenseModifier > 6)
+                    {
+                        //clamp buff at 6
+                        self.defenseModifier = 6;
+                        StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s defense can't go any higher!"));
+                        yield return new WaitForSeconds(standardWaitTime);
+                    }
+                    else if (self.attackModifier > 6)
+                    {
+                        //clamp buff at 6
+                        self.attackModifier = 6;
+                        StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack can't go any higher!"));
+                        yield return new WaitForSeconds(standardWaitTime);
+                    }
+                    StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack and defense were increased by {move.statModifier}!"));
+                    yield return new WaitForSeconds(standardWaitTime);
+                    break;
+                }
             case SOMove.MoveModifier.NONE:
                 {
                     Debug.LogWarning("WARNING:" + move.moveName + " does not have an assigned stat to modify. Check SO!");
                     break;
                 }
         }
-
         //End Turn
         EndTurn();
     }

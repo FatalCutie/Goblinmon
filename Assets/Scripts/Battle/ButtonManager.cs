@@ -182,21 +182,23 @@ public class ButtonManager : MonoBehaviour
                     StartCoroutine(FlashRunButtonRed());
                     return;
                 case TriggerBattleOverworld.BattleMusic.BM_ELITE:
-                    StartCoroutine(bs.ScrollText("You can't flee from a trainer fight!"));
+                    StartCoroutine(bs.ScrollText("Don't think you can run from me!"));
                     StartCoroutine(FlashRunButtonRed());
                     return;
                 case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
                     FindObjectOfType<AudioManager>().Stop("battleLegendary");
+                    FindObjectOfType<AudioManager>().Play("run");
+                    StartCoroutine(bs.ScrollText("You ran away!"));
+                    FindObjectOfType<SceneController>().TransitionScene("Overworld");
                     break;
                 case TriggerBattleOverworld.BattleMusic.BM_WILD:
                     FindObjectOfType<AudioManager>().Stop("battleWild");
+                    FindObjectOfType<AudioManager>().Play("run");
+                    StartCoroutine(bs.ScrollText("You ran away!"));
+                    FindObjectOfType<SceneController>().TransitionScene("Overworld");
                     break;
             }
-            FindObjectOfType<AudioManager>().Play("run");
-            StartCoroutine(bs.ScrollText("You ran away!"));
-            FindObjectOfType<SceneController>().TransitionScene("Overworld");
         }
-
     }
 
     public IEnumerator PlayerFailsToRun()
