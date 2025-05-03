@@ -13,6 +13,7 @@ public class PlayerPositionManager : MonoBehaviour
     public bool chungusBattled = false;
     public bool lost;
     public DialogueSO losingText;
+    public float movepointOffset = 0.1f;
 
     void Awake()
     {
@@ -45,7 +46,7 @@ public class PlayerPositionManager : MonoBehaviour
 
     public void SavePlayersPosition(){
         Transform player = FindObjectOfType<PlayerTileMovement>().movepoint;
-        playerPosition = player.position + new Vector3(0f, 0.5f, 0);
+        playerPosition = player.position + new Vector3(0, movepointOffset, 0);
 
     }
 
@@ -57,7 +58,7 @@ public class PlayerPositionManager : MonoBehaviour
         if (playerPosition != new Vector3(2.625f, -0.25f, 0) && player.movepoint.position != playerPosition)
         {
             player.movementLocked = true;
-            player.movepoint.position = playerPosition - new Vector3(0f, 0.1f, 0); //Move movepoint first 
+            player.movepoint.position = playerPosition - new Vector3(0f, movepointOffset, 0); //Move movepoint first 
             player.gameObject.transform.position = playerPosition; //Then actual player
             player.movementLocked = false;
         }
@@ -65,7 +66,6 @@ public class PlayerPositionManager : MonoBehaviour
 
     public void PlayerLostBattle()
     {
-        Debug.Log("I lost");
         playerPosition = new Vector3(-0.375f, 8, 0);
         lost = true;
     }

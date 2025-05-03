@@ -54,7 +54,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: press
     clip: {fileID: 8300000, guid: 334d8f10abdd337498b5df379073120f, type: 3}
-    volume: 1
+    volume: 0.565
     pitch: 1
     sBlend: 0
     loop: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: superEffective
     clip: {fileID: 8300000, guid: 980fcb103d8491b4fae45ed46d60679a, type: 3}
-    volume: 1
+    volume: 0.625
     pitch: 1
     sBlend: 0
     loop: 0
@@ -139,6 +139,13 @@ MonoBehaviour:
   - name: end
     clip: {fileID: 8300000, guid: 47edb27f03242124586039911ea137ed, type: 3}
     volume: 0.15
+    pitch: 1
+    sBlend: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: grass
+    clip: {fileID: 8300000, guid: 4199bd914a4ee134db480404768b5209, type: 3}
+    volume: 0.445
     pitch: 1
     sBlend: 0
     loop: 1

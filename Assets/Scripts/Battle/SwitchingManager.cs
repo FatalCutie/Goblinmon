@@ -175,7 +175,7 @@ public class SwitchingManager : MonoBehaviour
                 {
                     break;
                 }
-                Debug.Log($"Iteration {i}: ID {g.ID} does not equal {playerUnitToSave.ID}");
+                // Debug.Log($"Iteration {i}: ID {g.ID} does not equal {playerUnitToSave.ID}");
                 i++;
             }
             ps.goblinmon[i].currentHP = playerUnitToSave.currentHP;

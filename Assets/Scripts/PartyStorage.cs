@@ -16,9 +16,7 @@ public class PartyStorage : MonoBehaviour
         else
         {
             Destroy(gameObject);
-            //Override previous instance, because older session should have more up to date info
-            // Destroy(instance);
-            instance = this;
+            // instance = this;
             return;
         }
 

@@ -223,6 +223,12 @@ public class PlayerTileMovement : MonoBehaviour
         {
             // Debug.Log("Entering tall grass!");
             // inGrass = true;
+            FindObjectOfType<AudioManager>().Play("grass");
+            other.GetComponent<TallGrass>().RandomEncounter();
+        }
+        else if (other.CompareTag("Cave Floor"))
+        {
+            FindObjectOfType<AudioManager>().Play("cave"); //TODO: Change to cave walk sound
             other.GetComponent<TallGrass>().RandomEncounter();
         }
     }

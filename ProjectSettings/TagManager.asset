@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Tall Grass
   - Movepoint
+  - Cave Floor
   layers:
   - Default
   - TransparentFX

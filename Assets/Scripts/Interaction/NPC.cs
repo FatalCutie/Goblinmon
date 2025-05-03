@@ -54,12 +54,4 @@ public class NPC : MonoBehaviour, IInteractable
         }
         FindObjectOfType<AudioManager>().Play("catch");
     }
-
-    public IEnumerator IfPlayerLost()
-    {
-        StartCoroutine(dm.ScrollText(afterBattleText, this));
-        yield return new WaitForSeconds(1);
-        HealPlayerUnits();
-    }
-
 }
