@@ -29,6 +29,7 @@ public class PlayerTileMovement : MonoBehaviour
     public bool canWildEncounter = false; //enabled in UnlockPlayerMovement
     public DialogueSO endText;
     public NPC endingNPC; //I am ashamed at how utterly horrible this is but crunch is crunch
+    public bool idleTimerPaused = false;
 
     void Start()
     {
@@ -103,7 +104,7 @@ public class PlayerTileMovement : MonoBehaviour
 
     void CheckIfPlayerIsIdle()
     {
-        if (!playerIsIdle)
+        if (!playerIsIdle && !idleTimerPaused)
         {
             // Check for movement in the 2D plane (x and y positions)
             if (Vector2.Distance(transform.position, lastPosition) > 0.1f)
@@ -205,6 +206,7 @@ public class PlayerTileMovement : MonoBehaviour
             yield return new WaitForSeconds(2); //This is hardcoded. Adjust this with animation speed
             canWildEncounter = true;
             if (!FindObjectOfType<PlayerPositionManager>().lost) movementLocked = false;
+
         }
         else //If final boss beaten
         {
@@ -218,7 +220,7 @@ public class PlayerTileMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         //Flip inGrass bool
-        if (other.tag == "Movepoint" || other.tag == "Untagged") return;
+        if (other.CompareTag("Movepoint") || other.CompareTag("Untagged")) return;
         //Debug.Log(other.tag);
         if (other.CompareTag("Tall Grass"))
         {

@@ -600,7 +600,7 @@ public class BattleSystem : MonoBehaviour
             StartCoroutine(ThrowOutUnit());
             firstScroll = !firstScroll;
         }
-        //else StartCoroutine(ScrollText("Choose an action:"));
+        else dialogueText.text = "Choose an action:";
     }
 
     //Makes text scroll across dialogue box

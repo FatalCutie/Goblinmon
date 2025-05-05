@@ -16,7 +16,7 @@ public class InteractionDetector : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.E)){
-            if (!FindObjectOfType<PlayerTileMovement>().movementLocked) return;
+            if (FindObjectOfType<PlayerTileMovement>().movementLocked == true) return;
             interactableInRange?.Interact();
             //Close AFK panel if interacting
             if (FindObjectOfType<PlayerTileMovement>().idleTimer >= 3f)

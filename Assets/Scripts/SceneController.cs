@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
-    [SerializeField] public Animator transitionAnim;
+    public Animator transitionAnim;
     [SerializeField] GameObject blackScreen;
 
     private void Awake(){

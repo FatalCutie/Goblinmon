@@ -14,6 +14,7 @@ public class PlayerPositionManager : MonoBehaviour
     public bool lost;
     public DialogueSO losingText;
     public float movepointOffset = 0.1f;
+    public ZoneManager.Area area = ZoneManager.Area.AREA_TOWN;
 
     void Awake()
     {
@@ -47,6 +48,7 @@ public class PlayerPositionManager : MonoBehaviour
     public void SavePlayersPosition(){
         Transform player = FindObjectOfType<PlayerTileMovement>().movepoint;
         playerPosition = player.position + new Vector3(0, movepointOffset, 0);
+        area = FindObjectOfType<ZoneManager>().area;
 
     }
 
@@ -61,6 +63,7 @@ public class PlayerPositionManager : MonoBehaviour
             player.movepoint.position = playerPosition - new Vector3(0f, movepointOffset, 0); //Move movepoint first 
             player.gameObject.transform.position = playerPosition; //Then actual player
         }
+        FindObjectOfType<ZoneManager>().area = area;
     }
 
     public void PlayerLostBattle()

@@ -72,6 +72,7 @@ public class TitleScreen : MonoBehaviour
     {
         unitChoice.SetActive(false); //Only one starter for you
         FindObjectOfType<AudioManager>().Stop("introduction");
+        if (!sc) sc = FindObjectOfType<SceneController>();
         sc.TransitionScene("Overworld");
     }
 

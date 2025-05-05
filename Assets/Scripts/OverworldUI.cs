@@ -18,6 +18,7 @@ public class OverworldUI : MonoBehaviour
     [SerializeField] private SwitchingButton sb;
     public TextMeshProUGUI fusionItems;
     public UnityEngine.UI.Image fusionItemsImage;
+    private bool itemsVisable;
     public TextMeshProUGUI captureItems;
     public PlayerPositionManager ppm;
 
@@ -41,8 +42,8 @@ public class OverworldUI : MonoBehaviour
         }
 
         if (!ppm) ppm = FindObjectOfType<PlayerPositionManager>();
-        if (Int32.Parse(fusionItems.text) != ppm.fusionItems) fusionItems.text = $"{ppm.fusionItems}";
-        if (Int32.Parse(captureItems.text) != ppm.captureItems) captureItems.text = $"{ppm.captureItems}";
+        if (itemsVisable && Int32.Parse(fusionItems.text) != ppm.fusionItems) fusionItems.text = $"{ppm.fusionItems}";
+        if (itemsVisable && Int32.Parse(captureItems.text) != ppm.captureItems) captureItems.text = $"{ppm.captureItems}";
     }
 
     //Opens the unit and item panel
@@ -57,6 +58,7 @@ public class OverworldUI : MonoBehaviour
         //Lock player
         player.movementLocked = true;
         UnitMenuOpen = true;
+        itemsVisable = true;
     }
 
     //Closes the unit and item panel
@@ -74,6 +76,7 @@ public class OverworldUI : MonoBehaviour
         //Unlock Player
         player.movementLocked = false;
         UnitMenuOpen = false;
+        itemsVisable = false;
     }
 
     //Populate overworld unit buttons with data
@@ -111,19 +114,16 @@ public class OverworldUI : MonoBehaviour
         }
     }
 
-    public void OpenItemMenuOnIdle(){
-        UpdateItemUI();
-        ItemUIAnimator.SetBool("ItemsOpen", true);
-    }
-
-    public void CloseItemMenuOnIdle(){
-        UpdateItemUI();
-        ItemUIAnimator.SetBool("ItemsOpen", false);
-    }
-
-    public void UpdateItemUI()
+    public void OpenItemMenuOnIdle()
     {
-        //TODO: Implement Items
+        ItemUIAnimator.SetBool("ItemsOpen", true);
+        itemsVisable = true;
+    }
+
+    public void CloseItemMenuOnIdle()
+    {
+        ItemUIAnimator.SetBool("ItemsOpen", false);
+        itemsVisable = false;
     }
 
     public void OpenShopUI()
