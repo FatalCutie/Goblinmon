@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74db17fe70a6bb545a6731611c06e5ed, type: 3}
+  m_Name: Fusions
+  m_EditorClassIdentifier: 
+  entryTitle: Fusion
+  entryText: 'Fusion is a means of fusing two monsters together to get a stronger
+    monster. The fused monster will share the types and moves of the two units used
+    to fuse it. Fusing two of the same unit together will result in getting more
+    powerful versions of the original monsters moves instead. In order to fuse monsters
+    you must first buy a "fuser" from the shop for $500. Afterwards, click the DNA
+    button, then the two monsters you want to fuse. Note: You cannot fuse fusions.'

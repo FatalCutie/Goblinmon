@@ -224,26 +224,25 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Welcome to Fusionmon! Here are the basic gameplay mechanics to get you
-    started!
+  m_text: 'Welcome to Fusionmon! Here are the controls!
 
-    -You can open a menu in the overworld with Tab
 
-    -You can interact
-    with things in the overworld with E
+    WASD - Move
 
-    -You can catch enemy monsters with Boxes.
-    You can see how many you have in battle or by pressing Tab in the overworld
+    E
+    - Interact
 
-    -You
-    can fuse any two non fused monsters in the overworld by pressing the DNA button
-    with a fusion item. You can check fusion items with Tab
+    TAB - Open Menu
 
-    -In the center of
-    the map is a shop and a healer. Get money by defeating trainers around the world!
+    ESC - Pause
 
-    -Win
-    by defeating the Boss in the North
+
+    CHEAT CODES:
+
+    ] -
+    Disable/Enable battles
+
+    H - Heal Monsters
 
 '
   m_isRightToLeft: 0
@@ -462,6 +461,7 @@ MonoBehaviour:
   pauseMenu: {fileID: 0}
   menuOpen: 0
   canOpenMenu: 0
+  helpMenu: {fileID: 0}
 --- !u!1001 &143738658
 PrefabInstance:
   m_ObjectHideFlags: 0

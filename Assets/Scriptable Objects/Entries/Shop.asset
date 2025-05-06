@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74db17fe70a6bb545a6731611c06e5ed, type: 3}
+  m_Name: Shop
+  m_EditorClassIdentifier: 
+  entryTitle: Shop
+  entryText: Among the chaos of worlds colliding, a chain of Umbrella Corp. stores
+    have sprung up anywhere there has been a worldly collision. They offer Boxes,
+    which can be used to capture Monsters, as well as Fusers, which can be used to
+    fuse monsters. Money can be obtained from trainers around the world.

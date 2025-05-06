@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74db17fe70a6bb545a6731611c06e5ed, type: 3}
+  m_Name: Story
+  m_EditorClassIdentifier: 
+  entryTitle: Story
+  entryText: Fifteen years ago was the first collision. What was formerly known as
+    New York city collided with a parallel world, mixing our world with a more alien
+    one, turning New York into a treehouse jungle now known as Big Chimp City. Every
+    few years more collisions occur, mashing biomes together with no rhyme or reason.
+    With this fusion of biomes came monsters. Thanks to breakthroughs by Professor
+    Jugan, we learned that these monsters could be fused with other monsters, creating
+    stronger, more powerful monsters that humans have been living alongside and adapting
+    to.

@@ -7,9 +7,12 @@ public class PauseMenu : MonoBehaviour
     private bool lockedButtons = false;
     public bool menuOpen = false;
     public bool canOpenMenu = false;
+    public GameObject helpMenu;
+    public GameObject typeChart;
     void Start()
     {
         if(pauseMenu) pauseMenu.SetActive(false);
+        if (helpMenu) helpMenu.SetActive(false);
     }
 
     void Update()
@@ -39,6 +42,7 @@ public class PauseMenu : MonoBehaviour
         menuOpen = false;
         FindObjectOfType<PlayerTileMovement>().playerIsIdle = true;
         FindObjectOfType<PlayerTileMovement>().idleTimerPaused = true;
+        FindObjectOfType<AudioManager>().Play("press");
     }
 
     public void RestartGame(){
@@ -52,7 +56,15 @@ public class PauseMenu : MonoBehaviour
     }
 
     public void OpenHelpMenu(){
-        //TODO
+        helpMenu.SetActive(true);
+        FindObjectOfType<AudioManager>().Play("press");
+    }
+
+    public void CloseHelpMenu()
+    {
+        helpMenu.SetActive(false);
+        if (typeChart.activeSelf) typeChart.SetActive(false);
+        FindObjectOfType<AudioManager>().Play("press");
     }
 
     public static void QuitGame(){

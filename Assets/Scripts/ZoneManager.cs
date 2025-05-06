@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ZoneManager : MonoBehaviour
 {
-    public enum Area {AREA_TOWN, AREA_CENTER, AREA_SNOW, AREA_MAZE, AREA_WATER, AREA_FIRE, AREA_FINAL};
+    public enum Area { AREA_TOWN, AREA_CENTER, AREA_SNOW, AREA_MAZE, AREA_WATER, AREA_FIRE, AREA_FINAL, AREA_CAVE };
     public Area area = Area.AREA_TOWN;
     public Area oldArea = Area.AREA_TOWN;
     private bool displaying = false;
@@ -58,6 +58,10 @@ public class ZoneManager : MonoBehaviour
                 if(!displaying) areaText.text = "Arena";
                 area = Area.AREA_FINAL;
                 break;
+            case Area.AREA_CAVE:
+                if (!displaying) areaText.text = "Fusion Cave";
+                area = Area.AREA_CAVE;
+                break;
         }
         SwitchAreaMusic();
         StartCoroutine(DisplayAreaSwap());
@@ -87,6 +91,9 @@ public class ZoneManager : MonoBehaviour
             case Area.AREA_FINAL:
 
                 break;
+            case Area.AREA_CAVE:
+
+                break;
         }
     }
 
@@ -111,6 +118,9 @@ public class ZoneManager : MonoBehaviour
 
                 break;
             case Area.AREA_FINAL:
+
+                break;
+            case Area.AREA_CAVE:
 
                 break;
         }
