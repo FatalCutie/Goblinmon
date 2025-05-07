@@ -519,7 +519,7 @@ public class BattleSystem : MonoBehaviour
                     FindObjectOfType<AudioManager>().Stop("battleElite");
                     break;
                 case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
-                    FindObjectOfType<AudioManager>().Stop("battleLegendary");
+                    FindObjectOfType<AudioManager>().Stop("battleWild");
                     break;
                 case TriggerBattleOverworld.BattleMusic.BM_WILD:
                     FindObjectOfType<AudioManager>().Stop("battleWild");
@@ -569,7 +569,7 @@ public class BattleSystem : MonoBehaviour
                 FindObjectOfType<AudioManager>().Stop("winElite");
                 break;
             case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
-                FindObjectOfType<AudioManager>().Stop("winLegendary");
+                FindObjectOfType<AudioManager>().Stop("winWild");
                 break;
             case TriggerBattleOverworld.BattleMusic.BM_WILD:
                 FindObjectOfType<AudioManager>().Stop("winWild");
