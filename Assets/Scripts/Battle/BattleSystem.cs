@@ -90,7 +90,7 @@ public class BattleSystem : MonoBehaviour
                 break;
             }
         }
-
+        FindObjectOfType<BiomeManager>().SetUpBiome();
         //Instantiate battle based on above unit
         playerGO.GetComponent<Goblinmon>().goblinData = ps.goblinmon[j].goblinData;
         playerUnit = playerGO.GetComponent<Goblinmon>();
