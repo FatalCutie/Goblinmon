@@ -11153,6 +11153,7 @@ MonoBehaviour:
   party: []
   actualPlayer: {fileID: 0}
   standardWaitTime: 2
+  enemyRamping: 0
   twoTurnMove: {fileID: 0}
   squidReleased: 0
   squidDOT: {fileID: 11400000, guid: a9909c0a13abc564693ca91fb6647772, type: 2}
@@ -11257,11 +11258,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: {fileID: 1387181926}
   backgroundSprites:
-  - {fileID: 21300000, guid: cf0e759876e8160409727fc743766b16, type: 3}
-  - {fileID: 21300000, guid: d38bbcee07b288c4f81b86328791572c, type: 3}
-  - {fileID: 21300000, guid: 2c32ab9176f8bd640b7052c987f4b854, type: 3}
-  - {fileID: 21300000, guid: 3b3b4711df5aaaa46b69fae6e9e85711, type: 3}
-  - {fileID: 21300000, guid: c8a123fc573e0724c965f0705c74ca5e, type: 3}
+  - {fileID: 21300000, guid: dccc0c172e6213744b33ee95a538fd3a, type: 3}
+  - {fileID: 21300000, guid: 5f5d1e282bde9f844a75432b28252f49, type: 3}
+  - {fileID: 21300000, guid: 670a9823da660ba4b93c324e1d6e509a, type: 3}
+  - {fileID: 21300000, guid: 13b556c17d6ce0c4bac0ae2d390451ba, type: 3}
+  - {fileID: 21300000, guid: 2a573c1e3b60c764b89b4b4320a5b907, type: 3}
   playerBattleStation: {fileID: 2049001895}
   enemyBattleStation: {fileID: 1220717679}
   battleStations:

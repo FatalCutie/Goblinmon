@@ -20,7 +20,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Goblinmon actualPlayer;
     System.Random rnd = new System.Random();
     public float standardWaitTime = 1; //Standard Wait Time
-    private int enemyRamping;
+    public int enemyRamping;
     public SOMove twoTurnMove;
     public bool squidReleased;
     public SOMove squidDOT;
@@ -70,7 +70,7 @@ public class EnemyAI : MonoBehaviour
         {
             enemyRamping--;
             self.attackModifier--;
-            StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack fell by 1!"));
+            // StartCoroutine(bs.ScrollText($"{self.goblinData.gName}'s attack fell by 1!"));
         }
         if (!twoTurnMove)
         {
@@ -159,7 +159,6 @@ public class EnemyAI : MonoBehaviour
             {
                 return unit;
             }
-
         }
         //Debug.Log("Nothing strong, Looking for neutral");
 

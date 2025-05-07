@@ -519,7 +519,7 @@ public class BattleSystem : MonoBehaviour
                     FindObjectOfType<AudioManager>().Stop("battleElite");
                     break;
                 case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
-                    FindObjectOfType<AudioManager>().Stop("battleWild");
+                    FindObjectOfType<AudioManager>().Stop("battleLegendary");
                     break;
                 case TriggerBattleOverworld.BattleMusic.BM_WILD:
                     FindObjectOfType<AudioManager>().Stop("battleWild");
@@ -657,6 +657,7 @@ public class BattleSystem : MonoBehaviour
 
         //Check for more units
         eAI.SaveUnitData();
+        eAI.enemyRamping = 0;
         if (eAI.CheckForMoreUnits())
         {
             Goblinmon switchIn = eAI.FindSafeSwitch(true);

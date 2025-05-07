@@ -19,4 +19,4 @@ MonoBehaviour:
   damage: 40
   moveAction: 0
   moveModifier: 9
-  statModifier: 10
+  statModifier: 30

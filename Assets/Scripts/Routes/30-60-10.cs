@@ -2,14 +2,6 @@ using UnityEngine;
 
 public class HigherThirdEnounter : RandomEncounter
 {
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            GenerateRandomEncounter();
-        }
-    }
-
     public override void GenerateRandomEncounter()
     {
         int i = rnd.Next(0, 100);

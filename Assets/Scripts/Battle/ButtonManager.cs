@@ -169,6 +169,7 @@ public class ButtonManager : MonoBehaviour
 
     public void TestingRun()
     {
+        FindObjectOfType<SwitchingManager>().SavePlayerData();
         switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
         {
             case TriggerBattleOverworld.BattleMusic.BM_TRAINER:
@@ -200,6 +201,7 @@ public class ButtonManager : MonoBehaviour
         else
         {
             disableButtonsDuringAttack();
+            FindObjectOfType<SwitchingManager>().SavePlayerData();
             switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
             {
                 case TriggerBattleOverworld.BattleMusic.BM_TRAINER:
@@ -238,7 +240,7 @@ public class ButtonManager : MonoBehaviour
     public bool DoesPlayerGetAway()
     {
         SOGoblinmon gd = bs.enemyUnit.goblinData;
-        float number = gd.maxHP * gd.catchRate * 4 / (bs.enemyUnit.currentHP * 10);
+        float number = gd.maxHP * gd.catchRate * 4 * 3 / (bs.enemyUnit.currentHP * 10);
         float numberToBeat = bs.rnd.Next(0, 255);
         if (number * 2 >= numberToBeat) return true;
         return false;

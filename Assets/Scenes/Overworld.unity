@@ -41007,7 +41007,6 @@ GameObject:
   - component: {fileID: 294120832}
   - component: {fileID: 294120834}
   - component: {fileID: 294120833}
-  - component: {fileID: 294120835}
   m_Layer: 0
   m_Name: MovePoint
   m_TagString: Movepoint
@@ -41117,18 +41116,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.09
---- !u!114 &294120835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294120831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3439a0a796cdb05428adfc2178594be9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &294664536
 GameObject:
   m_ObjectHideFlags: 0
@@ -118681,7 +118668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 252452615198852898, guid: 205fd0ee4704b0a4aaf30472e000764d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1401485664602263909, guid: 205fd0ee4704b0a4aaf30472e000764d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -119288,6 +119275,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 292330294297194373}
   - {fileID: 2008382119}
   - {fileID: 2539221644231292445}
   - {fileID: 291843832}
@@ -119296,7 +119284,6 @@ SceneRoots:
   - {fileID: 7972664479639194642}
   - {fileID: 1476338161016615223}
   - {fileID: 729879728479287430}
-  - {fileID: 292330294297194373}
   - {fileID: 1300853269}
   - {fileID: 1090604603}
   - {fileID: 1106672086}
