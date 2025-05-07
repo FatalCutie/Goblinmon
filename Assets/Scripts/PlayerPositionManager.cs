@@ -15,6 +15,7 @@ public class PlayerPositionManager : MonoBehaviour
     public DialogueSO losingText;
     public float movepointOffset = 0.1f;
     public ZoneManager.Area area = ZoneManager.Area.AREA_TOWN;
+    private bool firstLoad = true;
 
     void Awake()
     {
@@ -64,9 +65,18 @@ public class PlayerPositionManager : MonoBehaviour
             player.movepoint.position = playerPosition - new Vector3(0f, movepointOffset, 0); //Move movepoint first 
             player.gameObject.transform.position = playerPosition; //Then actual player
         }
-        if (!lost) FindObjectOfType<ZoneManager>().area = area;
-        else FindObjectOfType<ZoneManager>().area = ZoneManager.Area.AREA_CENTER;
-        FindObjectOfType<ZoneManager>().SwitchAreaMusic();
+        if (!firstLoad)
+        {
+            if (!lost) FindObjectOfType<ZoneManager>().area = area;
+            else FindObjectOfType<ZoneManager>().area = ZoneManager.Area.AREA_CENTER;
+            FindObjectOfType<ZoneManager>().SwitchAreaMusic();
+        }
+        else
+        {
+            FindObjectOfType<AudioManager>().Play("townMusic");
+            firstLoad = !firstLoad;
+        }
+
     }
 
     public void PlayerLostBattle()

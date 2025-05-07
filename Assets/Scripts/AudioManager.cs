@@ -41,6 +41,11 @@ public class AudioManager : MonoBehaviour //FindObjectOfType<AudioManager>().Pla
             Debug.LogWarning("Sound: " + name + " not found!");
             return;
         }
+        else if (s.source == null)
+        {
+            Debug.LogWarning("Sound: " + name + " has no AudioSource assigned!");
+            return;
+        }
         s.source.Play();
     }
 
@@ -49,6 +54,11 @@ public class AudioManager : MonoBehaviour //FindObjectOfType<AudioManager>().Pla
         if (s == null)
         {
             Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
+        else if (s.source == null)
+        {
+            Debug.LogWarning("Sound: " + name + " has no AudioSource assigned!");
             return;
         }
         s.source.Stop();

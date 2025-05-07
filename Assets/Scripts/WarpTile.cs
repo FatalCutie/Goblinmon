@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WarpTile : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class WarpTile : MonoBehaviour
     {
         PlayerTileMovement player = FindObjectOfType<PlayerTileMovement>();
         player.movementLocked = true;
+        if (!transitionAnim) transitionAnim = FindObjectOfType<SceneController>().transitionAnim;
         transitionAnim.SetTrigger("EndFast");
         FindObjectOfType<AudioManager>().Play("transitionSound");
         yield return new WaitForSeconds(1);

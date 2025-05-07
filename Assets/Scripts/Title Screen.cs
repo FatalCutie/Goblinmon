@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class TitleScreen : MonoBehaviour
     public GameObject unitChoice;
     public bool skipOpening = false;
     public GameObject jugan;
+    public SpriteRenderer background;
+    public List<Sprite> sprites;
 
 
     void Start(){
@@ -22,6 +25,7 @@ public class TitleScreen : MonoBehaviour
         infoScreenUI.SetActive(false);
         unitChoice.SetActive(false);
         jugan.SetActive(false);
+        FindObjectOfType<AudioManager>().Play("title");
     }
 
     public void LoadBattleScene(){
@@ -51,6 +55,7 @@ public class TitleScreen : MonoBehaviour
         else
         {
             FindObjectOfType<AudioManager>().Play("introduction");
+            FindObjectOfType<AudioManager>().Stop("title");
             titleScreenUI.SetActive(false);
             jugan.SetActive(true);
             StartCoroutine(dm.ScrollText(openingCrawl, null));
@@ -71,7 +76,13 @@ public class TitleScreen : MonoBehaviour
     public void LoadIntoGame()
     {
         unitChoice.SetActive(false); //Only one starter for you
-        FindObjectOfType<AudioManager>().Stop("introduction");
+        try
+        {
+            FindObjectOfType<AudioManager>().Stop("introduction");
+            FindObjectOfType<AudioManager>().Stop("title");
+        }
+        catch (NullReferenceException) { } //For if you skip intro or not
+
         if (!sc) sc = FindObjectOfType<SceneController>();
         sc.TransitionScene("Overworld");
     }

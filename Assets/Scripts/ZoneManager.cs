@@ -8,7 +8,7 @@ public class ZoneManager : MonoBehaviour
 {
     public enum Area { AREA_TOWN, AREA_CENTER, AREA_SNOW, AREA_MAZE, AREA_WATER, AREA_FIRE, AREA_FINAL, AREA_CAVE };
     public Area area = Area.AREA_TOWN;
-    public Area oldArea = Area.AREA_TOWN;
+    public Area oldArea = Area.AREA_CENTER;
     private bool displaying = false;
     public Animator zoneAnimator;
     public TextMeshProUGUI areaText;
@@ -104,7 +104,9 @@ public class ZoneManager : MonoBehaviour
     }
 
     public void StopAreaMusic(){
-        switch(oldArea){
+
+        switch (oldArea)
+        {
             case Area.AREA_TOWN:
                 if (area == Area.AREA_CENTER) return;
                 FindObjectOfType<AudioManager>().Stop("townMusic");
