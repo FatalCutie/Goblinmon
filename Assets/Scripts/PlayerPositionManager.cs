@@ -41,7 +41,8 @@ public class PlayerPositionManager : MonoBehaviour
     public IEnumerator IfPlayerLost()
     {
         StartCoroutine(FindObjectOfType<DialogueManager>().ScrollText(losingText, null));
-        yield return new WaitForSeconds(1);
+        FindObjectOfType<ZoneManager>().area = ZoneManager.Area.AREA_CENTER;
+        yield return new WaitForSeconds(.5f);
         FindObjectOfType<NPC>().HealPlayerUnits();
     }
 
@@ -63,7 +64,9 @@ public class PlayerPositionManager : MonoBehaviour
             player.movepoint.position = playerPosition - new Vector3(0f, movepointOffset, 0); //Move movepoint first 
             player.gameObject.transform.position = playerPosition; //Then actual player
         }
-        FindObjectOfType<ZoneManager>().area = area;
+        if (!lost) FindObjectOfType<ZoneManager>().area = area;
+        else FindObjectOfType<ZoneManager>().area = ZoneManager.Area.AREA_CENTER;
+        FindObjectOfType<ZoneManager>().SwitchAreaMusic();
     }
 
     public void PlayerLostBattle()

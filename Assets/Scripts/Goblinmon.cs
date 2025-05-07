@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 
@@ -30,6 +31,11 @@ public class Goblinmon : MonoBehaviourID
         if (currentHP < 0) currentHP = 0; //clamp damage min
         if (currentHP <= 0) return true;
         else return false;
+    }
+
+    public IEnumerable PlayMoveAnimation(SOMove move)
+    {
+        yield return new WaitForSeconds(1);
     }
 
     //Applies stat changes to damage value

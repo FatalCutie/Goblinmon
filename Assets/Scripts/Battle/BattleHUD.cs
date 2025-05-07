@@ -13,6 +13,7 @@ public class BattleHUD : MonoBehaviour
     public GameObject attackButtonStorage;
     public Slider hpSlider;
     public TextMeshProUGUI healthText;
+    public GameObject fusionIcon;
 
     public void SetHUD(Goblinmon unit)
     {
@@ -21,6 +22,8 @@ public class BattleHUD : MonoBehaviour
         hpSlider.maxValue = unit.goblinData.maxHP;
         hpSlider.value = unit.currentHP;
         healthText.text = $"{unit.currentHP}/{unit.goblinData.maxHP}";
+        if (unit.goblinData.isFusion) fusionIcon.SetActive(true);
+        else fusionIcon.SetActive(false);
     }
 
     public void setHP(int hp, Goblinmon victim)

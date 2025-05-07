@@ -9,11 +9,29 @@ public class CatchSystem : MonoBehaviour
     [SerializeField] Animator battleAnimator;
     [SerializeField] Animator enemyAnimator;
     float captureScore;
+    bool instantCatch = false;
 
     void Start()
     {
         ps = FindObjectOfType<PartyStorage>();
         bs = FindObjectOfType<BattleSystem>();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (instantCatch)
+            {
+                instantCatch = !instantCatch;
+                FindObjectOfType<AudioManager>().Play("damage");
+            }
+            else
+            {
+                instantCatch = !instantCatch;
+                FindObjectOfType<AudioManager>().Play("press");
+            }
+        }
     }
     public IEnumerator AttemptToCatch(Goblinmon g){
         StartCoroutine(bs.ScrollText("You throw a Box!"));
@@ -36,7 +54,7 @@ public class CatchSystem : MonoBehaviour
 
     private bool IsCaptureSuccessful(Goblinmon g){
         SOGoblinmon gd = g.goblinData;
-
+        if (instantCatch) return true;
         //Run calculation to see if catch is successful
         //TODO: Replace 4 with ball modifier. Lower number = better ball
         float number = gd.maxHP * gd.catchRate * 4 / (g.currentHP * 10);

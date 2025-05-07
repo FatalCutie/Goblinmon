@@ -18,6 +18,7 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private List<AttackButton> attackButtons;
     public bool releaseMode = false;
     public bool cantClose = false;
+    public bool guaranteeRun = false;
 
 
     void Start()
@@ -30,6 +31,19 @@ public class ButtonManager : MonoBehaviour
     {
         if (!ppm) ppm = FindObjectOfType<PlayerPositionManager>();
         UpdateCatcherCount();
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (guaranteeRun)
+            {
+                guaranteeRun = !guaranteeRun;
+                FindObjectOfType<AudioManager>().Play("damage");
+            }
+            else
+            {
+                guaranteeRun = !guaranteeRun;
+                FindObjectOfType<AudioManager>().Play("press");
+            }
+        }
     }
 
     //If disabling the game object raises issues in the future
@@ -145,6 +159,12 @@ public class ButtonManager : MonoBehaviour
         FindObjectOfType<AudioManager>().Play("damage");
         yield return new WaitForSeconds(.2f);
         catchButtonImage.color = Color.white;
+    }
+
+    public void RunDecider()
+    {
+        if (guaranteeRun) TestingRun();
+        else RunAway();
     }
 
     public void TestingRun()

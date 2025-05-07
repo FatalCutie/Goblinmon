@@ -16,6 +16,7 @@ public class WarpTile : MonoBehaviour
         PlayerTileMovement player = FindObjectOfType<PlayerTileMovement>();
         player.movementLocked = true;
         transitionAnim.SetTrigger("EndFast");
+        FindObjectOfType<AudioManager>().Play("transitionSound");
         yield return new WaitForSeconds(1);
         player.movepoint.position = warpCoords - new Vector3(0f, 0.1f, 0); //this is hard coded LOL!
         player.gameObject.transform.position = warpCoords;

@@ -491,7 +491,7 @@ public class BattleSystem : MonoBehaviour
                     break;
                 case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
                     FindObjectOfType<AudioManager>().Stop("battleLegendary");
-                    FindObjectOfType<AudioManager>().Play("winLegendary");
+                    FindObjectOfType<AudioManager>().Play("winWild");
                     break;
                 case TriggerBattleOverworld.BattleMusic.BM_WILD:
                     FindObjectOfType<AudioManager>().Stop("battleWild");

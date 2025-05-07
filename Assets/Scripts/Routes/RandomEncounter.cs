@@ -20,6 +20,7 @@ public abstract class RandomEncounter : MonoBehaviour
         GameObject go = Instantiate(enemyPartyStoragePrefab); //Instantiate Object
         Goblinmon g = CreateGoblinmon(unit, go); //Create Goblinmon unit
         go.GetComponent<EnemyPartyStorage>().PopulateEnemy(g); //Adds goblinmon to party
+        FindObjectOfType<ZoneManager>().StopAllAreaMusic();
         go.GetComponent<EnemyPartyStorage>().battleMusic = TriggerBattleOverworld.BattleMusic.BM_WILD;
 
         //Load Scene

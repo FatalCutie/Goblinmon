@@ -55,6 +55,7 @@ public class TriggerBattleOverworld : MonoBehaviour
         //Load Scene
         FindObjectOfType<PlayerTileMovement>().movementLocked = true; //Lock player movement during transition
         FindObjectOfType<PlayerPositionManager>().SavePlayersPosition(); //Save players position for after battle
+        FindObjectOfType<ZoneManager>().StopAllAreaMusic();
         switch (battleMusic)
         {
             case BattleMusic.BM_TRAINER:

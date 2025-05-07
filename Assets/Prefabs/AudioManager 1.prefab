@@ -47,28 +47,28 @@ MonoBehaviour:
   sounds:
   - name: damage
     clip: {fileID: 8300000, guid: 013de593ea2bc27459a6955eb70521e6, type: 3}
-    volume: 1
+    volume: 0.4
     pitch: 1
     sBlend: 0
     loop: 0
     source: {fileID: 0}
   - name: press
     clip: {fileID: 8300000, guid: 334d8f10abdd337498b5df379073120f, type: 3}
-    volume: 0.565
+    volume: 0.2
     pitch: 1
     sBlend: 0
     loop: 0
     source: {fileID: 0}
   - name: run
     clip: {fileID: 8300000, guid: 08a79f7365ad2154fa7ca3ed37a267e3, type: 3}
-    volume: 1
+    volume: 0.25
     pitch: 1
     sBlend: 0
     loop: 0
     source: {fileID: 0}
   - name: superEffective
     clip: {fileID: 8300000, guid: 980fcb103d8491b4fae45ed46d60679a, type: 3}
-    volume: 0.625
+    volume: 0.2
     pitch: 1
     sBlend: 0
     loop: 0
@@ -88,50 +88,50 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - name: battleWild
-    clip: {fileID: 8300000, guid: 0880f2932f63f4f44be8e3b41858759f, type: 3}
-    volume: 0.15
+    clip: {fileID: 8300000, guid: b8d0d1d33bbddb243be004be40100c6c, type: 3}
+    volume: 0.1
     pitch: 1
     sBlend: 0
     loop: 1
     source: {fileID: 0}
   - name: winWild
     clip: {fileID: 8300000, guid: 1a1abc0cbd6de014f9ef26652eaeed72, type: 3}
-    volume: 0.15
+    volume: 0.1
     pitch: 1
     sBlend: 0
     loop: 1
     source: {fileID: 0}
   - name: battleTrainer
-    clip: {fileID: 8300000, guid: 349313710d5724944a3c31d0c5418aea, type: 3}
-    volume: 0.15
+    clip: {fileID: 8300000, guid: 87a84a6c082ab294e8d1ce11d7840a04, type: 3}
+    volume: 0.1
     pitch: 1
     sBlend: 0
     loop: 1
     source: {fileID: 0}
   - name: winTrainer
     clip: {fileID: 8300000, guid: 75368a4a166ee6b4a824fc29496b8210, type: 3}
-    volume: 0.15
+    volume: 0.1
     pitch: 1
     sBlend: 0
     loop: 1
     source: {fileID: 0}
   - name: battleLegendary
     clip: {fileID: 8300000, guid: e777e44288e08b1449ca6f607bb0646a, type: 3}
-    volume: 0.15
+    volume: 0.1
     pitch: 1
     sBlend: 0
     loop: 1
     source: {fileID: 0}
   - name: battleElite
-    clip: {fileID: 8300000, guid: fa4ac0283ec377a41a7be39599741bcb, type: 3}
-    volume: 0.15
+    clip: {fileID: 8300000, guid: 42c151414e8a51a4c8e56bc0e37c5275, type: 3}
+    volume: 0.1
     pitch: 1
     sBlend: 0
     loop: 1
     source: {fileID: 0}
   - name: introduction
     clip: {fileID: 8300000, guid: 13f8de435c23e204f9825c731c1ce903, type: 3}
-    volume: 0.15
+    volume: 0.1
     pitch: 1
     sBlend: 0
     loop: 1
@@ -145,15 +145,57 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: grass
     clip: {fileID: 8300000, guid: 4199bd914a4ee134db480404768b5209, type: 3}
-    volume: 0.1
+    volume: 0.02
     pitch: 0.48
     sBlend: 0
     loop: 0
     source: {fileID: 0}
   - name: cave
     clip: {fileID: 8300000, guid: cbf7816301eacf44e9948fe9b56f4c27, type: 3}
+    volume: 0.005
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: caveMusic
+    clip: {fileID: 8300000, guid: 52bfab29d09898046bea4c860c6130b7, type: 3}
     volume: 0.1
-    pitch: 0.52
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: townMusic
+    clip: {fileID: 8300000, guid: dbb60f5167de5a648a01884cf585d798, type: 3}
+    volume: 0.1
+    pitch: 1
+    sBlend: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: fireWaterMusic
+    clip: {fileID: 8300000, guid: 89eda1f8687b0094f988b28966a1d520, type: 3}
+    volume: 0.05
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: snowMazeMusic
+    clip: {fileID: 8300000, guid: e1495add1adaac248a07e69fa335cbcf, type: 3}
+    volume: 0.05
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: transitionSound
+    clip: {fileID: 8300000, guid: 625898b8e863c194aa2abea0095404f1, type: 3}
+    volume: 0.5
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: winElite
+    clip: {fileID: 8300000, guid: cac4572b35ba251438b4d39e4b816f29, type: 3}
+    volume: 0.1
+    pitch: 1
     sBlend: 0
     loop: 0
     source: {fileID: 0}
