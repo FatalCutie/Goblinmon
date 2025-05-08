@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class TitleScreen : MonoBehaviour
 {
-    
-
     public GameObject titleScreenUI;
     public GameObject infoScreenUI;
     public SceneController sc;
@@ -18,6 +16,9 @@ public class TitleScreen : MonoBehaviour
     public GameObject jugan;
     public SpriteRenderer background;
     public List<Sprite> sprites;
+    public Animator animator;
+
+
 
 
     void Start(){
@@ -25,7 +26,30 @@ public class TitleScreen : MonoBehaviour
         infoScreenUI.SetActive(false);
         unitChoice.SetActive(false);
         jugan.SetActive(false);
+        StartCoroutine(OpenTitleScreen());
+    }
+
+    public IEnumerator OpenTitleScreen()
+    {
+        yield return new WaitForSeconds(1);
+        animator.SetTrigger("Start");
+        yield return new WaitForSeconds(.5f);
+        animator.SetTrigger("Mon");
+        yield return new WaitForSeconds(.5f);
+        animator.SetTrigger("Buttons");
+        yield return new WaitForSeconds(1.5f);
+        animator.SetTrigger("Float");
+        animator.SetBool("Done", true);
         FindObjectOfType<AudioManager>().Play("title");
+    }
+
+    public void RestartTitle()
+    {
+        animator.SetBool("Done", false);
+        animator.SetTrigger("Restart");
+        FindObjectOfType<AudioManager>().Stop("title");
+        FindObjectOfType<OopsieScript>().SetMenuItemsInactive();
+        StartCoroutine(OpenTitleScreen());
     }
 
     public void LoadBattleScene(){
@@ -43,6 +67,7 @@ public class TitleScreen : MonoBehaviour
         FindObjectOfType<AudioManager>().Play("press");
         titleScreenUI.SetActive(true);
         infoScreenUI.SetActive(false);
+        animator.SetBool("Done", true);
     }
 
     public void BeginOpeningCrawl()

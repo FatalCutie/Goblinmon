@@ -199,6 +199,20 @@ MonoBehaviour:
     sBlend: 0
     loop: 0
     source: {fileID: 0}
+  - name: titleDone
+    clip: {fileID: 8300000, guid: 90b2235e624196f4ebdcdbfbaf527d95, type: 3}
+    volume: 0.2
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: titleBump
+    clip: {fileID: 8300000, guid: c199510e4e37a2c42b5e6aba169237bd, type: 3}
+    volume: 0.2
+    pitch: 1
+    sBlend: 0
+    loop: 0
+    source: {fileID: 0}
   - name: title
     clip: {fileID: 8300000, guid: 3a582f7a855c3634a81823a6f5847968, type: 3}
     volume: 0.1
