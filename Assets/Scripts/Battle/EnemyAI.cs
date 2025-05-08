@@ -229,6 +229,7 @@ public class EnemyAI : MonoBehaviour
             }
         }
         party[unitID].currentHP = unitToSave.currentHP; //Throws error
+        FindObjectOfType<EnemyPartyStorage>().goblinmon[unitID].currentHP = unitToSave.currentHP;
     }
 
     //Switch into the given safe unit
@@ -258,7 +259,7 @@ public class EnemyAI : MonoBehaviour
         Goblinmon gob = bs.enemyUnit;
         gob.goblinData = unit.goblinData;
         gob.currentHP = unit.currentHP;
-        gob.CloneIdFrom(unit);
+        gob.CloneIdFrom(unit); //I think it has something to do with this
 
         //Clear stat changes
         gob.defenseModifier = 0;

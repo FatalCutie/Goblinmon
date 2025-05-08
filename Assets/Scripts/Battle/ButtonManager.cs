@@ -188,7 +188,7 @@ public class ButtonManager : MonoBehaviour
                 break;
         }
         FindObjectOfType<AudioManager>().Play("run");
-        bs.ScrollText("You ran away!");
+        StartCoroutine(bs.ScrollText("You ran away!"));
         FindObjectOfType<SceneController>().TransitionScene("Overworld");
     }
 
@@ -200,7 +200,6 @@ public class ButtonManager : MonoBehaviour
         }
         else
         {
-            disableButtonsDuringAttack();
             FindObjectOfType<SwitchingManager>().SavePlayerData();
             switch (FindAnyObjectByType<EnemyPartyStorage>().battleMusic)
             {
@@ -213,12 +212,14 @@ public class ButtonManager : MonoBehaviour
                     StartCoroutine(FlashRunButtonRed());
                     return;
                 case TriggerBattleOverworld.BattleMusic.BM_LEGENDARY:
+                    enableAttackButtonsOnPress();
                     FindObjectOfType<AudioManager>().Stop("battleLegendary");
                     FindObjectOfType<AudioManager>().Play("run");
                     StartCoroutine(bs.ScrollText("You ran away!"));
                     FindObjectOfType<SceneController>().TransitionScene("Overworld");
                     break;
                 case TriggerBattleOverworld.BattleMusic.BM_WILD:
+                    enableAttackButtonsOnPress();
                     FindObjectOfType<AudioManager>().Stop("battleWild");
                     FindObjectOfType<AudioManager>().Play("run");
                     StartCoroutine(bs.ScrollText("You ran away!"));

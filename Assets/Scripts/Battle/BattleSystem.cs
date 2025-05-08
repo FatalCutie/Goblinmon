@@ -202,6 +202,7 @@ public class BattleSystem : MonoBehaviour
             bool isDead = enemyUnit.TakeDamage(move, playerUnit);
             if (move.moveModifier == SOMove.MoveModifier.SQUID && !squidReleased) squidReleased = !squidReleased; //Release the squid
             enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
+            eAI.SaveUnitData();
             if (enemyUnit.GetWeaknessMultiplier(move) > 1) //If super effective 
             {
                 FindObjectOfType<AudioManager>().Play("superEffective");
@@ -262,6 +263,7 @@ public class BattleSystem : MonoBehaviour
             {
                 //Deal damage
                 enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
+                eAI.SaveUnitData();
                 if (strongAttack) FindObjectOfType<AudioManager>().Play("superEffective");
                 else FindObjectOfType<AudioManager>().Play("damage");
                 yield return new WaitForSeconds(standardWaitTime / 2);
@@ -270,6 +272,7 @@ public class BattleSystem : MonoBehaviour
             {
                 //Deal last hit
                 enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
+                eAI.SaveUnitData();
                 if (strongAttack) FindObjectOfType<AudioManager>().Play("superEffective");
                 else FindObjectOfType<AudioManager>().Play("damage");
                 yield return new WaitForSeconds(standardWaitTime / 2);
@@ -678,6 +681,7 @@ public class BattleSystem : MonoBehaviour
         bool strongAttack = enemyUnit.GetWeaknessMultiplier(twoTurnMove) > 1;
         bool isDead = enemyUnit.TakeDamage(twoTurnMove, playerUnit);
         enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
+        eAI.SaveUnitData();
         if (strongAttack) //If super effective 
         {
             FindObjectOfType<AudioManager>().Play("superEffective");
@@ -764,6 +768,7 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(ScrollText("The squid is loose!"));
         yield return new WaitForSeconds(standardWaitTime);
         enemyHUD.setHP(enemyUnit.currentHP, enemyUnit);
+        eAI.SaveUnitData();
         FindObjectOfType<AudioManager>().Play("damage");
         bool isDead = enemyUnit.TakeDamage(squidDOT, playerUnit);
         yield return new WaitForSeconds(standardWaitTime);

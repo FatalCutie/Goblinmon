@@ -57,7 +57,7 @@ public class CatchSystem : MonoBehaviour
         if (instantCatch) return true;
         //Run calculation to see if catch is successful
         //TODO: Replace 4 with ball modifier. Lower number = better ball
-        float number = gd.maxHP * gd.catchRate * 4 / (g.currentHP * 10);
+        float number = gd.maxHP * gd.catchRate * 6 / (g.currentHP * 10);
         //Debug.Log($"{gd.maxHP * gd.catchRate * 4} / {g.currentHP * 255}");
         float numberToBeat = bs.rnd.Next(0, 255);
         //Debug.Log($"Using {number} to beat {numberToBeat}!");
