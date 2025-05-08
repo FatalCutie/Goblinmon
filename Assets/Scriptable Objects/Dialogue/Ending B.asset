@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ce7ab67607e6454d8e0e7dd79f416e1, type: 3}
-  m_Name: Ending
+  m_Name: Ending B
   m_EditorClassIdentifier: 
   text:
   - H- How can this be!?

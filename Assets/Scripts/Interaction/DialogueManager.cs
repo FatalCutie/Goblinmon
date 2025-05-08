@@ -78,6 +78,7 @@ public class DialogueManager : MonoBehaviour
         {
             //If on title screen
             if (FindObjectOfType<TitleScreen>()) FindObjectOfType<TitleScreen>().RevealStarters();
+            if (FindObjectOfType<EndingController>()) FindObjectOfType<EndingController>().EndGame();
         }
     }
 
